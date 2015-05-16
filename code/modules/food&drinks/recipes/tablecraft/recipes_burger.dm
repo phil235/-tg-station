@@ -215,3 +215,10 @@ datum/table_recipe/bearger
 			/obj/item/weapon/reagent_containers/food/snacks/bun = 1
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/burger/rat
+
+/datum/table_recipe/customburger
+	name = "Custom burger"
+	reqs = list(
+			/obj/item/weapon/reagent_containers/food/snacks/bun = 1
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/burger/custom

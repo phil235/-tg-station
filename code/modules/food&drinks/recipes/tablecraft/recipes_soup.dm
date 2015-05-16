@@ -204,3 +204,11 @@
 		/obj/item/weapon/reagent_containers/food/snacks/grown/cabbage = 1
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/soup/beet/red
+
+/datum/table_recipe/customsoup
+	name = "Custom soup"
+	reqs = list(
+		/datum/reagent/water = 10,
+		/obj/item/weapon/reagent_containers/glass/bowl = 1
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/soup/custom

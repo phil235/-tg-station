@@ -16,7 +16,6 @@
 	trash = /obj/item/trash/plate
 	bonus_reagents = list("nutriment" = 2)
 	list_reagents = list("nutriment" = 2, "vitamin" = 1)
-	custom_food_type = /obj/item/weapon/reagent_containers/food/snacks/customizable/pasta
 	filling_color = "#F0E68C"
 
 /obj/item/weapon/reagent_containers/food/snacks/pastatomato

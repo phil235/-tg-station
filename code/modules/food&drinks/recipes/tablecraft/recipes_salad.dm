@@ -113,3 +113,10 @@
 		/obj/item/weapon/reagent_containers/food/snacks/salad/boiledrice = 1
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/salad/ricepudding
+
+/datum/table_recipe/customsalad
+	name = "Custom salad"
+	reqs = list(
+		/obj/item/weapon/reagent_containers/glass/bowl = 1
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/salad/custom

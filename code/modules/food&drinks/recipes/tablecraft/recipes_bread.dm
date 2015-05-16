@@ -67,3 +67,10 @@
 		/obj/item/weapon/reagent_containers/food/snacks/grown/mimana = 1
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/store/bread/mimana
+
+/datum/table_recipe/custombread
+	name = "Custom bread"
+	reqs = list(
+		/obj/item/weapon/reagent_containers/food/snacks/store/bread/plain = 1,
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/store/bread/custom

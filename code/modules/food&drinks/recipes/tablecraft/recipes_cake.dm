@@ -90,3 +90,10 @@
 		/obj/item/weapon/reagent_containers/food/snacks/grown/pumpkin = 2
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/store/cake/pumpkinspice
+
+/datum/table_recipe/customcake
+	name = "Custom cake"
+	reqs = list(
+		/obj/item/weapon/reagent_containers/food/snacks/store/cake/plain = 1
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/store/cake/custom

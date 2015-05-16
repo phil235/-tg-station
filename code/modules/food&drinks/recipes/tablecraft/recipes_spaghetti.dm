@@ -53,3 +53,10 @@
 		/obj/item/weapon/reagent_containers/food/snacks/grown/carrot = 1
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/chowmein
+
+/datum/table_recipe/customspaghetti
+	name = "Custom spaghetti"
+	reqs = list(
+		/obj/item/weapon/reagent_containers/food/snacks/boiledspaghetti = 1
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/custompasta

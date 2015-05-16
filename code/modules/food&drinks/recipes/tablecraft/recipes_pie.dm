@@ -133,3 +133,10 @@
 		/obj/item/weapon/reagent_containers/food/snacks/grown/bluecherries = 1
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/pie/frostypie
+
+/datum/table_recipe/custompie
+	name = "Custom pie"
+	reqs = list(
+		/obj/item/weapon/reagent_containers/food/snacks/pie/plain = 1
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/pie/custom

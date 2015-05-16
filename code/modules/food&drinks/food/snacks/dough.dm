@@ -42,7 +42,6 @@
 	desc = "Add ingredients to make a pizza"
 	icon = 'icons/obj/food/food_ingredients.dmi'
 	icon_state = "pizzabread"
-	custom_food_type = /obj/item/weapon/reagent_containers/food/snacks/customizable/pizza
 	list_reagents = list("nutriment" = 7)
 	w_class = 3
 
@@ -62,7 +61,6 @@
 	icon = 'icons/obj/food/burgerbread.dmi'
 	icon_state = "bun"
 	list_reagents = list("nutriment" = 1)
-	custom_food_type = /obj/item/weapon/reagent_containers/food/snacks/customizable/burger
 	filling_color = "#CD853F"
 
 /obj/item/weapon/reagent_containers/food/snacks/cakebatter

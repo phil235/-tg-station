@@ -56,5 +56,11 @@
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/notasandwich
 
+/datum/table_recipe/customsandwich
+	name = "Custom sandwich"
+	reqs = list(
+		/obj/item/weapon/reagent_containers/food/snacks/breadslice/plain = 2
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/sandwich/custom
 
 

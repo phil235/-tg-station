@@ -26,7 +26,13 @@
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/kebab/tofu
 
-// see code/module/crafting/table.dm
+/datum/table_recipe/customkebab
+	name = "Custom kebab"
+	reqs = list(
+		/obj/item/stack/rods = 1
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/kebab/custom
+
 
 ////////////////////////////////////////////////FISH////////////////////////////////////////////////
 

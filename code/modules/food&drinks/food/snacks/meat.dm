@@ -16,9 +16,9 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/meat/slab/initialize_slice(obj/item/weapon/reagent_containers/food/snacks/meat/rawcutlet/slice, reagents_per_slice)
 	..()
-	var/image/I = new(icon, "rawcutlet_coloration")
-	I.color = filling_color
-	slice.overlays += I
+//	var/image/I = new(icon, "rawcutlet_coloration")
+	slice.color = filling_color
+//	slice.overlays += I
 	slice.filling_color = filling_color
 	slice.name = "raw [name] cutlet"
 	slice.meat_type = name
@@ -26,6 +26,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/meat/slab/initialize_cooked_food(obj/item/weapon/reagent_containers/food/snacks/S, cooking_efficiency)
 	..()
 	S.name = "[name] steak"
+	S.color = color
 
 ///////////////////////////////////// HUMAN MEATS //////////////////////////////////////////////////////
 
