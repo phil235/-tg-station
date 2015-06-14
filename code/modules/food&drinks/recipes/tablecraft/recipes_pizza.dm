@@ -74,6 +74,7 @@
 /datum/table_recipe/custompizza
 	name = "Custom pizza"
 	reqs = list(
-		/obj/item/weapon/reagent_containers/food/snacks/pizzabread = 1
+		/obj/item/weapon/reagent_containers/food/snacks/pizzabread = 1,
+		/obj/item/weapon/reagent_containers/food/snacks/grown/tomato = 1
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/pizza/custom

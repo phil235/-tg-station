@@ -61,6 +61,6 @@
 	reqs = list(
 		/obj/item/weapon/reagent_containers/food/snacks/breadslice/plain = 2
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/sandwich/custom
+	result = /obj/item/weapon/reagent_containers/food/snacks/customsandwich
 
 

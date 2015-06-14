@@ -690,25 +690,16 @@
 				<b>Rice:</b> Mix 10u rice with 10u water in a bowl then microwave it.
 
 				<h2>Custom food:</h2>
-				Add ingredients to a base item to prepare a custom meal.<br>
-				The bases are:<br>
-				- bun (burger)<br>
-				- breadslices(sandwich)<br>
-				- plain bread<br>
-				- plain pie<br>
-				- vanilla cake<br>
-				- empty bowl (salad)<br>
-				- bowl with 10u water (soup)<br>
-				- boiled spaghetti<br>
-				- pizza bread<br>
-				- metal rod (kebab)
+				Custom food bases are tablecrafted, you then add ingredients manually.<br>
+				You can make custom burgers, sandwiches, breads, pies, cakes,<br>
+				salads, soups, pastas, pizzas and kebabs.
 
 				<h2>Table Craft:</h2>
-				Put ingredients on table, then click and drag the table onto yourself to see what recipes you can prepare.
+				Put ingredients on table, then click and drag the table or any ingredient onto yourself to see what recipes you can prepare.
 
 				<h2>Microwave:</h2>
 				Use it to cook or boil food ingredients (meats, doughs, egg, spaghetti, donkpocket, etc...).
-				It can cook multiple items at once. Use the higher power settings for faster (and riskier) cooking.
+				It can cook multiple items at once.
 
 				<h2>Processor:</h2>
 				Use it to process certain ingredients (meat into faggot, doughslice into spaghetti, potato into fries,etc...)

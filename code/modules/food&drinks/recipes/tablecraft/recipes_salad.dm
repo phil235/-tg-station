@@ -117,6 +117,7 @@
 /datum/table_recipe/customsalad
 	name = "Custom salad"
 	reqs = list(
-		/obj/item/weapon/reagent_containers/glass/bowl = 1
+		/obj/item/weapon/reagent_containers/glass/bowl = 1,
+		/obj/item/weapon/reagent_containers/food/snacks/grown/ambrosia = 1
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/salad/custom

@@ -45,6 +45,13 @@
 
 
 /obj/item/weapon/reagent_containers/food/snacks/attack_self(mob/user)
+	if(customizable) //renaming the food
+		var/txt = stripped_input(user, "What would you like the food to be called?", "Food Naming", "", 30)
+		if(txt)
+			ingMax = ingredients.len
+			user << "<span class='notice'>You add a last touch to the dish by renaming it.</span>"
+			customname = txt
+			name = "[customname] [initial(name)]"
 	return
 
 
@@ -176,18 +183,11 @@
 				ingredients += S
 				S.loc = src
 				mix_filling_color(S)
-				S.reagents.trans_to(src,min(S.reagents.total_volume, 15)) //limit of 15, we don't want our custom food to be completely filled by just one ingredient with large reagent volume.
+				S.reagents.trans_to(src, S.reagents.total_volume)
 				update_overlays(S)
 				user << "<span class='notice'>You add the [S.name] to the [name].</span>"
 				update_name(S)
-		//renaming the food
-		else if(istype(W, /obj/item/weapon/pen))
-			var/txt = stripped_input(user, "What would you like the food to be called?", "Food Naming", "", 30)
-			if(txt)
-				ingMax = ingredients.len
-				user << "<span class='notice'>You add a last touch to the dish by renaming it.</span>"
-				customname = txt
-				name = "[customname] [initial(name)]"
+
 
 
 //Called when you finish tablecrafting a snack.

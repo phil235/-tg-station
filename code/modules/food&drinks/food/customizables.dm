@@ -123,6 +123,7 @@
 	list_reagents = list("nutriment" = 1)
 	ingMax = 6
 	icon_state = "customkebab"
+	trash = /obj/item/trash/plate
 	customizable = 1
 	volume = 80
 
@@ -169,7 +170,7 @@
 	volume = 80
 
 
-/obj/item/weapon/reagent_containers/food/snacks/sandwich/custom
+/obj/item/weapon/reagent_containers/food/snacks/customsandwich
 	name = "sandwich"
 	desc = "A timeless classic."
 	ingMax = 12
