@@ -69,7 +69,7 @@
 				probWeight++
 			qdel(tempCheck)
 
-		if(ispath(I,/obj/item/weapon/reagent_containers/food))
+		if(ispath(I,/obj/item/weapon/reagent_containers))
 			var/obj/item/tempCheck = new I()
 			if(tempCheck.icon_state != null) //check it's an actual usable item, in a hacky way
 				valid_items += rand(1,max(2,35-probWeight))
@@ -358,7 +358,7 @@
 		if(prob(EFFECT_PROB_LOW) && criticalReaction)
 			visible_message("<span class='warning'>[src]'s emergency coolant system gives off a small ding!</span>")
 			playsound(src.loc, 'sound/machines/ding.ogg', 50, 1)
-			var/obj/item/weapon/reagent_containers/food/drinks/coffee/C = new /obj/item/weapon/reagent_containers/food/drinks/coffee(get_turf(pick(oview(1,src))))
+			var/obj/item/weapon/reagent_containers/drinks/coffee/C = new /obj/item/weapon/reagent_containers/drinks/coffee(get_turf(pick(oview(1,src))))
 			chosenchem = pick("plasma","capsaicin","ethanol")
 			C.reagents.remove_any(25)
 			C.reagents.add_reagent(chosenchem , 50)

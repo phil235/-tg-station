@@ -48,8 +48,8 @@
 	icon_type = "donut"
 	name = "donut box"
 	storage_slots = 6
-	can_hold = list(/obj/item/weapon/reagent_containers/food/snacks/donut)
-	spawn_type = /obj/item/weapon/reagent_containers/food/snacks/donut
+	can_hold = list(/obj/item/weapon/reagent_containers/snacks/donut)
+	spawn_type = /obj/item/weapon/reagent_containers/snacks/donut
 
 /*
  * Egg Box
@@ -61,8 +61,8 @@
 	icon_type = "egg"
 	name = "egg box"
 	storage_slots = 12
-	can_hold = list(/obj/item/weapon/reagent_containers/food/snacks/egg)
-	spawn_type = /obj/item/weapon/reagent_containers/food/snacks/egg
+	can_hold = list(/obj/item/weapon/reagent_containers/snacks/egg)
+	spawn_type = /obj/item/weapon/reagent_containers/snacks/egg
 
 /*
  * Candle Box

@@ -406,8 +406,8 @@ var/list/TYPES_SHORTCUTS = list(
 	/obj/item/device/radio/headset = "HEADSET",
 	/obj/item/clothing/head/helmet/space = "SPESSHELMET",
 	/obj/item/weapon/book/manual = "MANUAL",
-	/obj/item/weapon/reagent_containers/food/drinks = "DRINK", //longest paths comes first
-	/obj/item/weapon/reagent_containers/food = "FOOD",
+	/obj/item/weapon/reagent_containers/drinks = "DRINK", //longest paths comes first
+	/obj/item/weapon/reagent_containers/snacks = "SNACKS",
 	/obj/item/weapon/reagent_containers = "REAGENT_CONTAINERS",
 	/obj/machinery/atmospherics = "ATMOS",
 	/obj/machinery/portable_atmospherics = "PORT_ATMOS",
@@ -624,7 +624,7 @@ var/global/list/g_fancy_list_of_types = null
 		alert("Invalid mob")
 		return
 	//log_admin("[key_name(src)] has alienized [M.key].")
-	
+
 
 	var/list/outfits = list("Naked","Custom","As Job...")
 	var/list/paths = typesof(/datum/outfit) - /datum/outfit - typesof(/datum/outfit/job)

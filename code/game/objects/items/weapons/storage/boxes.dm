@@ -309,12 +309,12 @@
 
 /obj/item/weapon/storage/box/drinkingglasses/New()
 	..()
-	new /obj/item/weapon/reagent_containers/food/drinks/drinkingglass(src)
-	new /obj/item/weapon/reagent_containers/food/drinks/drinkingglass(src)
-	new /obj/item/weapon/reagent_containers/food/drinks/drinkingglass(src)
-	new /obj/item/weapon/reagent_containers/food/drinks/drinkingglass(src)
-	new /obj/item/weapon/reagent_containers/food/drinks/drinkingglass(src)
-	new /obj/item/weapon/reagent_containers/food/drinks/drinkingglass(src)
+	new /obj/item/weapon/reagent_containers/drinks/drinkingglass(src)
+	new /obj/item/weapon/reagent_containers/drinks/drinkingglass(src)
+	new /obj/item/weapon/reagent_containers/drinks/drinkingglass(src)
+	new /obj/item/weapon/reagent_containers/drinks/drinkingglass(src)
+	new /obj/item/weapon/reagent_containers/drinks/drinkingglass(src)
+	new /obj/item/weapon/reagent_containers/drinks/drinkingglass(src)
 
 /obj/item/weapon/storage/box/condimentbottles
 	name = "box of condiment bottles"
@@ -322,12 +322,12 @@
 
 /obj/item/weapon/storage/box/condimentbottles/New()
 	..()
-	new /obj/item/weapon/reagent_containers/food/condiment(src)
-	new /obj/item/weapon/reagent_containers/food/condiment(src)
-	new /obj/item/weapon/reagent_containers/food/condiment(src)
-	new /obj/item/weapon/reagent_containers/food/condiment(src)
-	new /obj/item/weapon/reagent_containers/food/condiment(src)
-	new /obj/item/weapon/reagent_containers/food/condiment(src)
+	new /obj/item/weapon/reagent_containers/condiment(src)
+	new /obj/item/weapon/reagent_containers/condiment(src)
+	new /obj/item/weapon/reagent_containers/condiment(src)
+	new /obj/item/weapon/reagent_containers/condiment(src)
+	new /obj/item/weapon/reagent_containers/condiment(src)
+	new /obj/item/weapon/reagent_containers/condiment(src)
 
 /obj/item/weapon/storage/box/cups
 	name = "box of paper cups"
@@ -335,13 +335,13 @@
 
 /obj/item/weapon/storage/box/cups/New()
 	..()
-	new /obj/item/weapon/reagent_containers/food/drinks/sillycup( src )
-	new /obj/item/weapon/reagent_containers/food/drinks/sillycup( src )
-	new /obj/item/weapon/reagent_containers/food/drinks/sillycup( src )
-	new /obj/item/weapon/reagent_containers/food/drinks/sillycup( src )
-	new /obj/item/weapon/reagent_containers/food/drinks/sillycup( src )
-	new /obj/item/weapon/reagent_containers/food/drinks/sillycup( src )
-	new /obj/item/weapon/reagent_containers/food/drinks/sillycup( src )
+	new /obj/item/weapon/reagent_containers/drinks/sillycup( src )
+	new /obj/item/weapon/reagent_containers/drinks/sillycup( src )
+	new /obj/item/weapon/reagent_containers/drinks/sillycup( src )
+	new /obj/item/weapon/reagent_containers/drinks/sillycup( src )
+	new /obj/item/weapon/reagent_containers/drinks/sillycup( src )
+	new /obj/item/weapon/reagent_containers/drinks/sillycup( src )
+	new /obj/item/weapon/reagent_containers/drinks/sillycup( src )
 
 /obj/item/weapon/storage/box/donkpockets
 	name = "box of donk-pockets"
@@ -350,12 +350,12 @@
 
 /obj/item/weapon/storage/box/donkpockets/New()
 	..()
-	new /obj/item/weapon/reagent_containers/food/snacks/donkpocket(src)
-	new /obj/item/weapon/reagent_containers/food/snacks/donkpocket(src)
-	new /obj/item/weapon/reagent_containers/food/snacks/donkpocket(src)
-	new /obj/item/weapon/reagent_containers/food/snacks/donkpocket(src)
-	new /obj/item/weapon/reagent_containers/food/snacks/donkpocket(src)
-	new /obj/item/weapon/reagent_containers/food/snacks/donkpocket(src)
+	new /obj/item/weapon/reagent_containers/snacks/donkpocket(src)
+	new /obj/item/weapon/reagent_containers/snacks/donkpocket(src)
+	new /obj/item/weapon/reagent_containers/snacks/donkpocket(src)
+	new /obj/item/weapon/reagent_containers/snacks/donkpocket(src)
+	new /obj/item/weapon/reagent_containers/snacks/donkpocket(src)
+	new /obj/item/weapon/reagent_containers/snacks/donkpocket(src)
 
 /obj/item/weapon/storage/box/monkeycubes
 	name = "monkey cube box"
@@ -363,12 +363,12 @@
 	icon = 'icons/obj/food/food.dmi'
 	icon_state = "monkeycubebox"
 	storage_slots = 7
-	can_hold = list(/obj/item/weapon/reagent_containers/food/snacks/monkeycube)
+	can_hold = list(/obj/item/weapon/reagent_containers/snacks/monkeycube)
 
 /obj/item/weapon/storage/box/monkeycubes/New()
 	..()
 	for(var/i = 1; i <= 5; i++)
-		new /obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped(src)
+		new /obj/item/weapon/reagent_containers/snacks/monkeycube/wrapped(src)
 
 
 /obj/item/weapon/storage/box/permits

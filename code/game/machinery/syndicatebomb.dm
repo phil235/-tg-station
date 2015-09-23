@@ -249,7 +249,7 @@
 	qdel(src)
 
 /obj/item/weapon/bombcore/badmin/summon/
-	var/summon_path = /obj/item/weapon/reagent_containers/food/snacks/cookie
+	var/summon_path = /obj/item/weapon/reagent_containers/snacks/cookie
 	var/amt_summon = 1
 
 /obj/item/weapon/bombcore/badmin/summon/detonate()

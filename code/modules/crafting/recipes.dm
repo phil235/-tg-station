@@ -25,17 +25,17 @@
 	reqs = list(/datum/reagent/fuel = 50,
 				/obj/item/stack/cable_coil = 1,
 				/obj/item/device/assembly/igniter = 1,
-				/obj/item/weapon/reagent_containers/food/drinks/soda_cans = 1)
-	parts = list(/obj/item/weapon/reagent_containers/food/drinks/soda_cans = 1)
+				/obj/item/weapon/reagent_containers/drinks/soda_cans = 1)
+	parts = list(/obj/item/weapon/reagent_containers/drinks/soda_cans = 1)
 	time = 80
 	category = CAT_WEAPON
 
 /datum/table_recipe/molotov
 	name = "Molotov"
-	result = /obj/item/weapon/reagent_containers/food/drinks/bottle/molotov
+	result = /obj/item/weapon/reagent_containers/drinks/bottle/molotov
 	reqs = list(/obj/item/weapon/reagent_containers/glass/rag = 1,
-				/obj/item/weapon/reagent_containers/food/drinks/bottle = 1)
-	parts = list(/obj/item/weapon/reagent_containers/food/drinks/bottle = 1)
+				/obj/item/weapon/reagent_containers/drinks/bottle = 1)
+	parts = list(/obj/item/weapon/reagent_containers/drinks/bottle = 1)
 	time = 80
 	category = CAT_WEAPON
 

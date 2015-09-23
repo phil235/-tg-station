@@ -208,8 +208,8 @@
 
 /obj/item/weapon/robot_module/butler/New()
 	..()
-	modules += new /obj/item/weapon/reagent_containers/food/drinks/drinkingglass(src)
-	modules += new /obj/item/weapon/reagent_containers/food/condiment/enzyme(src)
+	modules += new /obj/item/weapon/reagent_containers/drinks/drinkingglass(src)
+	modules += new /obj/item/weapon/reagent_containers/condiment/enzyme(src)
 	modules += new /obj/item/weapon/pen(src)
 	modules += new /obj/item/weapon/razor(src)
 	modules += new /obj/item/device/instrument/violin(src)

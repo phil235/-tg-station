@@ -6,8 +6,8 @@
 		else
 			t_max = rand(1,4)
 
-	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown/))
-		var/obj/item/weapon/reagent_containers/food/snacks/grown/F = O
+	if(istype(O, /obj/item/weapon/reagent_containers/snacks/grown/))
+		var/obj/item/weapon/reagent_containers/snacks/grown/F = O
 		while(t_amount < t_max)
 			var/obj/item/seeds/t_prod = new F.seed(O.loc, O)
 			t_prod.lifespan = F.lifespan

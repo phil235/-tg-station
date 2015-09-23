@@ -180,7 +180,7 @@
 
 /datum/objective_item/special/corgimeat
 	name = "a piece of corgi meat"
-	targetitem = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/corgi
+	targetitem = /obj/item/weapon/reagent_containers/snacks/meat/slab/corgi
 	difficulty = 5
 
 //Stack objectives get their own subtype

@@ -9,7 +9,7 @@
 	var/operating = 0 //Is it on?
 	var/dirty = 0 // Does it need cleaning?
 	var/gibtime = 40 // Time from starting until meat appears
-	var/typeofmeat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human
+	var/typeofmeat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human
 	var/meat_produced = 0
 	var/ignore_clothing = 0
 	use_power = 1
@@ -170,21 +170,21 @@
 	var/sourcetotalreagents = src.occupant.reagents.total_volume
 	var/gibtype = /obj/effect/decal/cleanable/blood/gibs
 
-	var/obj/item/weapon/reagent_containers/food/snacks/meat/slab/allmeat[meat_produced]
+	var/obj/item/weapon/reagent_containers/snacks/meat/slab/allmeat[meat_produced]
 
 	if(ishuman(occupant))
 		var/mob/living/carbon/human/gibee = occupant
 		if(gibee.dna && gibee.dna.species)
 			typeofmeat = gibee.dna.species.meat
 		else
-			typeofmeat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human
+			typeofmeat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human
 	else
 		if(iscarbon(occupant))
 			var/mob/living/carbon/C = occupant
 			typeofmeat = C.type_of_meat
 			gibtype = C.gib_type
 	for (var/i=1 to meat_produced)
-		var/obj/item/weapon/reagent_containers/food/snacks/meat/slab/newmeat = new typeofmeat
+		var/obj/item/weapon/reagent_containers/snacks/meat/slab/newmeat = new typeofmeat
 		newmeat.name = sourcename + newmeat.name
 		newmeat.subjectname = sourcename
 		if(sourcejob)

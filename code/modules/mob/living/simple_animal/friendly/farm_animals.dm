@@ -12,7 +12,7 @@
 	speak_chance = 1
 	turns_per_move = 5
 	see_in_dark = 6
-	butcher_results = list(/obj/item/weapon/reagent_containers/food/snacks/meat/slab = 4)
+	butcher_results = list(/obj/item/weapon/reagent_containers/snacks/meat/slab = 4)
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "kicks"
@@ -90,7 +90,7 @@
 	speak_chance = 1
 	turns_per_move = 5
 	see_in_dark = 6
-	butcher_results = list(/obj/item/weapon/reagent_containers/food/snacks/meat/slab = 6)
+	butcher_results = list(/obj/item/weapon/reagent_containers/snacks/meat/slab = 6)
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "kicks"
@@ -150,7 +150,7 @@
 	density = 0
 	speak_chance = 2
 	turns_per_move = 2
-	butcher_results = list(/obj/item/weapon/reagent_containers/food/snacks/meat/slab = 1)
+	butcher_results = list(/obj/item/weapon/reagent_containers/snacks/meat/slab = 1)
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "kicks"
@@ -193,9 +193,9 @@ var/global/chicken_count = 0
 	density = 0
 	speak_chance = 2
 	turns_per_move = 3
-	butcher_results = list(/obj/item/weapon/reagent_containers/food/snacks/meat/slab = 2)
-	var/egg_type = /obj/item/weapon/reagent_containers/food/snacks/egg
-	var/food_type = /obj/item/weapon/reagent_containers/food/snacks/grown/wheat
+	butcher_results = list(/obj/item/weapon/reagent_containers/snacks/meat/slab = 2)
+	var/egg_type = /obj/item/weapon/reagent_containers/snacks/egg
+	var/food_type = /obj/item/weapon/reagent_containers/snacks/grown/wheat
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "kicks"
@@ -256,8 +256,8 @@ var/global/chicken_count = 0
 			if(chicken_count < MAX_CHICKENS && prob(25))
 				SSobj.processing |= E
 
-/obj/item/weapon/reagent_containers/food/snacks/egg/var/amount_grown = 0
-/obj/item/weapon/reagent_containers/food/snacks/egg/process()
+/obj/item/weapon/reagent_containers/snacks/egg/var/amount_grown = 0
+/obj/item/weapon/reagent_containers/snacks/egg/process()
 	if(isturf(loc))
 		amount_grown += rand(1,2)
 		if(amount_grown >= 100)

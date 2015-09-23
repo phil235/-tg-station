@@ -87,7 +87,7 @@
 	return ..()
 
 /obj/machinery/vending/snack/Destroy()
-	for(var/obj/item/weapon/reagent_containers/food/snacks/S in contents)
+	for(var/obj/item/weapon/reagent_containers/snacks/S in contents)
 		S.loc = get_turf(src)
 	qdel(wires)
 	wires = null
@@ -170,7 +170,7 @@
 	return total
 
 /obj/machinery/vending/snack/attackby(obj/item/weapon/W, mob/user, params)
-	if(istype(W, /obj/item/weapon/reagent_containers/food/snacks))
+	if(istype(W, /obj/item/weapon/reagent_containers/snacks))
 		if(!compartment_access_check(user))
 			return
 		if(junk_check(W))
@@ -190,7 +190,7 @@
 		var/obj/item/weapon/storage/T = W
 		var/loaded = 0
 		var/denied_items = 0
-		for(var/obj/item/weapon/reagent_containers/food/snacks/S in T.contents)
+		for(var/obj/item/weapon/reagent_containers/snacks/S in T.contents)
 			if(iscompartmentfull(user))
 				break
 			if(junk_check(S))
@@ -217,7 +217,7 @@
 	req_access_txt = "0"
 	return 1
 
-/obj/machinery/vending/snack/proc/junk_check(obj/item/weapon/reagent_containers/food/snacks/S)
+/obj/machinery/vending/snack/proc/junk_check(obj/item/weapon/reagent_containers/snacks/S)
 	if(S.junkiness)
 		return 0
 	return 1
@@ -228,7 +228,7 @@
 		return 1
 	return 0
 
-/obj/machinery/vending/snack/proc/food_load(obj/item/weapon/reagent_containers/food/snacks/S)
+/obj/machinery/vending/snack/proc/food_load(obj/item/weapon/reagent_containers/snacks/S)
 	if(dish_quants[S.name])
 		dish_quants[S.name]++
 	else
@@ -633,18 +633,18 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	desc = "A technological marvel, supposedly able to mix just the mixture you'd like to drink the moment you ask for one."
 	icon_state = "boozeomat"        //////////////18 drink entities below, plus the glasses, in case someone wants to edit the number of bottles
 	icon_deny = "boozeomat-deny"
-	products = list(/obj/item/weapon/reagent_containers/food/drinks/bottle/gin = 5,/obj/item/weapon/reagent_containers/food/drinks/bottle/whiskey = 5,
-					/obj/item/weapon/reagent_containers/food/drinks/bottle/tequila = 5,/obj/item/weapon/reagent_containers/food/drinks/bottle/vodka = 5,
-					/obj/item/weapon/reagent_containers/food/drinks/bottle/vermouth = 5,/obj/item/weapon/reagent_containers/food/drinks/bottle/rum = 5,
-					/obj/item/weapon/reagent_containers/food/drinks/bottle/wine = 5,/obj/item/weapon/reagent_containers/food/drinks/bottle/cognac = 5,
-					/obj/item/weapon/reagent_containers/food/drinks/bottle/kahlua = 5,/obj/item/weapon/reagent_containers/food/drinks/beer = 6,
-					/obj/item/weapon/reagent_containers/food/drinks/ale = 6,/obj/item/weapon/reagent_containers/food/drinks/bottle/orangejuice = 4,
-					/obj/item/weapon/reagent_containers/food/drinks/bottle/tomatojuice = 4,/obj/item/weapon/reagent_containers/food/drinks/bottle/limejuice = 4,
-					/obj/item/weapon/reagent_containers/food/drinks/bottle/cream = 4,/obj/item/weapon/reagent_containers/food/drinks/soda_cans/tonic = 8,
-					/obj/item/weapon/reagent_containers/food/drinks/soda_cans/cola = 8, /obj/item/weapon/reagent_containers/food/drinks/soda_cans/sodawater = 15,
-					/obj/item/weapon/reagent_containers/food/drinks/drinkingglass = 30,/obj/item/weapon/reagent_containers/food/drinks/ice = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/shotglass = 12)
-	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/mug/tea = 12)
+	products = list(/obj/item/weapon/reagent_containers/drinks/bottle/gin = 5,/obj/item/weapon/reagent_containers/drinks/bottle/whiskey = 5,
+					/obj/item/weapon/reagent_containers/drinks/bottle/tequila = 5,/obj/item/weapon/reagent_containers/drinks/bottle/vodka = 5,
+					/obj/item/weapon/reagent_containers/drinks/bottle/vermouth = 5,/obj/item/weapon/reagent_containers/drinks/bottle/rum = 5,
+					/obj/item/weapon/reagent_containers/drinks/bottle/wine = 5,/obj/item/weapon/reagent_containers/drinks/bottle/cognac = 5,
+					/obj/item/weapon/reagent_containers/drinks/bottle/kahlua = 5,/obj/item/weapon/reagent_containers/drinks/beer = 6,
+					/obj/item/weapon/reagent_containers/drinks/ale = 6,/obj/item/weapon/reagent_containers/drinks/bottle/orangejuice = 4,
+					/obj/item/weapon/reagent_containers/drinks/bottle/tomatojuice = 4,/obj/item/weapon/reagent_containers/drinks/bottle/limejuice = 4,
+					/obj/item/weapon/reagent_containers/drinks/bottle/cream = 4,/obj/item/weapon/reagent_containers/drinks/soda_cans/tonic = 8,
+					/obj/item/weapon/reagent_containers/drinks/soda_cans/cola = 8, /obj/item/weapon/reagent_containers/drinks/soda_cans/sodawater = 15,
+					/obj/item/weapon/reagent_containers/drinks/drinkingglass = 30,/obj/item/weapon/reagent_containers/drinks/ice = 10,
+					/obj/item/weapon/reagent_containers/drinks/drinkingglass/shotglass = 12)
+	contraband = list(/obj/item/weapon/reagent_containers/drinks/mug/tea = 12)
 	vend_delay = 15
 	product_slogans = "I hope nobody asks me for a bloody cup o' tea...;Alcohol is humanity's friend. Would you abandon a friend?;Quite delighted to serve you!;Is nobody thirsty on this station?"
 	product_ads = "Drink up!;Booze is good for you!;Alcohol is humanity's best friend.;Quite delighted to serve you!;Care for a nice, cold beer?;Nothing cures you like booze!;Have a sip!;Have a drink!;Have a beer!;Beer is good for you!;Only the finest alcohol!;Best quality booze since 2053!;Award-winning wine!;Maximum alcohol!;Man loves beer.;A toast for progress!"
@@ -664,8 +664,8 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	icon_state = "coffee"
 	icon_vend = "coffee-vend"
 	vend_delay = 34
-	products = list(/obj/item/weapon/reagent_containers/food/drinks/coffee = 25,/obj/item/weapon/reagent_containers/food/drinks/mug/tea = 25,/obj/item/weapon/reagent_containers/food/drinks/mug/coco = 25)
-	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/ice = 12)
+	products = list(/obj/item/weapon/reagent_containers/drinks/coffee = 25,/obj/item/weapon/reagent_containers/drinks/mug/tea = 25,/obj/item/weapon/reagent_containers/drinks/mug/coco = 25)
+	contraband = list(/obj/item/weapon/reagent_containers/drinks/ice = 12)
 	refill_canister = /obj/item/weapon/vending_refill/coffee
 
 /obj/machinery/vending/snack
@@ -674,10 +674,10 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	product_slogans = "Try our new nougat bar!;Twice the calories for half the price!"
 	product_ads = "The healthiest!;Award-winning chocolate bars!;Mmm! So good!;Oh my god it's so juicy!;Have a snack.;Snacks are good for you!;Have some more Getmore!;Best quality snacks straight from mars.;We love chocolate!;Try our new jerky!"
 	icon_state = "snack"
-	products = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 6,/obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 6,/obj/item/weapon/reagent_containers/food/snacks/chips =6,
-					/obj/item/weapon/reagent_containers/food/snacks/sosjerky = 6,/obj/item/weapon/reagent_containers/food/snacks/no_raisin = 6,/obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/cheesiehonkers = 6)
-	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/syndicake = 6)
+	products = list(/obj/item/weapon/reagent_containers/snacks/candy = 6,/obj/item/weapon/reagent_containers/drinks/dry_ramen = 6,/obj/item/weapon/reagent_containers/snacks/chips =6,
+					/obj/item/weapon/reagent_containers/snacks/sosjerky = 6,/obj/item/weapon/reagent_containers/snacks/no_raisin = 6,/obj/item/weapon/reagent_containers/snacks/spacetwinkie = 6,
+					/obj/item/weapon/reagent_containers/snacks/cheesiehonkers = 6)
+	contraband = list(/obj/item/weapon/reagent_containers/snacks/syndicake = 6)
 	refill_canister = /obj/item/weapon/vending_refill/snack
 	var/chef_compartment_access = "28"
 
@@ -687,9 +687,9 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	product_slogans = "Enjoy your meal.;Enough calories to support strenuous labor."
 	product_ads = "Sufficiently healthy.;Efficiently produced tofu!;Mmm! So good!;Have a meal.;You need food to live!;Have some more candy corn!;Try our new ice cups!"
 	icon_state = "sustenance"
-	products = list(/obj/item/weapon/reagent_containers/food/snacks/tofu = 24,
-					/obj/item/weapon/reagent_containers/food/drinks/ice = 12,
-					/obj/item/weapon/reagent_containers/food/snacks/candy_corn = 6)
+	products = list(/obj/item/weapon/reagent_containers/snacks/tofu = 24,
+					/obj/item/weapon/reagent_containers/drinks/ice = 12,
+					/obj/item/weapon/reagent_containers/snacks/candy_corn = 6)
 	contraband = list(/obj/item/weapon/kitchen/knife = 6)
 
 
@@ -699,11 +699,11 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	icon_state = "Cola_Machine"
 	product_slogans = "Robust Softdrinks: More robust than a toolbox to the head!"
 	product_ads = "Refreshing!;Hope you're thirsty!;Over 1 million drinks sold!;Thirsty? Why not cola?;Please, have a drink!;Drink up!;The best drinks in space."
-	products = list(/obj/item/weapon/reagent_containers/food/drinks/soda_cans/cola = 10,/obj/item/weapon/reagent_containers/food/drinks/soda_cans/space_mountain_wind = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/soda_cans/dr_gibb = 10,/obj/item/weapon/reagent_containers/food/drinks/soda_cans/starkist = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/soda_cans/space_up = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/soda_cans/lemon_lime = 10)
-	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/soda_cans/thirteenloko = 6)
+	products = list(/obj/item/weapon/reagent_containers/drinks/soda_cans/cola = 10,/obj/item/weapon/reagent_containers/drinks/soda_cans/space_mountain_wind = 10,
+					/obj/item/weapon/reagent_containers/drinks/soda_cans/dr_gibb = 10,/obj/item/weapon/reagent_containers/drinks/soda_cans/starkist = 10,
+					/obj/item/weapon/reagent_containers/drinks/soda_cans/space_up = 10,
+					/obj/item/weapon/reagent_containers/drinks/soda_cans/lemon_lime = 10)
+	contraband = list(/obj/item/weapon/reagent_containers/drinks/soda_cans/thirteenloko = 6)
 	refill_canister = /obj/item/weapon/vending_refill/cola
 
 //This one's from bay12
@@ -799,7 +799,7 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	icon_deny = "sec-deny"
 	req_access_txt = "1"
 	products = list(/obj/item/weapon/restraints/handcuffs = 8,/obj/item/weapon/restraints/handcuffs/cable/zipties = 10,/obj/item/weapon/grenade/flashbang = 4,/obj/item/device/assembly/flash/handheld = 5,
-					/obj/item/weapon/reagent_containers/food/snacks/donut = 12,/obj/item/weapon/storage/box/evidence = 6,/obj/item/device/flashlight/seclite = 4)
+					/obj/item/weapon/reagent_containers/snacks/donut = 12,/obj/item/weapon/storage/box/evidence = 6,/obj/item/device/flashlight/seclite = 4)
 	contraband = list(/obj/item/clothing/glasses/sunglasses = 2,/obj/item/weapon/storage/fancy/donut_box = 2)
 	premium = list(/obj/item/weapon/coin/antagtoken = 1)
 
@@ -885,7 +885,7 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	desc = "A kitchen and restaurant equipment vendor"
 	product_ads = "Mm, food stuffs!;Food and food accessories.;Get your plates!;You like forks?;I like forks.;Woo, utensils.;You don't really need these..."
 	icon_state = "dinnerware"
-	products = list(/obj/item/weapon/storage/bag/tray = 8,/obj/item/weapon/kitchen/fork = 6,/obj/item/weapon/kitchen/knife = 3,/obj/item/weapon/kitchen/rollingpin = 2,/obj/item/weapon/reagent_containers/food/drinks/drinkingglass = 8,/obj/item/clothing/suit/apron/chef = 2,/obj/item/weapon/reagent_containers/food/condiment/pack/ketchup = 5,/obj/item/weapon/reagent_containers/food/condiment/pack/hotsauce = 5,/obj/item/weapon/reagent_containers/glass/bowl = 20)
+	products = list(/obj/item/weapon/storage/bag/tray = 8,/obj/item/weapon/kitchen/fork = 6,/obj/item/weapon/kitchen/knife = 3,/obj/item/weapon/kitchen/rollingpin = 2,/obj/item/weapon/reagent_containers/drinks/drinkingglass = 8,/obj/item/clothing/suit/apron/chef = 2,/obj/item/weapon/reagent_containers/condiment/pack/ketchup = 5,/obj/item/weapon/reagent_containers/condiment/pack/hotsauce = 5,/obj/item/weapon/reagent_containers/glass/bowl = 20)
 	contraband = list(/obj/item/weapon/kitchen/rollingpin = 2, /obj/item/weapon/kitchen/knife/butcher = 2)
 
 /obj/machinery/vending/sovietsoda
@@ -893,8 +893,8 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	desc = "Old sweet water vending machine"
 	icon_state = "sovietsoda"
 	product_ads = "For Tsar and Country.;Have you fulfilled your nutrition quota today?;Very nice!;We are simple people, for this is all we eat.;If there is a person, there is a problem. If there is no person, then there is no problem."
-	products = list(/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/filled/soda = 30)
-	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/filled/cola = 20)
+	products = list(/obj/item/weapon/reagent_containers/drinks/drinkingglass/filled/soda = 30)
+	contraband = list(/obj/item/weapon/reagent_containers/drinks/drinkingglass/filled/cola = 20)
 
 /obj/machinery/vending/tool
 	name = "\improper YouTool"

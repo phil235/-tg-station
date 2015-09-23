@@ -187,7 +187,7 @@
 
 /obj/item/organ/internal/gland/egg/activate()
 	owner << "<span class='boldannounce'>You lay an egg!</span>"
-	var/obj/item/weapon/reagent_containers/food/snacks/egg/egg = new(owner.loc)
+	var/obj/item/weapon/reagent_containers/snacks/egg/egg = new(owner.loc)
 	egg.reagents.add_reagent("sacid",20)
 	egg.desc += " It smells bad."
 

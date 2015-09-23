@@ -60,19 +60,19 @@
 	return food_stored >= STORAGE_CAPACITY
 
 /obj/machinery/food_cart/attackby(obj/item/O, mob/user, params)
-	if(istype(O, /obj/item/weapon/reagent_containers/food/drinks/drinkingglass))
-		var/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/DG = O
+	if(istype(O, /obj/item/weapon/reagent_containers/drinks/drinkingglass))
+		var/obj/item/weapon/reagent_containers/drinks/drinkingglass/DG = O
 		if(!DG.reagents.total_volume) //glass is empty
 			if(!user.drop_item())
 				return
 			qdel(DG)
 			glasses++
 			user << "<span class='notice'>The [src] accepts the drinking glass, sterilizing it.</span>"
-	else if(istype(O, /obj/item/weapon/reagent_containers/food/snacks))
+	else if(istype(O, /obj/item/weapon/reagent_containers/snacks))
 		if(isFull())
 			user << "<span class='warning'>The [src] is at full capacity.</span>"
 		else
-			var/obj/item/weapon/reagent_containers/food/snacks/S = O
+			var/obj/item/weapon/reagent_containers/snacks/S = O
 			if(!user.drop_item())
 				return
 			S.loc = src
@@ -88,7 +88,7 @@
 			user << "<span class='notice'>The [src] accepts a sheet of glass.</span>"
 	else if(istype(O, /obj/item/weapon/storage/bag/tray))
 		var/obj/item/weapon/storage/bag/tray/T = O
-		for(var/obj/item/weapon/reagent_containers/food/snacks/S in T.contents)
+		for(var/obj/item/weapon/reagent_containers/snacks/S in T.contents)
 			if(isFull())
 				user << "<span class='warning'>The [src] is at full capacity.</span>"
 				break
@@ -128,7 +128,7 @@
 			usr << "<span class='warning'>There are no glasses left!</span>"
 			glasses = 0
 		else
-			var/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/DG = new(loc)
+			var/obj/item/weapon/reagent_containers/drinks/drinkingglass/DG = new(loc)
 			if(href_list["pour"])
 				reagents.trans_id_to(DG, href_list["pour"], portion)
 			if(href_list["m_pour"])

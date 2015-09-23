@@ -166,7 +166,7 @@
 					if(B.bcell)
 						B.bcell.charge = B.bcell.maxcharge
 				//Service
-				if(istype(O,/obj/item/weapon/reagent_containers/food/condiment/enzyme))
+				if(istype(O,/obj/item/weapon/reagent_containers/condiment/enzyme))
 					if(O.reagents.get_reagent_amount("enzyme") < 50)
 						O.reagents.add_reagent("enzyme", 2 * coeff)
 				//Janitor

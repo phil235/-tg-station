@@ -37,7 +37,7 @@ Clown
 
 /datum/outfit/job/clown/post_equip(mob/living/carbon/human/H)
 	..()
-	new /obj/item/weapon/reagent_containers/food/snacks/grown/banana(H.back, 50)
+	new /obj/item/weapon/reagent_containers/snacks/grown/banana(H.back, 50)
 
 	H.dna.add_mutation(CLOWNMUT)
 	H.rename_self("clown")
@@ -70,7 +70,7 @@ Mime
 	gloves = /obj/item/clothing/gloves/color/white
 	head = /obj/item/clothing/head/beret
 	suit = /obj/item/clothing/suit/suspenders
-	backpack_contents = list(/obj/item/weapon/reagent_containers/food/drinks/bottle/bottleofnothing=1,\
+	backpack_contents = list(/obj/item/weapon/reagent_containers/drinks/bottle/bottleofnothing=1,\
 		/obj/item/toy/crayon/mime=1)
 
 	backpack = /obj/item/weapon/storage/backpack/mime

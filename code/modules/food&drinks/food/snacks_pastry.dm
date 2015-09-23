@@ -2,7 +2,7 @@
 //This file contains pastries that don't fit any existing categories.
 ////////////////////////////////////////////DONUTS////////////////////////////////////////////
 
-/obj/item/weapon/reagent_containers/food/snacks/donut
+/obj/item/weapon/reagent_containers/snacks/donut
 	name = "donut"
 	desc = "Goes great with Robust Coffee."
 	icon_state = "donut1"
@@ -12,7 +12,7 @@
 	var/extra_reagent = null
 	filling_color = "#D2691E"
 
-/obj/item/weapon/reagent_containers/food/snacks/donut/New()
+/obj/item/weapon/reagent_containers/snacks/donut/New()
 	..()
 	if(prob(30))
 		icon_state = "donut2"
@@ -21,12 +21,12 @@
 		bonus_reagents = list("sprinkles" = 2, "sugar" = 1)
 		filling_color = "#FF69B4"
 
-/obj/item/weapon/reagent_containers/food/snacks/donut/chaos
+/obj/item/weapon/reagent_containers/snacks/donut/chaos
 	name = "chaos donut"
 	desc = "Like life, it never quite tastes the same."
 	bitesize = 10
 
-/obj/item/weapon/reagent_containers/food/snacks/donut/chaos/New()
+/obj/item/weapon/reagent_containers/snacks/donut/chaos/New()
 	..()
 	extra_reagent = pick("nutriment", "capsaicin", "frostoil", "krokodil", "plasma", "cocoa", "slimejelly", "banana", "berryjuice", "omnizine")
 	reagents.add_reagent("[extra_reagent]", 3)
@@ -38,14 +38,14 @@
 		bonus_reagents = list("sprinkles" = 2, "[extra_reagent]" = 3, "sugar" = 1)
 		filling_color = "#FF69B4"
 
-/obj/item/weapon/reagent_containers/food/snacks/donut/jelly
+/obj/item/weapon/reagent_containers/snacks/donut/jelly
 	name = "jelly donut"
 	desc = "You jelly?"
 	icon_state = "jdonut1"
 	bonus_reagents = list("sugar" = 1, "vitamin" = 1)
 	extra_reagent = "berryjuice"
 
-/obj/item/weapon/reagent_containers/food/snacks/donut/jelly/New()
+/obj/item/weapon/reagent_containers/snacks/donut/jelly/New()
 	..()
 	if(extra_reagent)
 		reagents.add_reagent("[extra_reagent]", 3)
@@ -56,13 +56,13 @@
 		bonus_reagents = list("sprinkles" = 2, "sugar" = 1)
 		filling_color = "#FF69B4"
 
-/obj/item/weapon/reagent_containers/food/snacks/donut/jelly/slimejelly
+/obj/item/weapon/reagent_containers/snacks/donut/jelly/slimejelly
 	name = "jelly donut"
 	desc = "You jelly?"
 	icon_state = "jdonut1"
 	extra_reagent = "slimejelly"
 
-/obj/item/weapon/reagent_containers/food/snacks/donut/jelly/cherryjelly
+/obj/item/weapon/reagent_containers/snacks/donut/jelly/cherryjelly
 	name = "jelly donut"
 	desc = "You jelly?"
 	icon_state = "jdonut1"
@@ -70,7 +70,7 @@
 
 ////////////////////////////////////////////MUFFINS////////////////////////////////////////////
 
-/obj/item/weapon/reagent_containers/food/snacks/muffin
+/obj/item/weapon/reagent_containers/snacks/muffin
 	name = "muffin"
 	desc = "A delicious and spongy little cake."
 	icon_state = "muffin"
@@ -78,18 +78,18 @@
 	list_reagents = list("nutriment" = 6)
 	filling_color = "#F4A460"
 
-/obj/item/weapon/reagent_containers/food/snacks/muffin/berry
+/obj/item/weapon/reagent_containers/snacks/muffin/berry
 	name = "berry muffin"
 	icon_state = "berrymuffin"
 	desc = "A delicious and spongy little cake, with berries."
 
-/obj/item/weapon/reagent_containers/food/snacks/muffin/booberry
+/obj/item/weapon/reagent_containers/snacks/muffin/booberry
 	name = "booberry muffin"
 	icon_state = "berrymuffin"
 	alpha = 125
 	desc = "My stomach is a graveyard! No living being can quench my bloodthirst!"
 
-/obj/item/weapon/reagent_containers/food/snacks/chawanmushi
+/obj/item/weapon/reagent_containers/snacks/chawanmushi
 	name = "chawanmushi"
 	desc = "A legendary egg custard that makes friends out of enemies. Probably too hot for a cat to eat."
 	icon_state = "chawanmushi"
@@ -99,7 +99,7 @@
 
 ////////////////////////////////////////////WAFFLES////////////////////////////////////////////
 
-/obj/item/weapon/reagent_containers/food/snacks/waffles
+/obj/item/weapon/reagent_containers/snacks/waffles
 	name = "waffles"
 	desc = "Mmm, waffles."
 	icon_state = "waffles"
@@ -108,7 +108,7 @@
 	list_reagents = list("nutriment" = 8, "vitamin" = 1)
 	filling_color = "#D2691E"
 
-/obj/item/weapon/reagent_containers/food/snacks/soylentgreen
+/obj/item/weapon/reagent_containers/snacks/soylentgreen
 	name = "\improper Soylent Green"
 	desc = "Not made of people. Honest." //Totally people.
 	icon_state = "soylent_green"
@@ -117,7 +117,7 @@
 	list_reagents = list("nutriment" = 10, "vitamin" = 1)
 	filling_color = "#9ACD32"
 
-/obj/item/weapon/reagent_containers/food/snacks/soylenviridians
+/obj/item/weapon/reagent_containers/snacks/soylenviridians
 	name = "\improper Soylent Virdians"
 	desc = "Not made of people. Honest." //Actually honest for once.
 	icon_state = "soylent_yellow"
@@ -126,7 +126,7 @@
 	list_reagents = list("nutriment" = 10, "vitamin" = 1)
 	filling_color = "#9ACD32"
 
-/obj/item/weapon/reagent_containers/food/snacks/rofflewaffles
+/obj/item/weapon/reagent_containers/snacks/rofflewaffles
 	name = "roffle waffles"
 	desc = "Waffles from Roffle. Co."
 	icon_state = "rofflewaffles"
@@ -138,7 +138,7 @@
 
 ////////////////////////////////////////////OTHER////////////////////////////////////////////
 
-/obj/item/weapon/reagent_containers/food/snacks/cookie
+/obj/item/weapon/reagent_containers/snacks/cookie
 	name = "cookie"
 	desc = "COOKIE!!!"
 	icon_state = "COOKIE!!!"
@@ -147,21 +147,21 @@
 	list_reagents = list("nutriment" = 1)
 	filling_color = "#F0E68C"
 
-/obj/item/weapon/reagent_containers/food/snacks/donkpocket
+/obj/item/weapon/reagent_containers/snacks/donkpocket
 	name = "\improper Donk-pocket"
 	desc = "The food of choice for the seasoned traitor."
 	icon_state = "donkpocket"
 	list_reagents = list("nutriment" = 4)
-	cooked_type = /obj/item/weapon/reagent_containers/food/snacks/donkpocket/warm
+	cooked_type = /obj/item/weapon/reagent_containers/snacks/donkpocket/warm
 	filling_color = "#CD853F"
 
-/obj/item/weapon/reagent_containers/food/snacks/donkpocket/warm
+/obj/item/weapon/reagent_containers/snacks/donkpocket/warm
 	name = "warm Donk-pocket"
 	desc = "The heated food of choice for the seasoned traitor."
 	bonus_reagents = list("omnizine" = 3)
 	list_reagents = list("nutriment" = 4, "omnizine" = 3)
 
-/obj/item/weapon/reagent_containers/food/snacks/fortunecookie
+/obj/item/weapon/reagent_containers/snacks/fortunecookie
 	name = "fortune cookie"
 	desc = "A true prophecy in each cookie!"
 	icon_state = "fortune_cookie"
@@ -169,7 +169,7 @@
 	list_reagents = list("nutriment" = 3)
 	filling_color = "#F4A460"
 
-/obj/item/weapon/reagent_containers/food/snacks/poppypretzel
+/obj/item/weapon/reagent_containers/snacks/poppypretzel
 	name = "poppy pretzel"
 	desc = "It's all twisted up!"
 	icon_state = "poppypretzel"
@@ -177,7 +177,7 @@
 	list_reagents = list("nutriment" = 5)
 	filling_color = "#F0E68C"
 
-/obj/item/weapon/reagent_containers/food/snacks/plumphelmetbiscuit
+/obj/item/weapon/reagent_containers/snacks/plumphelmetbiscuit
 	name = "plump helmet biscuit"
 	desc = "This is a finely-prepared plump helmet biscuit. The ingredients are exceptionally minced plump helmet, and well-minced dwarven wheat flour."
 	icon_state = "phelmbiscuit"
@@ -185,7 +185,7 @@
 	list_reagents = list("nutriment" = 5)
 	filling_color = "#F0E68C"
 
-/obj/item/weapon/reagent_containers/food/snacks/plumphelmetbiscuit/New()
+/obj/item/weapon/reagent_containers/snacks/plumphelmetbiscuit/New()
 	..()
 	if(prob(10))
 		name = "exceptional plump helmet biscuit"
@@ -193,7 +193,7 @@
 		reagents.add_reagent("omnizine", 5)
 		bonus_reagents = list("omnizine" = 5, "nutriment" = 1, "vitamin" = 1)
 
-/obj/item/weapon/reagent_containers/food/snacks/cracker
+/obj/item/weapon/reagent_containers/snacks/cracker
 	name = "cracker"
 	desc = "It's a salted cracker."
 	icon_state = "cracker"
@@ -202,7 +202,7 @@
 	list_reagents = list("nutriment" = 1)
 	filling_color = "#F0E68C"
 
-/obj/item/weapon/reagent_containers/food/snacks/hotdog
+/obj/item/weapon/reagent_containers/snacks/hotdog
 	name = "hotdog"
 	desc = "Fresh footlong ready to go down on."
 	icon_state = "hotdog"
@@ -211,7 +211,7 @@
 	list_reagents = list("nutriment" = 6, "ketchup" = 3, "vitamin" = 3)
 	filling_color = "#8B0000"
 
-/obj/item/weapon/reagent_containers/food/snacks/meatbun
+/obj/item/weapon/reagent_containers/snacks/meatbun
 	name = "meat bun"
 	desc = "Has the potential to not be Dog."
 	icon_state = "meatbun"
@@ -219,7 +219,7 @@
 	list_reagents = list("nutriment" = 6, "vitamin" = 2)
 	filling_color = "#8B0000"
 
-/obj/item/weapon/reagent_containers/food/snacks/sugarcookie
+/obj/item/weapon/reagent_containers/snacks/sugarcookie
 	name = "sugar cookie"
 	desc = "Just like your little sister used to make."
 	icon_state = "sugarcookie"
@@ -227,7 +227,7 @@
 	list_reagents = list("nutriment" = 3, "sugar" = 3)
 	filling_color = "#CD853F"
 
-/obj/item/weapon/reagent_containers/food/snacks/chococornet
+/obj/item/weapon/reagent_containers/snacks/chococornet
 	name = "chocolate cornet"
 	desc = "Which side's the head, the fat end or the thin end?"
 	icon_state = "chococornet"
@@ -235,7 +235,7 @@
 	list_reagents = list("nutriment" = 5, "vitamin" = 1)
 	filling_color = "#FFE4C4"
 
-/obj/item/weapon/reagent_containers/food/snacks/oatmealcookie
+/obj/item/weapon/reagent_containers/snacks/oatmealcookie
 	name = "oatmeal cookie"
 	desc = "The best of both cookie and oat"
 	icon_state = "oatmealcookie"
@@ -243,7 +243,7 @@
 	list_reagents = list("nutriment" = 5, "vitamin" = 1)
 	filling_color = "#D2691E"
 
-/obj/item/weapon/reagent_containers/food/snacks/raisincookie
+/obj/item/weapon/reagent_containers/snacks/raisincookie
 	name = "raisin cookie"
 	desc = "Why would you put raisins on a cookie?"
 	icon_state = "raisincookie"
@@ -251,7 +251,7 @@
 	list_reagents = list("nutriment" = 5, "vitamin" = 1)
 	filling_color = "#F0E68C"
 
-/obj/item/weapon/reagent_containers/food/snacks/cherrycupcake
+/obj/item/weapon/reagent_containers/snacks/cherrycupcake
 	name = "cherry cupcake"
 	desc = "A sweet cupcake with cherry bits."
 	icon_state = "cherrycupcake"
@@ -259,7 +259,7 @@
 	list_reagents = list("nutriment" = 5, "vitamin" = 1)
 	filling_color = "#F0E68C"
 
-/obj/item/weapon/reagent_containers/food/snacks/bluecherrycupcake
+/obj/item/weapon/reagent_containers/snacks/bluecherrycupcake
 	name = "blue cherry cupcake"
 	desc = "Blue cherries inside a delicious cupcake"
 	icon_state = "bluecherrycupcake"

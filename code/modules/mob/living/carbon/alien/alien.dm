@@ -12,7 +12,7 @@
 	ventcrawler = 2
 	languages = ALIEN
 	verb_say = "hisses"
-	type_of_meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/xeno
+	type_of_meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/xeno
 	var/nightvision = 1
 
 	var/obj/item/weapon/card/id/wear_id = null // Fix for station bounced radios -- Skie

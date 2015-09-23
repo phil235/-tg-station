@@ -3,10 +3,10 @@
 #define SKINTYPE_BEAR	/obj/item/clothing/head/bearpelt
 #define SKINTYPE_CORGI	/obj/item/stack/sheet/animalhide/corgi
 
-#define MEATTYPE_MONKEY	/obj/item/weapon/reagent_containers/food/snacks/meat/slab/monkey
-#define MEATTYPE_ALIEN	/obj/item/weapon/reagent_containers/food/snacks/meat/slab/xeno
-#define MEATTYPE_BEAR	/obj/item/weapon/reagent_containers/food/snacks/meat/slab/bear
-#define MEATTYPE_CORGI	/obj/item/weapon/reagent_containers/food/snacks/meat/slab/corgi
+#define MEATTYPE_MONKEY	/obj/item/weapon/reagent_containers/snacks/meat/slab/monkey
+#define MEATTYPE_ALIEN	/obj/item/weapon/reagent_containers/snacks/meat/slab/xeno
+#define MEATTYPE_BEAR	/obj/item/weapon/reagent_containers/snacks/meat/slab/bear
+#define MEATTYPE_CORGI	/obj/item/weapon/reagent_containers/snacks/meat/slab/corgi
 
 //////Kitchen Spike
 

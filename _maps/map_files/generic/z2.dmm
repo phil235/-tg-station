@@ -1324,12 +1324,12 @@
 /area/centcom/ferry)
 "dX" = (
 /obj/structure/table/wood,
-/obj/item/weapon/reagent_containers/food/drinks/bottle/rum,
-/obj/item/weapon/reagent_containers/food/drinks/bottle/tequila,
-/obj/item/weapon/reagent_containers/food/drinks/bottle/vodka{
+/obj/item/weapon/reagent_containers/drinks/bottle/rum,
+/obj/item/weapon/reagent_containers/drinks/bottle/tequila,
+/obj/item/weapon/reagent_containers/drinks/bottle/vodka{
 	pixel_x = -5
 	},
-/obj/item/weapon/reagent_containers/food/drinks/bottle/whiskey{
+/obj/item/weapon/reagent_containers/drinks/bottle/whiskey{
 	pixel_x = 5
 	},
 /turf/simulated/floor/plasteel/black,
@@ -3619,7 +3619,7 @@
 /area/syndicate_mothership)
 "kN" = (
 /obj/structure/table/wood,
-/obj/item/weapon/reagent_containers/food/drinks/beer{
+/obj/item/weapon/reagent_containers/drinks/beer{
 	pixel_x = -2;
 	 pixel_y = 5
 	},
@@ -3748,7 +3748,7 @@
 /area/syndicate_mothership)
 "li" = (
 /obj/structure/table/wood,
-/obj/item/weapon/reagent_containers/food/drinks/beer{
+/obj/item/weapon/reagent_containers/drinks/beer{
 	pixel_x = 5;
 	 pixel_y = -2
 	},
@@ -3763,7 +3763,7 @@
 /area/syndicate_mothership)
 "lj" = (
 /obj/structure/table/wood,
-/obj/item/weapon/reagent_containers/food/snacks/pizzaslice/mushroom,
+/obj/item/weapon/reagent_containers/snacks/pizzaslice/mushroom,
 /turf/simulated/floor/plasteel/bar{
 	dir = 2
 	},
@@ -4033,7 +4033,7 @@
 /area/syndicate_mothership)
 "lU" = (
 /obj/item/weapon/storage/box/drinkingglasses,
-/obj/item/weapon/reagent_containers/food/drinks/bottle/rum,
+/obj/item/weapon/reagent_containers/drinks/bottle/rum,
 /obj/structure/table/wood,
 /turf/simulated/floor/wood,
 /area/syndicate_mothership)
@@ -4245,7 +4245,7 @@
 	 icon_state = "minibar_left";
 	 name = "skeletal minibar"
 	},
-/obj/item/weapon/reagent_containers/food/drinks/bottle/vodka,
+/obj/item/weapon/reagent_containers/drinks/bottle/vodka,
 /turf/simulated/floor/wood,
 /area/syndicate_mothership)
 "mA" = (
@@ -4263,7 +4263,7 @@
 	 icon_state = "minibar_right";
 	 name = "skeletal minibar"
 	},
-/obj/item/weapon/reagent_containers/food/drinks/bottle/gin,
+/obj/item/weapon/reagent_containers/drinks/bottle/gin,
 /turf/simulated/floor/wood,
 /area/syndicate_mothership)
 "mC" = (
@@ -5342,7 +5342,7 @@
 "px" = (
 /obj/structure/table/wood,
 /obj/item/weapon/storage/bag/tray,
-/obj/item/weapon/reagent_containers/food/snacks/burger/spell,
+/obj/item/weapon/reagent_containers/snacks/burger/spell,
 /turf/simulated/floor/carpet,
 /area/wizard_station)
 "py" = (
@@ -5498,7 +5498,7 @@
 /area/centcom/holding)
 "pX" = (
 /obj/structure/table,
-/obj/item/weapon/reagent_containers/food/drinks/shaker,
+/obj/item/weapon/reagent_containers/drinks/shaker,
 /turf/simulated/floor/plasteel/freezer{
 	dir = 2
 	},
@@ -5519,7 +5519,7 @@
 /area/centcom/holding)
 "qa" = (
 /obj/structure/table,
-/obj/item/weapon/reagent_containers/food/drinks/soda_cans/cola,
+/obj/item/weapon/reagent_containers/drinks/soda_cans/cola,
 /turf/simulated/floor/plasteel/freezer{
 	dir = 2
 	},

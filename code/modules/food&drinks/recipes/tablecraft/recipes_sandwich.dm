@@ -9,38 +9,38 @@
 /datum/table_recipe/sandwich
 	name = "Sandwich"
 	reqs = list(
-		/obj/item/weapon/reagent_containers/food/snacks/breadslice/plain = 2,
-		/obj/item/weapon/reagent_containers/food/snacks/meat/steak = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge = 1
+		/obj/item/weapon/reagent_containers/snacks/breadslice/plain = 2,
+		/obj/item/weapon/reagent_containers/snacks/meat/steak = 1,
+		/obj/item/weapon/reagent_containers/snacks/cheesewedge = 1
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/sandwich
+	result = /obj/item/weapon/reagent_containers/snacks/sandwich
 	category = CAT_FOOD
 
 /datum/table_recipe/grilledcheesesandwich
 	name = "Grilled cheese sandwich"
 	reqs = list(
-		/obj/item/weapon/reagent_containers/food/snacks/breadslice/plain = 2,
-		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge = 2
+		/obj/item/weapon/reagent_containers/snacks/breadslice/plain = 2,
+		/obj/item/weapon/reagent_containers/snacks/cheesewedge = 2
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/grilledcheese
+	result = /obj/item/weapon/reagent_containers/snacks/grilledcheese
 	category = CAT_FOOD
 
 /datum/table_recipe/slimesandwich
 	name = "Jelly sandwich"
 	reqs = list(
 		/datum/reagent/toxin/slimejelly = 5,
-		/obj/item/weapon/reagent_containers/food/snacks/breadslice/plain = 2,
+		/obj/item/weapon/reagent_containers/snacks/breadslice/plain = 2,
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/jellysandwich/slime
+	result = /obj/item/weapon/reagent_containers/snacks/jellysandwich/slime
 	category = CAT_FOOD
 
 /datum/table_recipe/cherrysandwich
 	name = "Jelly sandwich"
 	reqs = list(
 		/datum/reagent/consumable/cherryjelly = 5,
-		/obj/item/weapon/reagent_containers/food/snacks/breadslice/plain = 2,
+		/obj/item/weapon/reagent_containers/snacks/breadslice/plain = 2,
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/jellysandwich/cherry
+	result = /obj/item/weapon/reagent_containers/snacks/jellysandwich/cherry
 	category = CAT_FOOD
 
 /datum/table_recipe/icecreamsandwich
@@ -48,19 +48,26 @@
 	reqs = list(
 		/datum/reagent/consumable/cream = 5,
 		/datum/reagent/consumable/ice = 5,
-		/obj/item/weapon/reagent_containers/food/snacks/icecream = 1
+		/obj/item/weapon/reagent_containers/snacks/icecream = 1
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/icecreamsandwich
+	result = /obj/item/weapon/reagent_containers/snacks/icecreamsandwich
 	category = CAT_FOOD
 
 /datum/table_recipe/notasandwich
 	name = "Not a sandwich"
 	reqs = list(
-		/obj/item/weapon/reagent_containers/food/snacks/breadslice/plain = 2,
+		/obj/item/weapon/reagent_containers/snacks/breadslice/plain = 2,
 		/obj/item/clothing/mask/fakemoustache = 1
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/notasandwich
+	result = /obj/item/weapon/reagent_containers/snacks/notasandwich
 	category = CAT_FOOD
 
-
+/datum/table_recipe/customsandwich
+	name = "Custom sandwich"
+	reqs = list(
+		/obj/item/weapon/reagent_containers/snacks/breadslice = 2 //check that it works phil235
+	)
+	parts = list(/obj/item/weapon/reagent_containers/snacks/breadslice = 2) //to save the slice's icon for the overlay/icon.
+	result = /obj/item/weapon/reagent_containers/snacks/customsandwich
+	category = CAT_FOOD
 

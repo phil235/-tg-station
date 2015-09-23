@@ -98,7 +98,7 @@
 /obj/effect/landmark/costume/chicken/New()
 	new /obj/item/clothing/suit/chickensuit(src.loc)
 	new /obj/item/clothing/head/chicken(src.loc)
-	new /obj/item/weapon/reagent_containers/food/snacks/egg(src.loc)
+	new /obj/item/weapon/reagent_containers/snacks/egg(src.loc)
 	qdel(src)
 
 /obj/effect/landmark/costume/gladiator/New()

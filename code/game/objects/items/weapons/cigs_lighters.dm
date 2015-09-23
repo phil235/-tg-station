@@ -378,8 +378,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 
 /obj/item/clothing/mask/cigarette/pipe/attackby(obj/item/O, mob/user, params)
-	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown))
-		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = O
+	if(istype(O, /obj/item/weapon/reagent_containers/snacks/grown))
+		var/obj/item/weapon/reagent_containers/snacks/grown/G = O
 		if(!packeditem)
 			if(G.dry == 1)
 				user << "<span class='notice'>You stuff [O] into [src].</span>"
@@ -552,8 +552,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/weapon/rollingpaper/afterattack(atom/target, mob/user, proximity)
 	if(!proximity)
 		return
-	if(istype(target, /obj/item/weapon/reagent_containers/food/snacks/grown))
-		var/obj/item/weapon/reagent_containers/food/snacks/grown/O = target
+	if(istype(target, /obj/item/weapon/reagent_containers/snacks/grown))
+		var/obj/item/weapon/reagent_containers/snacks/grown/O = target
 		if(O.dry)
 			user.unEquip(target, 1)
 			user.unEquip(src, 1)

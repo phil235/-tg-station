@@ -239,8 +239,8 @@
 	name = "large grenade"
 	desc = "A custom made large grenade."
 	icon_state = "large_grenade"
-	allowed_containers = list(/obj/item/weapon/reagent_containers/glass,/obj/item/weapon/reagent_containers/food/condiment,
-								/obj/item/weapon/reagent_containers/food/drinks)
+	allowed_containers = list(/obj/item/weapon/reagent_containers/glass,/obj/item/weapon/reagent_containers/condiment,
+								/obj/item/weapon/reagent_containers/drinks)
 	origin_tech = "combat=3;materials=3"
 	affected_area = 4
 

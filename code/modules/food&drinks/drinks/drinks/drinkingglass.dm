@@ -1,6 +1,6 @@
 
 
-/obj/item/weapon/reagent_containers/food/drinks/drinkingglass
+/obj/item/weapon/reagent_containers/drinks/drinkingglass
 	name = "drinking glass"
 	desc = "Your standard drinking glass."
 	icon_state = "glass_empty"
@@ -10,19 +10,19 @@
 	burntime = 5
 	spillable = 1
 
-/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/fire_act()
+/obj/item/weapon/reagent_containers/drinks/drinkingglass/fire_act()
 	if(!reagents.total_volume)
 		return
 	..()
 
-/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/burn()
+/obj/item/weapon/reagent_containers/drinks/drinkingglass/burn()
 	reagents.total_volume = 0 //Burns away all the alcohol :(
 	reagents.reagent_list.Cut()
 	on_reagent_change()
 	extinguish()
 	return
 
-/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/on_reagent_change()
+/obj/item/weapon/reagent_containers/drinks/drinkingglass/on_reagent_change()
 	overlays.Cut()
 	if (reagents.reagent_list.len > 0)
 		switch(reagents.get_master_reagent_id())
@@ -506,7 +506,7 @@
 //  You can only mix the ported-over drinks in shot glasses for now (they'll mix in a shaker, but the sprite won't change for glasses). //
 //  This is on a case-by-case basis, and you can even make a seperate sprite for shot glasses if you want. //
 
-/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/shotglass
+/obj/item/weapon/reagent_containers/drinks/drinkingglass/shotglass
 	name = "shot glass"
 	desc = "A shot glass - the universal symbol for bad decisions."
 	icon_state = "shotglass"
@@ -514,7 +514,7 @@
 	amount_per_transfer_from_this = 15
 	volume = 15
 
-/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/shotglass/on_reagent_change()
+/obj/item/weapon/reagent_containers/drinks/drinkingglass/shotglass/on_reagent_change()
 	if (gulp_size < 15) gulp_size = 15
 	else gulp_size = max(round(reagents.total_volume / 15), 15)
 
@@ -583,19 +583,19 @@
 		return
 
 // for /obj/machinery/vending/sovietsoda
-/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/filled/New()
+/obj/item/weapon/reagent_containers/drinks/drinkingglass/filled/New()
 	..()
 	on_reagent_change()
 
-/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/filled/soda
+/obj/item/weapon/reagent_containers/drinks/drinkingglass/filled/soda
 	list_reagents = list("sodawater" = 50)
 
-/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/filled/cola
+/obj/item/weapon/reagent_containers/drinks/drinkingglass/filled/cola
 	list_reagents = list("cola" = 50)
 
-/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/attackby(obj/item/I, mob/user, params)
-	if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/egg)) //breaking eggs
-		var/obj/item/weapon/reagent_containers/food/snacks/egg/E = I
+/obj/item/weapon/reagent_containers/drinks/drinkingglass/attackby(obj/item/I, mob/user, params)
+	if(istype(I,/obj/item/weapon/reagent_containers/snacks/egg)) //breaking eggs
+		var/obj/item/weapon/reagent_containers/snacks/egg/E = I
 		if(reagents)
 			if(reagents.total_volume >= reagents.maximum_volume)
 				user << "<span class='notice'>[src] is full.</span>"
@@ -607,7 +607,7 @@
 	else
 		..()
 
-/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/attack(obj/target, mob/user)
+/obj/item/weapon/reagent_containers/drinks/drinkingglass/attack(obj/target, mob/user)
 
 	if(user.a_intent == "harm" && ismob(target) && target.reagents && reagents.total_volume)
 		target.visible_message("<span class='danger'>[user] splashes the contents of [src] onto [target]!</span>", \
@@ -618,7 +618,7 @@
 		return
 	..()
 
-/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/afterattack(obj/target, mob/user, proximity)
+/obj/item/weapon/reagent_containers/drinks/drinkingglass/afterattack(obj/target, mob/user, proximity)
 	if((!proximity) || !check_allowed_items(target,target_self=1)) return
 
 	else if(reagents.total_volume && user.a_intent == "harm")

@@ -40,7 +40,7 @@
 	return
 
 /obj/item/organ/internal/proc/prepare_eat()
-	var/obj/item/weapon/reagent_containers/food/snacks/S = new
+	var/obj/item/weapon/reagent_containers/snacks/S = new
 	S.name = name
 	S.desc = desc
 	S.icon = icon
@@ -60,7 +60,7 @@
 	if(M == user && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(status == ORGAN_ORGANIC)
-			var/obj/item/weapon/reagent_containers/food/snacks/S = prepare_eat()
+			var/obj/item/weapon/reagent_containers/snacks/S = prepare_eat()
 			if(S)
 				H.drop_item()
 				H.put_in_active_hand(S)

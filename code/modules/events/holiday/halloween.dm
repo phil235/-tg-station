@@ -52,13 +52,13 @@
 		spawn_meteors(3, meteorsSPOOKY) //meteor list types defined in gamemode/meteor/meteors.dm
 
 //spooky foods (you can't actually make these when it's not halloween)
-/obj/item/weapon/reagent_containers/food/snacks/sugarcookie/spookyskull
+/obj/item/weapon/reagent_containers/snacks/sugarcookie/spookyskull
 	name = "skull cookie"
 	desc = "Spooky! It's got delicious calcium flavouring!"
 	icon = 'icons/obj/halloween_items.dmi'
 	icon_state = "skeletoncookie"
 
-/obj/item/weapon/reagent_containers/food/snacks/sugarcookie/spookycoffin
+/obj/item/weapon/reagent_containers/snacks/sugarcookie/spookycoffin
 	name = "coffin cookie"
 	desc = "Spooky! It's got delicious coffee flavouring!"
 	icon = 'icons/obj/halloween_items.dmi'
@@ -76,9 +76,9 @@
 /obj/item/weapon/storage/spooky/New()
 	..()
 	for(var/distrobuteinbag=0 to 5)
-		var/type = pick(/obj/item/weapon/reagent_containers/food/snacks/sugarcookie/spookyskull,
-		/obj/item/weapon/reagent_containers/food/snacks/sugarcookie/spookycoffin,
-		/obj/item/weapon/reagent_containers/food/snacks/candy_corn,
-		/obj/item/weapon/reagent_containers/food/snacks/candy,
-		/obj/item/weapon/reagent_containers/food/snacks/chocolatebar)
+		var/type = pick(/obj/item/weapon/reagent_containers/snacks/sugarcookie/spookyskull,
+		/obj/item/weapon/reagent_containers/snacks/sugarcookie/spookycoffin,
+		/obj/item/weapon/reagent_containers/snacks/candy_corn,
+		/obj/item/weapon/reagent_containers/snacks/candy,
+		/obj/item/weapon/reagent_containers/snacks/chocolatebar)
 		new type(src)

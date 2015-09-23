@@ -365,7 +365,7 @@
 				if(!src.issuperUV)
 					for(var/obj/item/ITEM in src)
 						ITEM.clean_blood()
-					if(istype(STORAGE, /obj/item/weapon/reagent_containers/food))
+					if(istype(STORAGE, /obj/item/weapon/reagent_containers/snacks))
 						qdel(STORAGE)
 				else //It was supercycling, destroy everything
 					src.HELMET = null

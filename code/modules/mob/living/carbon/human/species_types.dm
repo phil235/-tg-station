@@ -66,7 +66,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	attack_verb = "slash"
 	attack_sound = 'sound/weapons/slash.ogg'
 	miss_sound = 'sound/weapons/slashmiss.ogg'
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/lizard
+	meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human/mutant/lizard
 
 /datum/species/lizard/random_name(gender,unique,lastname)
 	if(unique)
@@ -111,7 +111,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	miss_sound = 'sound/weapons/slashmiss.ogg'
 	burnmod = 1.25
 	heatmod = 1.5
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/plant
+	meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human/mutant/plant
 
 /datum/species/plant/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if(chem.id == "plantbgone")
@@ -179,7 +179,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	darksight = 8
 	sexes = 0
 	ignored_by = list(/mob/living/simple_animal/hostile/faithless)
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/shadow
+	meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human/mutant/shadow
 	specflags = list(NOBREATH,NOBLOOD,RADIMMUNE)
 	dangerous_existence = 1
 
@@ -211,7 +211,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	hair_color = "mutcolor"
 	hair_alpha = 150
 	ignored_by = list(/mob/living/simple_animal/slime)
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/slime
+	meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human/mutant/slime
 	exotic_blood = /datum/reagent/toxin/slimejelly
 	var/recently_changed = 1
 
@@ -251,7 +251,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	say_mod = "chirps"
 	eyes = "jelleyes"
 	specflags = list(MUTCOLORS,EYECOLOR,NOBLOOD)
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/slime
+	meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human/mutant/slime
 	exotic_blood = /datum/reagent/toxin/slimejelly
 	var/recently_changed = 1
 
@@ -292,7 +292,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	punchmod = 5
 	no_equip = list(slot_wear_mask, slot_wear_suit, slot_gloves, slot_shoes, slot_head, slot_w_uniform)
 	nojumpsuit = 1
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/golem
+	meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human/mutant/golem
 
 
 /*
@@ -302,7 +302,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 /datum/species/golem/adamantine
 	name = "Adamantine Golem"
 	id = "adamantine"
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/golem/adamantine
+	meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human/mutant/golem/adamantine
 
 /*
  FLIES
@@ -313,7 +313,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	name = "Human?"
 	id = "fly"
 	say_mod = "buzzes"
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
+	meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human/mutant/fly
 
 /datum/species/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if(chem.id == "pestkiller")
@@ -334,7 +334,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	id = "skeleton"
 	say_mod = "rattles"
 	sexes = 0
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/skeleton
+	meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human/mutant/skeleton
 	specflags = list(NOBREATH,HEATRES,COLDRES,NOBLOOD,RADIMMUNE,VIRUSIMMUNE,PIERCEIMMUNE)
 /*
  ZOMBIES
@@ -346,7 +346,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	id = "zombie"
 	say_mod = "moans"
 	sexes = 0
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/zombie
+	meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human/mutant/zombie
 	specflags = list(NOBREATH,HEATRES,COLDRES,NOBLOOD,RADIMMUNE)
 
 /datum/species/zombie/handle_speech(message)
@@ -369,7 +369,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	name = "Human"
 	id = "zombie"
 	sexes = 0
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/zombie
+	meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human/mutant/zombie
 
 
 /datum/species/abductor
@@ -407,7 +407,7 @@ var/global/image/plasmaman_on_fire = image("icon"='icons/mob/OnFire.dmi', "icon_
 	id = "plasmaman"
 	say_mod = "rattles"
 	sexes = 0
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/skeleton
+	meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/human/mutant/skeleton
 	specflags = list(NOBLOOD,RADIMMUNE)
 	safe_oxygen_min = 0 //We don't breath this
 	safe_toxins_min = 16 //We breath THIS!

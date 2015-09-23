@@ -52,7 +52,7 @@
 
 	//Corgi costume says goodbye
 	for(var/obj/item/clothing/suit/hooded/ian_costume/IC in contents)
-		new /obj/item/weapon/reagent_containers/food/snacks/meat/slab/corgi(src)
+		new /obj/item/weapon/reagent_containers/snacks/meat/slab/corgi(src)
 		qdel(IC)
 
 	if(crayon)

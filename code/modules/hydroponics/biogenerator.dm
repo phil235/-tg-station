@@ -67,12 +67,12 @@
 		user << "<span class='warning'>The biogenerator is currently processing.</span>"
 	else if(istype(O, /obj/item/weapon/storage/bag/plants))
 		var/i = 0
-		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in contents)
+		for(var/obj/item/weapon/reagent_containers/snacks/grown/G in contents)
 			i++
 		if(i >= max_items)
 			user << "<span class='warning'>The biogenerator is already full! Activate it.</span>"
 		else
-			for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in O.contents)
+			for(var/obj/item/weapon/reagent_containers/snacks/grown/G in O.contents)
 				if(i >= max_items)
 					break
 				G.loc = src
@@ -85,11 +85,11 @@
 				user << "<span class='info'>You fill the biogenerator to its capacity.</span>"
 
 
-	else if(!istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown))
+	else if(!istype(O, /obj/item/weapon/reagent_containers/snacks/grown))
 		user << "<span class='warning'>You cannot put this in [src.name]!</span>"
 	else
 		var/i = 0
-		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in contents)
+		for(var/obj/item/weapon/reagent_containers/snacks/grown/G in contents)
 			i++
 		if(i >= max_items)
 			user << "<span class='warning'>The biogenerator is full! Activate it.</span>"
@@ -193,7 +193,7 @@
 		usr << "<span class='warning'>The biogenerator is in the process of working.</span>"
 		return
 	var/S = 0
-	for(var/obj/item/weapon/reagent_containers/food/snacks/grown/I in contents)
+	for(var/obj/item/weapon/reagent_containers/snacks/grown/I in contents)
 		S += 5
 		if(I.reagents.get_reagent_amount("nutriment") < 0.1)
 			points += 1*productivity
@@ -240,13 +240,13 @@
 			else beaker.reagents.add_reagent("cream",10)
 		if("cmilk")
 			if (check_cost(100/efficiency)) return 0
-			else new/obj/item/weapon/reagent_containers/food/condiment/milk(src.loc)
+			else new/obj/item/weapon/reagent_containers/condiment/milk(src.loc)
 		if("ccream")
 			if (check_cost(300/efficiency)) return 0
-			else new/obj/item/weapon/reagent_containers/food/drinks/bottle/cream(src.loc)
+			else new/obj/item/weapon/reagent_containers/drinks/bottle/cream(src.loc)
 		if("meat")
 			if (check_cost(250/efficiency)) return 0
-			else new/obj/item/weapon/reagent_containers/food/snacks/monkeycube(src.loc)
+			else new/obj/item/weapon/reagent_containers/snacks/monkeycube(src.loc)
 		if("ez")
 			if (check_cost(10/efficiency)) return 0
 			else new/obj/item/weapon/reagent_containers/glass/bottle/nutrient/ez(src.loc)

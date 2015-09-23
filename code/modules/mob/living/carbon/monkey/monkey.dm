@@ -8,7 +8,7 @@
 	pass_flags = PASSTABLE
 	languages = MONKEY
 	ventcrawler = 1
-	type_of_meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/monkey
+	type_of_meat = /obj/item/weapon/reagent_containers/snacks/meat/slab/monkey
 	gib_type = /obj/effect/decal/cleanable/blood/gibs
 	unique_name = 1
 

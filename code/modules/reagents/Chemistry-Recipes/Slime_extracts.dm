@@ -39,7 +39,7 @@
 /datum/chemical_reaction/slimemonkey/on_reaction(datum/reagents/holder)
 	feedback_add_details("slime_cores_used","[type]")
 	for(var/i = 1, i <= 3, i++)
-		var /obj/item/weapon/reagent_containers/food/snacks/monkeycube/M = new /obj/item/weapon/reagent_containers/food/snacks/monkeycube
+		var /obj/item/weapon/reagent_containers/snacks/monkeycube/M = new /obj/item/weapon/reagent_containers/snacks/monkeycube
 		M.loc = get_turf(holder.my_atom)
 
 //Green
@@ -153,25 +153,24 @@
 /datum/chemical_reaction/slimebork/on_reaction(datum/reagents/holder)
 
 	feedback_add_details("slime_cores_used","[type]")
-	var/list/blocked = list(/obj/item/weapon/reagent_containers/food/snacks,
-		/obj/item/weapon/reagent_containers/food/snacks/store/bread,
-		/obj/item/weapon/reagent_containers/food/snacks/breadslice,
-		/obj/item/weapon/reagent_containers/food/snacks/store/cake,
-		/obj/item/weapon/reagent_containers/food/snacks/cakeslice,
-		/obj/item/weapon/reagent_containers/food/snacks/store,
-		/obj/item/weapon/reagent_containers/food/snacks/pie,
-		/obj/item/weapon/reagent_containers/food/snacks/kebab,
-		/obj/item/weapon/reagent_containers/food/snacks/pizza,
-		/obj/item/weapon/reagent_containers/food/snacks/pizzaslice,
-		/obj/item/weapon/reagent_containers/food/snacks/salad,
-		/obj/item/weapon/reagent_containers/food/snacks/meat,
-		/obj/item/weapon/reagent_containers/food/snacks/soup,
-		/obj/item/weapon/reagent_containers/food/snacks/grown,
-		/obj/item/weapon/reagent_containers/food/snacks/grown/mushroom,
+	var/list/blocked = list(/obj/item/weapon/reagent_containers/snacks,
+		/obj/item/weapon/reagent_containers/snacks/store/bread,
+		/obj/item/weapon/reagent_containers/snacks/breadslice,
+		/obj/item/weapon/reagent_containers/snacks/store/cake,
+		/obj/item/weapon/reagent_containers/snacks/cakeslice,
+		/obj/item/weapon/reagent_containers/snacks/store,
+		/obj/item/weapon/reagent_containers/snacks/pie,
+		/obj/item/weapon/reagent_containers/snacks/kebab,
+		/obj/item/weapon/reagent_containers/snacks/pizza,
+		/obj/item/weapon/reagent_containers/snacks/pizzaslice,
+		/obj/item/weapon/reagent_containers/snacks/salad,
+		/obj/item/weapon/reagent_containers/snacks/meat,
+		/obj/item/weapon/reagent_containers/snacks/soup,
+		/obj/item/weapon/reagent_containers/snacks/grown,
+		/obj/item/weapon/reagent_containers/snacks/grown/mushroom,
 		)
-	blocked |= typesof(/obj/item/weapon/reagent_containers/food/snacks/customizable)
 
-	var/list/borks = typesof(/obj/item/weapon/reagent_containers/food/snacks) - blocked
+	var/list/borks = typesof(/obj/item/weapon/reagent_containers/snacks) - blocked
 	// BORK BORK BORK
 
 	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
@@ -201,9 +200,9 @@
 /datum/chemical_reaction/slimebork2/on_reaction(datum/reagents/holder)
 
 	feedback_add_details("slime_cores_used","[type]")
-	var/list/blocked = list(/obj/item/weapon/reagent_containers/food/drinks)
+	var/list/blocked = list(/obj/item/weapon/reagent_containers/drinks)
 
-	var/list/borks = typesof(/obj/item/weapon/reagent_containers/food/drinks) - blocked
+	var/list/borks = typesof(/obj/item/weapon/reagent_containers/drinks) - blocked
 	// BORK BORK BORK
 
 	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)

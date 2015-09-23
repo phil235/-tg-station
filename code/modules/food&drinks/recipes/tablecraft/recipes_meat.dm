@@ -6,30 +6,36 @@
 	name = "Human kebab"
 	reqs = list(
 		/obj/item/stack/rods = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/meat/steak/plain/human = 2
+		/obj/item/weapon/reagent_containers/snacks/meat/steak/plain/human = 2
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/kebab/human
+	result = /obj/item/weapon/reagent_containers/snacks/kebab/human
 	category = CAT_FOOD
 
 /datum/table_recipe/kebab
 	name = "Kebab"
 	reqs = list(
 		/obj/item/stack/rods = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/meat/steak = 2
+		/obj/item/weapon/reagent_containers/snacks/meat/steak = 2
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/kebab/monkey
+	result = /obj/item/weapon/reagent_containers/snacks/kebab/monkey
 	category = CAT_FOOD
 
 /datum/table_recipe/tofukebab
 	name = "Tofu kebab"
 	reqs = list(
 		/obj/item/stack/rods = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/tofu = 2
+		/obj/item/weapon/reagent_containers/snacks/tofu = 2
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/kebab/tofu
+	result = /obj/item/weapon/reagent_containers/snacks/kebab/tofu
 	category = CAT_FOOD
 
-// see code/module/crafting/table.dm
+/datum/table_recipe/customkebab
+	name = "Custom kebab"
+	reqs = list(
+		/obj/item/stack/rods = 1
+	)
+	result = /obj/item/weapon/reagent_containers/snacks/kebab/custom
+	category = CAT_FOOD
 
 ////////////////////////////////////////////////FISH////////////////////////////////////////////////
 
@@ -37,39 +43,39 @@
 	name = "Cuban carp"
 	reqs = list(
 		/datum/reagent/consumable/flour = 5,
-		/obj/item/weapon/reagent_containers/food/snacks/grown/chili = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/carpmeat = 1
+		/obj/item/weapon/reagent_containers/snacks/grown/chili = 1,
+		/obj/item/weapon/reagent_containers/snacks/carpmeat = 1
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/cubancarp
+	result = /obj/item/weapon/reagent_containers/snacks/cubancarp
 	category = CAT_FOOD
 
 /datum/table_recipe/fishandchips
 	name = "Fish and chips"
 	reqs = list(
-		/obj/item/weapon/reagent_containers/food/snacks/fries = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/carpmeat = 1
+		/obj/item/weapon/reagent_containers/snacks/fries = 1,
+		/obj/item/weapon/reagent_containers/snacks/carpmeat = 1
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/fishandchips
+	result = /obj/item/weapon/reagent_containers/snacks/fishandchips
 	category = CAT_FOOD
 
 /datum/table_recipe/fishfingers
 	name = "Fish fingers"
 	reqs = list(
 		/datum/reagent/consumable/flour = 5,
-		/obj/item/weapon/reagent_containers/food/snacks/bun = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/carpmeat = 1
+		/obj/item/weapon/reagent_containers/snacks/bun = 1,
+		/obj/item/weapon/reagent_containers/snacks/carpmeat = 1
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/fishfingers
+	result = /obj/item/weapon/reagent_containers/snacks/fishfingers
 	category = CAT_FOOD
 
 /datum/table_recipe/sashimi
 	name = "Sashimi"
 	reqs = list(
 		/datum/reagent/consumable/soysauce = 5,
-		/obj/item/weapon/reagent_containers/food/snacks/spidereggs = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/carpmeat = 1
+		/obj/item/weapon/reagent_containers/snacks/spidereggs = 1,
+		/obj/item/weapon/reagent_containers/snacks/carpmeat = 1
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/sashimi
+	result = /obj/item/weapon/reagent_containers/snacks/sashimi
 	category = CAT_FOOD
 
 ////////////////////////////////////////////////MR SPIDER////////////////////////////////////////////////
@@ -78,10 +84,10 @@
 	name = "Spider eggs ham"
 	reqs = list(
 		/datum/reagent/consumable/sodiumchloride = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/spidereggs = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/meat/cutlet/spider = 2
+		/obj/item/weapon/reagent_containers/snacks/spidereggs = 1,
+		/obj/item/weapon/reagent_containers/snacks/meat/cutlet/spider = 2
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/spidereggsham
+	result = /obj/item/weapon/reagent_containers/snacks/spidereggsham
 	category = CAT_FOOD
 
 ////////////////////////////////////////////////MISC RECIPE's////////////////////////////////////////////////
@@ -90,47 +96,47 @@
 	name = "Corned beef"
 	reqs = list(
 		/datum/reagent/consumable/sodiumchloride = 5,
-		/obj/item/weapon/reagent_containers/food/snacks/meat/steak = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/grown/cabbage = 2
+		/obj/item/weapon/reagent_containers/snacks/meat/steak = 1,
+		/obj/item/weapon/reagent_containers/snacks/grown/cabbage = 2
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/cornedbeef
+	result = /obj/item/weapon/reagent_containers/snacks/cornedbeef
 	category = CAT_FOOD
 
 /datum/table_recipe/bearsteak
 	name = "Filet migrawr"
 	reqs = list(
 		/datum/reagent/consumable/ethanol/manly_dorf = 5,
-		/obj/item/weapon/reagent_containers/food/snacks/meat/steak/bear = 1,
+		/obj/item/weapon/reagent_containers/snacks/meat/steak/bear = 1,
 	)
 	tools = list(/obj/item/weapon/lighter)
-	result = /obj/item/weapon/reagent_containers/food/snacks/bearsteak
+	result = /obj/item/weapon/reagent_containers/snacks/bearsteak
 	category = CAT_FOOD
 
 /datum/table_recipe/enchiladas
 	name = "Enchiladas"
 	reqs = list(
-		/obj/item/weapon/reagent_containers/food/snacks/meat/cutlet = 2,
-		/obj/item/weapon/reagent_containers/food/snacks/grown/chili = 2,
-		/obj/item/weapon/reagent_containers/food/snacks/tortilla = 2
+		/obj/item/weapon/reagent_containers/snacks/meat/cutlet = 2,
+		/obj/item/weapon/reagent_containers/snacks/grown/chili = 2,
+		/obj/item/weapon/reagent_containers/snacks/tortilla = 2
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/enchiladas
+	result = /obj/item/weapon/reagent_containers/snacks/enchiladas
 	category = CAT_FOOD
 
 /datum/table_recipe/stewedsoymeat
 	name = "Stewed soymeat"
 	reqs = list(
-		/obj/item/weapon/reagent_containers/food/snacks/soydope = 2,
-		/obj/item/weapon/reagent_containers/food/snacks/grown/carrot = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/grown/tomato = 1
+		/obj/item/weapon/reagent_containers/snacks/soydope = 2,
+		/obj/item/weapon/reagent_containers/snacks/grown/carrot = 1,
+		/obj/item/weapon/reagent_containers/snacks/grown/tomato = 1
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/stewedsoymeat
+	result = /obj/item/weapon/reagent_containers/snacks/stewedsoymeat
 	category = CAT_FOOD
 
 /datum/table_recipe/sausage
 	name = "Sausage"
 	reqs = list(
-		/obj/item/weapon/reagent_containers/food/snacks/faggot = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/meat/cutlet = 2
+		/obj/item/weapon/reagent_containers/snacks/faggot = 1,
+		/obj/item/weapon/reagent_containers/snacks/meat/cutlet = 2
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/sausage
+	result = /obj/item/weapon/reagent_containers/snacks/sausage
 	category = CAT_FOOD

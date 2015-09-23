@@ -12,13 +12,13 @@
 	var/obj/item/weapon/tank/jetpack/J = H.back
 	J.toggle()
 	J.Topic(null, list("stat" = 1))
-			
+
 
 /datum/outfit/tournament
 
 /datum/outfit/tournament/
 	name = "tournament standard red"
-	
+
 	uniform = /obj/item/clothing/under/color/red
 	shoes = /obj/item/clothing/shoes/sneakers/black
 	suit = /obj/item/clothing/suit/armor/vest
@@ -30,7 +30,7 @@
 
 /datum/outfit/tournament/red
 	name = "tournament standard green"
-	
+
 	uniform = /obj/item/clothing/under/color/green
 
 /datum/outfit/tournament/gangster
@@ -107,7 +107,7 @@
 	ears = /obj/item/device/radio/headset
 	glasses = /obj/item/clothing/glasses/thermal/monocle
 	suit = /obj/item/clothing/suit/hooded/chaplain_hoodie
-	l_pocket = /obj/item/weapon/reagent_containers/food/snacks/grown/banana
+	l_pocket = /obj/item/weapon/reagent_containers/snacks/grown/banana
 	r_pocket = /obj/item/weapon/bikehorn
 	id = /obj/item/weapon/card/id
 	r_hand = /obj/item/weapon/twohanded/fireaxe
@@ -156,7 +156,7 @@
 /datum/outfit/assassin/post_equip(mob/living/carbon/human/H)
 	var/obj/item/clothing/under/U = H.w_uniform
 	U.attachTie(new /obj/item/clothing/tie/waistcoat(H))
-	
+
 	//Could use a type
 	var/obj/item/weapon/storage/secure/briefcase/sec_briefcase = H.l_hand
 	for(var/obj/item/briefcase_item in sec_briefcase)
@@ -172,7 +172,7 @@
 	pda.owner = H.real_name
 	pda.ownjob = "Reaper"
 	pda.update_label()
-	
+
 	var/obj/item/weapon/card/id/syndicate/W = H.wear_id
 	W.access = get_all_accesses()
 	W.assignment = "Reaper"
@@ -340,7 +340,7 @@
 	var/obj/item/device/radio/R = H.ears
 	R.set_frequency(CENTCOM_FREQ)
 	R.freqlock = 1
-	
+
 	var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)//Here you go Deuryn
 	L.imp_in = H
 	L.implanted = 1
@@ -362,4 +362,3 @@
 
 
 
-			

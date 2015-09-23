@@ -30,7 +30,7 @@
 		range = pick(2,2,2,3,3,3,4)
 
 /obj/item/weapon/grenade/iedcasing/CheckParts()
-	var/obj/item/weapon/reagent_containers/food/drinks/soda_cans/can = locate() in contents
+	var/obj/item/weapon/reagent_containers/drinks/soda_cans/can = locate() in contents
 	if(can)
 		var/muh_layer = can.layer
 		can.layer = FLOAT_LAYER

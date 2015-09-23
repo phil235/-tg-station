@@ -3,7 +3,7 @@
 
 ////////////////////////////////////////////FISH////////////////////////////////////////////
 
-/obj/item/weapon/reagent_containers/food/snacks/cubancarp
+/obj/item/weapon/reagent_containers/snacks/cubancarp
 	name = "\improper Cuban carp"
 	desc = "A grifftastic sandwich that burns your tongue and then leaves it numb!"
 	icon_state = "cubancarp"
@@ -13,7 +13,7 @@
 	filling_color = "#CD853F"
 	list_reagents = list("nutriment" = 6, "capsaicin" = 1)
 
-/obj/item/weapon/reagent_containers/food/snacks/carpmeat
+/obj/item/weapon/reagent_containers/snacks/carpmeat //phil235 make it actual meat
 	name = "carp fillet"
 	desc = "A fillet of spess carp meat."
 	icon_state = "fishfillet"
@@ -21,15 +21,15 @@
 	bitesize = 6
 	filling_color = "#FA8072"
 
-/obj/item/weapon/reagent_containers/food/snacks/carpmeat/New()
+/obj/item/weapon/reagent_containers/snacks/carpmeat/New()
 	..()
 	eatverb = pick("bite","chew","choke down","gnaw","swallow","chomp")
 
-/obj/item/weapon/reagent_containers/food/snacks/carpmeat/imitation
+/obj/item/weapon/reagent_containers/snacks/carpmeat/imitation
 	name = "imitation carp fillet"
 	desc = "Almost just like the real thing, kinda."
 
-/obj/item/weapon/reagent_containers/food/snacks/fishfingers
+/obj/item/weapon/reagent_containers/snacks/fishfingers
 	name = "fish fingers"
 	desc = "A finger of fish."
 	icon_state = "fishfingers"
@@ -38,7 +38,7 @@
 	bitesize = 1
 	filling_color = "#CD853F"
 
-/obj/item/weapon/reagent_containers/food/snacks/fishandchips
+/obj/item/weapon/reagent_containers/snacks/fishandchips
 	name = "fish and chips"
 	desc = "I do say so myself chap."
 	icon_state = "fishandchips"
@@ -48,22 +48,22 @@
 
 ////////////////////////////////////////////MEATS AND ALIKE////////////////////////////////////////////
 
-/obj/item/weapon/reagent_containers/food/snacks/tofu
+/obj/item/weapon/reagent_containers/snacks/tofu
 	name = "tofu"
 	desc = "We all love tofu."
 	icon_state = "tofu"
 	list_reagents = list("nutriment" = 2)
 	filling_color = "#F0E68C"
 
-/obj/item/weapon/reagent_containers/food/snacks/spiderleg
+/obj/item/weapon/reagent_containers/snacks/spiderleg
 	name = "spider leg"
 	desc = "A still twitching leg of a giant spider... you don't really want to eat this, do you?"
 	icon_state = "spiderleg"
 	list_reagents = list("nutriment" = 2, "toxin" = 2)
-	cooked_type = /obj/item/weapon/reagent_containers/food/snacks/boiledspiderleg
+	cooked_type = /obj/item/weapon/reagent_containers/snacks/boiledspiderleg
 	filling_color = "#000000"
 
-/obj/item/weapon/reagent_containers/food/snacks/cornedbeef
+/obj/item/weapon/reagent_containers/snacks/cornedbeef
 	name = "corned beef and cabbage"
 	desc = "Now you can feel like a real tourist vacationing in Ireland."
 	icon_state = "cornedbeef"
@@ -71,7 +71,7 @@
 	bonus_reagents = list("nutriment" = 1, "vitamin" = 4)
 	list_reagents = list("nutriment" = 5)
 
-/obj/item/weapon/reagent_containers/food/snacks/bearsteak
+/obj/item/weapon/reagent_containers/snacks/bearsteak
 	name = "Filet migrawr"
 	desc = "Because eating bear wasn't manly enough."
 	icon_state = "bearsteak"
@@ -79,14 +79,14 @@
 	bonus_reagents = list("nutriment" = 2, "vitamin" = 6)
 	list_reagents = list("nutriment" = 2, "vitamin" = 5, "manlydorf" = 5)
 
-/obj/item/weapon/reagent_containers/food/snacks/faggot
+/obj/item/weapon/reagent_containers/snacks/faggot
 	name = "faggot"
 	desc = "A great meal all round. Not a cord of wood."
 	icon_state = "faggot"
 	list_reagents = list("nutriment" = 4, "vitamin" = 1)
 	filling_color = "#800000"
 
-/obj/item/weapon/reagent_containers/food/snacks/sausage
+/obj/item/weapon/reagent_containers/snacks/sausage
 	name = "sausage"
 	desc = "A piece of mixed, long meat."
 	icon_state = "sausage"
@@ -94,32 +94,32 @@
 	bonus_reagents = list("nutriment" = 1, "vitamin" = 1)
 	list_reagents = list("nutriment" = 6, "vitamin" = 1)
 
-/obj/item/weapon/reagent_containers/food/snacks/sausage/New()
+/obj/item/weapon/reagent_containers/snacks/sausage/New()
 	..()
 	eatverb = pick("bite","chew","nibble","deep throat","gobble","chomp")
 
-/obj/item/weapon/reagent_containers/food/snacks/kebab
+/obj/item/weapon/reagent_containers/snacks/kebab
 	trash = /obj/item/stack/rods
 	icon_state = "kebab"
 	w_class = 3
 	list_reagents = list("nutriment" = 8)
 
-/obj/item/weapon/reagent_containers/food/snacks/kebab/human
+/obj/item/weapon/reagent_containers/snacks/kebab/human
 	name = "human-kebab"
 	desc = "A human meat, on a stick."
 	bonus_reagents = list("nutriment" = 1, "vitamin" = 6)
 
-/obj/item/weapon/reagent_containers/food/snacks/kebab/monkey
+/obj/item/weapon/reagent_containers/snacks/kebab/monkey
 	name = "meat-kebab"
 	desc = "Delicious meat, on a stick."
 	bonus_reagents = list("nutriment" = 1, "vitamin" = 2)
 
-/obj/item/weapon/reagent_containers/food/snacks/kebab/tofu
+/obj/item/weapon/reagent_containers/snacks/kebab/tofu
 	name = "tofu-kebab"
 	desc = "Vegan meat, on a stick."
 	bonus_reagents = list("nutriment" = 1)
 
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube
+/obj/item/weapon/reagent_containers/snacks/monkeycube
 	name = "monkey cube"
 	desc = "Just add water!"
 	icon_state = "monkeycube"
@@ -128,7 +128,7 @@
 	list_reagents = list("nutriment" = 2)
 	filling_color = "#CD853F"
 
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/afterattack(obj/O, mob/user,proximity)
+/obj/item/weapon/reagent_containers/snacks/monkeycube/afterattack(obj/O, mob/user,proximity)
 	if(!proximity) return
 	if(istype(O,/obj/structure/sink) && !wrapped)
 		user << "<span class='notice'>You place [src] under a stream of water...</span>"
@@ -137,27 +137,27 @@
 		return Expand()
 	..()
 
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/attack_self(mob/user)
+/obj/item/weapon/reagent_containers/snacks/monkeycube/attack_self(mob/user)
 	if(wrapped)
 		Unwrap(user)
 
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/proc/Expand()
+/obj/item/weapon/reagent_containers/snacks/monkeycube/proc/Expand()
 	visible_message("<span class='notice'>[src] expands!</span>")
 	new /mob/living/carbon/monkey(get_turf(src))
 	qdel(src)
 
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/proc/Unwrap(mob/user)
+/obj/item/weapon/reagent_containers/snacks/monkeycube/proc/Unwrap(mob/user)
 	icon_state = "monkeycube"
 	desc = "Just add water!"
 	user << "<span class='notice'>You unwrap the cube.</span>"
 	wrapped = 0
 
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped
+/obj/item/weapon/reagent_containers/snacks/monkeycube/wrapped
 	desc = "Still wrapped in some paper."
 	icon_state = "monkeycubewrap"
 	wrapped = 1
 
-/obj/item/weapon/reagent_containers/food/snacks/enchiladas
+/obj/item/weapon/reagent_containers/snacks/enchiladas
 	name = "enchiladas"
 	desc = "Viva La Mexico!"
 	icon_state = "enchiladas"
@@ -166,7 +166,7 @@
 	filling_color = "#FFA07A"
 	list_reagents = list("nutriment" = 8, "capsaicin" = 6)
 
-/obj/item/weapon/reagent_containers/food/snacks/stewedsoymeat
+/obj/item/weapon/reagent_containers/snacks/stewedsoymeat
 	name = "stewed soy meat"
 	desc = "Even non-vegetarians will LOVE this!"
 	icon_state = "stewedsoymeat"
@@ -175,11 +175,11 @@
 	list_reagents = list("nutriment" = 8)
 	filling_color = "#D2691E"
 
-/obj/item/weapon/reagent_containers/food/snacks/stewedsoymeat/New()
+/obj/item/weapon/reagent_containers/snacks/stewedsoymeat/New()
 	..()
 	eatverb = pick("slurp","sip","suck","inhale","drink")
 
-/obj/item/weapon/reagent_containers/food/snacks/boiledspiderleg
+/obj/item/weapon/reagent_containers/snacks/boiledspiderleg
 	name = "boiled spider leg"
 	desc = "A giant spider's leg that's still twitching after being cooked. Gross!"
 	icon_state = "spiderlegcooked"
@@ -188,7 +188,7 @@
 	list_reagents = list("nutriment" = 3, "capsaicin" = 2)
 	filling_color = "#000000"
 
-/obj/item/weapon/reagent_containers/food/snacks/spidereggsham
+/obj/item/weapon/reagent_containers/snacks/spidereggsham
 	name = "green eggs and ham"
 	desc = "Would you eat them on a train? Would you eat them on a plane? Would you eat them on a state of the art corporate deathtrap floating through space?"
 	icon_state = "spidereggsham"
@@ -198,7 +198,7 @@
 	bitesize = 4
 	filling_color = "#7FFF00"
 
-/obj/item/weapon/reagent_containers/food/snacks/sashimi
+/obj/item/weapon/reagent_containers/snacks/sashimi
 	name = "carp sashimi"
 	desc = "Celebrate surviving attack from hostile alien lifeforms by hospitalising yourself."
 	icon_state = "sashimi"

@@ -772,19 +772,19 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 
 /datum/supply_packs/organic/food
 	name = "Food Crate"
-	contains = list(/obj/item/weapon/reagent_containers/food/condiment/flour,
-					/obj/item/weapon/reagent_containers/food/condiment/rice,
-					/obj/item/weapon/reagent_containers/food/condiment/milk,
-					/obj/item/weapon/reagent_containers/food/condiment/soymilk,
-					/obj/item/weapon/reagent_containers/food/condiment/saltshaker,
-					/obj/item/weapon/reagent_containers/food/condiment/peppermill,
+	contains = list(/obj/item/weapon/reagent_containers/condiment/flour,
+					/obj/item/weapon/reagent_containers/condiment/rice,
+					/obj/item/weapon/reagent_containers/condiment/milk,
+					/obj/item/weapon/reagent_containers/condiment/soymilk,
+					/obj/item/weapon/reagent_containers/condiment/saltshaker,
+					/obj/item/weapon/reagent_containers/condiment/peppermill,
 					/obj/item/weapon/storage/fancy/egg_box,
-					/obj/item/weapon/reagent_containers/food/condiment/enzyme,
-					/obj/item/weapon/reagent_containers/food/condiment/sugar,
-					/obj/item/weapon/reagent_containers/food/snacks/meat/slab/monkey,
-					/obj/item/weapon/reagent_containers/food/snacks/grown/banana,
-					/obj/item/weapon/reagent_containers/food/snacks/grown/banana,
-					/obj/item/weapon/reagent_containers/food/snacks/grown/banana)
+					/obj/item/weapon/reagent_containers/condiment/enzyme,
+					/obj/item/weapon/reagent_containers/condiment/sugar,
+					/obj/item/weapon/reagent_containers/snacks/meat/slab/monkey,
+					/obj/item/weapon/reagent_containers/snacks/grown/banana,
+					/obj/item/weapon/reagent_containers/snacks/grown/banana,
+					/obj/item/weapon/reagent_containers/snacks/grown/banana)
 	cost = 10
 	containername = "food crate"
 
@@ -806,15 +806,15 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 /datum/supply_packs/organic/party
 	name = "Party equipment"
 	contains = list(/obj/item/weapon/storage/box/drinkingglasses,
-					/obj/item/weapon/reagent_containers/food/drinks/shaker,
-					/obj/item/weapon/reagent_containers/food/drinks/bottle/patron,
-					/obj/item/weapon/reagent_containers/food/drinks/bottle/goldschlager,
-					/obj/item/weapon/reagent_containers/food/drinks/ale,
-					/obj/item/weapon/reagent_containers/food/drinks/ale,
-					/obj/item/weapon/reagent_containers/food/drinks/beer,
-					/obj/item/weapon/reagent_containers/food/drinks/beer,
-					/obj/item/weapon/reagent_containers/food/drinks/beer,
-					/obj/item/weapon/reagent_containers/food/drinks/beer)
+					/obj/item/weapon/reagent_containers/drinks/shaker,
+					/obj/item/weapon/reagent_containers/drinks/bottle/patron,
+					/obj/item/weapon/reagent_containers/drinks/bottle/goldschlager,
+					/obj/item/weapon/reagent_containers/drinks/ale,
+					/obj/item/weapon/reagent_containers/drinks/ale,
+					/obj/item/weapon/reagent_containers/drinks/beer,
+					/obj/item/weapon/reagent_containers/drinks/beer,
+					/obj/item/weapon/reagent_containers/drinks/beer,
+					/obj/item/weapon/reagent_containers/drinks/beer)
 	cost = 20
 	containername = "party equipment"
 
@@ -1072,8 +1072,8 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 
 /datum/supply_packs/misc/religious_supplies
 	name = "Religious Supplies Crate"
-	contains = list(/obj/item/weapon/reagent_containers/food/drinks/bottle/holywater,
-					/obj/item/weapon/reagent_containers/food/drinks/bottle/holywater,
+	contains = list(/obj/item/weapon/reagent_containers/drinks/bottle/holywater,
+					/obj/item/weapon/reagent_containers/drinks/bottle/holywater,
 					/obj/item/weapon/storage/book/bible/booze,
 					/obj/item/weapon/storage/book/bible/booze,
 					/obj/item/clothing/suit/hooded/chaplain_hoodie,
@@ -1192,7 +1192,7 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 					/obj/item/clothing/mask/gas/mime,
 					/obj/item/clothing/head/beret,
 					/obj/item/clothing/suit/suspenders,
-					/obj/item/weapon/reagent_containers/food/drinks/bottle/bottleofnothing,
+					/obj/item/weapon/reagent_containers/drinks/bottle/bottleofnothing,
 					/obj/item/weapon/storage/backpack/mime)
 	cost = 10
 	containertype = /obj/structure/closet/crate/secure

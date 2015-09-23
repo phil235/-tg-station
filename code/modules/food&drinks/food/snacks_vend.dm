@@ -2,7 +2,7 @@
 //in other words: junk food
 //don't even bother looking for recipes for these
 
-/obj/item/weapon/reagent_containers/food/snacks/candy
+/obj/item/weapon/reagent_containers/snacks/candy
 	name = "candy"
 	desc = "Nougat love it or hate it."
 	icon_state = "candy"
@@ -11,7 +11,7 @@
 	junkiness = 25
 	filling_color = "#D2691E"
 
-/obj/item/weapon/reagent_containers/food/snacks/sosjerky
+/obj/item/weapon/reagent_containers/snacks/sosjerky
 	name = "\improper Scaredy's Private Reserve Beef Jerky"
 	icon_state = "sosjerky"
 	desc = "Beef jerky made from the finest space cows."
@@ -20,7 +20,7 @@
 	junkiness = 25
 	filling_color = "#8B0000"
 
-/obj/item/weapon/reagent_containers/food/snacks/chips
+/obj/item/weapon/reagent_containers/snacks/chips
 	name = "chips"
 	desc = "Commander Riker's What-The-Crisps"
 	icon_state = "chips"
@@ -30,7 +30,7 @@
 	junkiness = 20
 	filling_color = "#FFD700"
 
-/obj/item/weapon/reagent_containers/food/snacks/no_raisin
+/obj/item/weapon/reagent_containers/snacks/no_raisin
 	name = "4no raisins"
 	icon_state = "4no_raisins"
 	desc = "Best raisins in the universe. Not sure why."
@@ -39,7 +39,7 @@
 	junkiness = 25
 	filling_color = "#8B0000"
 
-/obj/item/weapon/reagent_containers/food/snacks/spacetwinkie
+/obj/item/weapon/reagent_containers/snacks/spacetwinkie
 	name = "space twinkie"
 	icon_state = "space_twinkie"
 	desc = "Guaranteed to survive longer than you will."
@@ -47,7 +47,7 @@
 	junkiness = 25
 	filling_color = "#FFD700"
 
-/obj/item/weapon/reagent_containers/food/snacks/cheesiehonkers
+/obj/item/weapon/reagent_containers/snacks/cheesiehonkers
 	name = "cheesie honkers"
 	desc = "Bite sized cheesie snacks that will honk all over your mouth."
 	icon_state = "cheesie_honkers"
@@ -56,7 +56,7 @@
 	junkiness = 25
 	filling_color = "#FFD700"
 
-/obj/item/weapon/reagent_containers/food/snacks/syndicake
+/obj/item/weapon/reagent_containers/snacks/syndicake
 	name = "syndi-cakes"
 	icon_state = "syndi_cakes"
 	desc = "An extremely moist snack cake that tastes just as good after being nuked."

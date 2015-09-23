@@ -24,9 +24,9 @@
 	var/loot = rand(1,100) //100 different crates with varying chances of spawning
 	switch(loot)
 		if(1 to 5) //5% chance
-			new /obj/item/weapon/reagent_containers/food/drinks/bottle/rum(src)
-			new /obj/item/weapon/reagent_containers/food/snacks/grown/ambrosia(src)
-			new /obj/item/weapon/reagent_containers/food/drinks/bottle/whiskey(src)
+			new /obj/item/weapon/reagent_containers/drinks/bottle/rum(src)
+			new /obj/item/weapon/reagent_containers/snacks/grown/ambrosia(src)
+			new /obj/item/weapon/reagent_containers/drinks/bottle/whiskey(src)
 			new /obj/item/weapon/lighter(src)
 		if(6 to 10)
 			new /obj/item/weapon/bedsheet(src)
@@ -139,7 +139,7 @@
 			new /obj/item/clothing/head/beret(src)
 			new /obj/item/clothing/suit/suspenders(src)
 			new /obj/item/toy/crayon/mime(src)
-			new /obj/item/weapon/reagent_containers/food/drinks/bottle/bottleofnothing(src)
+			new /obj/item/weapon/reagent_containers/drinks/bottle/bottleofnothing(src)
 		if(96)
 			new /obj/item/weapon/hand_tele(src)
 		if(97)

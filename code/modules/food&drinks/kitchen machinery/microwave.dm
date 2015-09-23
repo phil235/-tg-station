@@ -132,7 +132,7 @@
 	else if(istype(O, /obj/item/weapon/storage/bag/tray))
 		var/obj/item/weapon/storage/T = O
 		var/loaded = 0
-		for(var/obj/item/weapon/reagent_containers/food/snacks/S in T.contents)
+		for(var/obj/item/weapon/reagent_containers/snacks/S in T.contents)
 			if (contents.len>=max_n_of_items)
 				user << "<span class='warning'>[src] is full, you cannot put more!</span>"
 				return 1
@@ -143,7 +143,7 @@
 			user << "<span class='notice'>You insert [loaded] items into [src].</span>"
 
 
-	else if(istype(O,/obj/item/weapon/reagent_containers/food/snacks))
+	else if(istype(O,/obj/item/weapon/reagent_containers/snacks))
 		if (contents.len>=max_n_of_items)
 			user << "<span class='warning'>[src] is full, you cannot put more!</span>"
 			return 1
@@ -240,18 +240,24 @@
 			return
 		stop()
 
-		for(var/obj/item/weapon/reagent_containers/food/snacks/F in contents)
+		for(var/obj/item/weapon/reagent_containers/snacks/F in contents)
 			if(F.cooked_type)
-				var/obj/item/weapon/reagent_containers/food/snacks/S = new F.cooked_type (get_turf(src))
+				var/obj/item/weapon/reagent_containers/snacks/S = new F.cooked_type (get_turf(src))
 				F.initialize_cooked_food(S, efficiency)
 				feedback_add_details("food_made","[F.type]")
+			else if(F.raw)
+				F.raw = 0
+				//F.on_cooking()
+				F.ingMax = F.ingredients.len
+				if(F.cooked_icon)
+					F.icon_state = F.cooked_icon
+				return
 			else
-				new /obj/item/weapon/reagent_containers/food/snacks/badrecipe(src)
+				new /obj/item/weapon/reagent_containers/snacks/badrecipe(src)
 				if(dirty < 100)
 					dirty++
 			qdel(F)
 
-		return
 
 /obj/machinery/microwave/proc/microwaving(seconds as num)
 	for (var/i=1 to seconds)
@@ -264,7 +270,7 @@
 /obj/machinery/microwave/proc/has_extra_item()
 	for (var/obj/O in contents)
 		if ( \
-				!istype(O,/obj/item/weapon/reagent_containers/food) && \
+				!istype(O,/obj/item/weapon/reagent_containers/snacks) && \
 				!istype(O, /obj/item/weapon/grown) \
 			)
 			return 1
@@ -302,9 +308,9 @@
 	icon_state = "mwbloody" // Make it look dirty too
 	operating = 0 // Turn it off again aferwards
 	updateUsrDialog()
-	for(var/obj/item/weapon/reagent_containers/food/snacks/S in src)
+	for(var/obj/item/weapon/reagent_containers/snacks/S in src)
 		if(prob(50))
-			new /obj/item/weapon/reagent_containers/food/snacks/badrecipe(src)
+			new /obj/item/weapon/reagent_containers/snacks/badrecipe(src)
 			qdel(S)
 
 /obj/machinery/microwave/proc/broke()

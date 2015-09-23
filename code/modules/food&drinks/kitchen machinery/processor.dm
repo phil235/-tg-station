@@ -42,36 +42,36 @@
 
 	/* objs */
 /datum/food_processor_process/meat
-	input = /obj/item/weapon/reagent_containers/food/snacks/meat/slab
-	output = /obj/item/weapon/reagent_containers/food/snacks/faggot
+	input = /obj/item/weapon/reagent_containers/snacks/meat/slab
+	output = /obj/item/weapon/reagent_containers/snacks/faggot
 
 /datum/food_processor_process/potato
-	input = /obj/item/weapon/reagent_containers/food/snacks/grown/potato
-	output = /obj/item/weapon/reagent_containers/food/snacks/fries
+	input = /obj/item/weapon/reagent_containers/snacks/grown/potato
+	output = /obj/item/weapon/reagent_containers/snacks/fries
 
 /datum/food_processor_process/carrot
-	input = /obj/item/weapon/reagent_containers/food/snacks/grown/carrot
-	output = /obj/item/weapon/reagent_containers/food/snacks/carrotfries
+	input = /obj/item/weapon/reagent_containers/snacks/grown/carrot
+	output = /obj/item/weapon/reagent_containers/snacks/carrotfries
 
 /datum/food_processor_process/soybeans
-	input = /obj/item/weapon/reagent_containers/food/snacks/grown/soybeans
-	output = /obj/item/weapon/reagent_containers/food/snacks/soydope
+	input = /obj/item/weapon/reagent_containers/snacks/grown/soybeans
+	output = /obj/item/weapon/reagent_containers/snacks/soydope
 
 /datum/food_processor_process/spaghetti
-	input = /obj/item/weapon/reagent_containers/food/snacks/doughslice
-	output = /obj/item/weapon/reagent_containers/food/snacks/spaghetti
+	input = /obj/item/weapon/reagent_containers/snacks/doughslice
+	output = /obj/item/weapon/reagent_containers/snacks/spaghetti
 
 /datum/food_processor_process/corn
-	input = /obj/item/weapon/reagent_containers/food/snacks/grown/corn
-	output = /obj/item/weapon/reagent_containers/food/snacks/tortilla
+	input = /obj/item/weapon/reagent_containers/snacks/grown/corn
+	output = /obj/item/weapon/reagent_containers/snacks/tortilla
 
 /datum/food_processor_process/parsnip
-	input = /obj/item/weapon/reagent_containers/food/snacks/grown/parsnip
-	output = /obj/item/weapon/reagent_containers/food/snacks/roastparsnip
+	input = /obj/item/weapon/reagent_containers/snacks/grown/parsnip
+	output = /obj/item/weapon/reagent_containers/snacks/roastparsnip
 
 /datum/food_processor_process/sweetpotato
-	input = /obj/item/weapon/reagent_containers/food/snacks/grown/sweetpotato
-	output = /obj/item/weapon/reagent_containers/food/snacks/yakiimo
+	input = /obj/item/weapon/reagent_containers/snacks/grown/sweetpotato
+	output = /obj/item/weapon/reagent_containers/snacks/yakiimo
 
 
 /* mobs */

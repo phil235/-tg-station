@@ -13,7 +13,7 @@
 /datum/chemical_reaction/tofu/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/weapon/reagent_containers/food/snacks/tofu(location)
+		new /obj/item/weapon/reagent_containers/snacks/tofu(location)
 	return
 
 /datum/chemical_reaction/chocolate_bar
@@ -26,7 +26,7 @@
 /datum/chemical_reaction/chocolate_bar/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/weapon/reagent_containers/food/snacks/chocolatebar(location)
+		new /obj/item/weapon/reagent_containers/snacks/chocolatebar(location)
 	return
 
 
@@ -40,7 +40,7 @@
 /datum/chemical_reaction/chocolate_bar2/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/weapon/reagent_containers/food/snacks/chocolatebar(location)
+		new /obj/item/weapon/reagent_containers/snacks/chocolatebar(location)
 	return
 
 /datum/chemical_reaction/hot_coco
@@ -89,7 +89,7 @@
 
 /datum/chemical_reaction/cheesewheel/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
-	new /obj/item/weapon/reagent_containers/food/snacks/store/cheesewheel(location)
+	new /obj/item/weapon/reagent_containers/snacks/store/cheesewheel(location)
 	return
 
 /datum/chemical_reaction/synthmeat
@@ -102,7 +102,7 @@
 
 /datum/chemical_reaction/synthmeat/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
-	new /obj/item/weapon/reagent_containers/food/snacks/meat/slab/synthmeat(location)
+	new /obj/item/weapon/reagent_containers/snacks/meat/slab/synthmeat(location)
 	return
 
 /datum/chemical_reaction/hot_ramen
@@ -126,11 +126,11 @@
 	result = null
 	required_reagents = list("carpotoxin" = 5)
 	result_amount = 1
-	required_container = /obj/item/weapon/reagent_containers/food/snacks/tofu
+	required_container = /obj/item/weapon/reagent_containers/snacks/tofu
 	mix_message = "The mixture becomes similar to carp meat."
 
 /datum/chemical_reaction/imitationcarpmeat/on_reaction(datum/reagents/holder)
-	var/obj/item/weapon/reagent_containers/food/snacks/S = new /obj/item/weapon/reagent_containers/food/snacks/carpmeat/imitation
+	var/obj/item/weapon/reagent_containers/snacks/S = new /obj/item/weapon/reagent_containers/snacks/carpmeat/imitation
 	S.loc = get_turf(holder.my_atom)
 	if(holder && holder.my_atom)
 		qdel(holder.my_atom)
@@ -146,7 +146,7 @@
 /datum/chemical_reaction/dough/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/weapon/reagent_containers/food/snacks/dough(location)
+		new /obj/item/weapon/reagent_containers/snacks/dough(location)
 
 /datum/chemical_reaction/cakebatter
 	name = "Cake Batter"
@@ -159,7 +159,7 @@
 /datum/chemical_reaction/cakebatter/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/weapon/reagent_containers/food/snacks/cakebatter(location)
+		new /obj/item/weapon/reagent_containers/snacks/cakebatter(location)
 
 /datum/chemical_reaction/cakebatter/vegan
 	id = "vegancakebatter"
@@ -175,7 +175,7 @@
 	mix_message = "The rice absorbs the water."
 
 /datum/chemical_reaction/ricebowl/on_reaction(datum/reagents/holder)
-	var/obj/item/weapon/reagent_containers/food/snacks/S = new /obj/item/weapon/reagent_containers/food/snacks/salad/ricebowl
+	var/obj/item/weapon/reagent_containers/snacks/S = new /obj/item/weapon/reagent_containers/snacks/salad/ricebowl
 	S.loc = get_turf(holder.my_atom)
 	if(holder && holder.my_atom)
 		qdel(holder.my_atom)

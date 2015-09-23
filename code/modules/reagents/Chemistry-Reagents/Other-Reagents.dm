@@ -140,8 +140,8 @@
 		Item.extinguish()
 
 	// Monkey cube
-	if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/monkeycube))
-		var/obj/item/weapon/reagent_containers/food/snacks/monkeycube/cube = O
+	if(istype(O,/obj/item/weapon/reagent_containers/snacks/monkeycube))
+		var/obj/item/weapon/reagent_containers/snacks/monkeycube/cube = O
 		if(!cube.wrapped)
 			cube.Expand()
 

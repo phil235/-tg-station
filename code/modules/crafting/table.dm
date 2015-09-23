@@ -75,8 +75,8 @@
 			if(!check_contents(R) || !check_tools(user, R))
 				return 0
 			var/atom/movable/I = new R.result (loc)
-			if(istype(I, /obj/item/weapon/reagent_containers/food/snacks))
-				var/obj/item/weapon/reagent_containers/food/snacks/S = I
+			if(istype(I, /obj/item/weapon/reagent_containers/snacks))
+				var/obj/item/weapon/reagent_containers/snacks/S = I
 				S.create_reagents(S.volume)
 				feedback_add_details("food_made","[S.type]")
 				send_feedback = 0
