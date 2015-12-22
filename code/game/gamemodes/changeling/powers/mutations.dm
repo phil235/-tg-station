@@ -7,8 +7,6 @@
 		Armor
 */
 
-
-//Parent to shields and blades because muh copypasted code.
 /obj/effect/proc_holder/changeling/weapon
 	name = "Organic Weapon"
 	desc = "Go tell a coder if you see this"
@@ -122,10 +120,11 @@
 	return 1
 
 
-//fancy headers yo
+
 /***************************************\
 |***************ARM BLADE***************|
 \***************************************/
+/*
 /obj/effect/proc_holder/changeling/weapon/arm_blade
 	name = "Arm Blade"
 	desc = "We reform one of our arms into a deadly blade."
@@ -137,7 +136,7 @@
 	max_genetic_damage = 20
 	weapon_type = /obj/item/weapon/melee/arm_blade
 	weapon_name_simple = "blade"
-
+*/
 /obj/item/weapon/melee/arm_blade
 	name = "arm blade"
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people as a hot knife through butter"
@@ -199,6 +198,7 @@
 /***************************************\
 |****************SHIELD*****************|
 \***************************************/
+/*
 /obj/effect/proc_holder/changeling/weapon/shield
 	name = "Organic Shield"
 	desc = "We reform one of our arms into a hard shield."
@@ -220,7 +220,7 @@
 	var/obj/item/weapon/shield/changeling/S = ..(user)
 	S.remaining_uses = round(changeling.absorbedcount * 3)
 	return 1
-
+*/
 /obj/item/weapon/shield/changeling
 	name = "shield-like mass"
 	desc = "A mass of tough, boney tissue. You can still see the fingers as a twisted pattern in the shield."
@@ -309,6 +309,7 @@
 /***************************************\
 |*****************ARMOR*****************|
 \***************************************/
+/*
 /obj/effect/proc_holder/changeling/suit/armor
 	name = "Chitinous Armor"
 	desc = "We turn our skin into tough chitin to protect us from damage."
@@ -324,7 +325,7 @@
 	helmet_type = /obj/item/clothing/head/helmet/changeling
 	suit_name_simple = "armor"
 	helmet_name_simple = "helmet"
-
+*/
 /obj/item/clothing/suit/armor/changeling
 	name = "chitinous mass"
 	desc = "A tough, hard covering of black chitin."

@@ -300,11 +300,12 @@
 	reagent_state = LIQUID
 	color = "#C8A5DC"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
+	easily_purgeable = 0 //charcoal can't purge itself.
 
 /datum/reagent/medicine/charcoal/on_mob_life(mob/living/M)
 	M.adjustToxLoss(-2*REM)
 	for(var/datum/reagent/R in M.reagents.reagent_list)
-		if(R != src)
+		if(R.easily_purgeable)
 			M.reagents.remove_reagent(R.id,1)
 	..()
 	return
