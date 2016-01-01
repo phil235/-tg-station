@@ -193,7 +193,7 @@
 		SSobj.processing |= src
 
 /turf/simulated/floor/plating/lava/process()
-	if(!contents)
+	if(!contents.len)
 		processing = 0
 		SSobj.processing.Remove(src)
 		return
