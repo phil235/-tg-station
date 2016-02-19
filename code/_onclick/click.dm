@@ -297,7 +297,7 @@
 // Simple helper to face what you clicked on, in case it should be needed in more than one place
 /mob/proc/face_atom(atom/A)
 	if( buckled || stat != CONSCIOUS || !A || !x || !y || !A.x || !A.y )
-		return
+		return 1
 	var/dx = A.x - x
 	var/dy = A.y - y
 	if(!dx && !dy) // Wall items are graphically shifted but on the floor
@@ -321,6 +321,23 @@
 			dir = EAST
 		else
 			dir = WEST
+
+/mob/living/face_atom(atom/A)
+	var/old_dir = dir
+	if(!..())
+		update_direction_overlay(old_dir)
+
+/mob/living/proc/update_direction_overlay(old_dir)
+	if(dir != old_dir)
+		switch(dir)
+			if(NORTH)
+				overlay_fullscreen("direction", /obj/screen/fullscreen/direction, 1)
+			if(SOUTH)
+				overlay_fullscreen("direction", /obj/screen/fullscreen/direction, 2)
+			if(WEST)
+				overlay_fullscreen("direction", /obj/screen/fullscreen/direction, 3)
+			if(EAST)
+				overlay_fullscreen("direction", /obj/screen/fullscreen/direction, 4)
 
 /obj/screen/click_catcher
 	icon = 'icons/mob/screen_full.dmi'

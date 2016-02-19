@@ -524,6 +524,7 @@ Sorry Giacom. Please don't be mad :(
 	return
 
 /mob/living/Move(atom/newloc, direct)
+	var/old_dir = dir
 	if (buckled && buckled.loc != newloc) //not updating position
 		if (!buckled.anchored)
 			return buckled.Move(newloc, direct)
@@ -542,6 +543,7 @@ Sorry Giacom. Please don't be mad :(
 	if (!cuff_dragged && pulling && !throwing && (get_dist(src, pulling) <= 1 || pulling.loc == loc))
 		var/turf/T = loc
 		. = ..()
+		update_direction_overlay(old_dir)
 
 		if (pulling && pulling.loc)
 			if(!isturf(pulling.loc))
@@ -592,6 +594,7 @@ Sorry Giacom. Please don't be mad :(
 	else
 		stop_pulling()
 		. = ..()
+		update_direction_overlay(old_dir)
 	if (s_active && !(s_active in contents) && !(s_active.loc in contents))
 		// It's ugly. But everything related to inventory/storage is. -- c0
 		s_active.close(src)
