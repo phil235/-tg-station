@@ -323,21 +323,9 @@
 			dir = WEST
 
 /mob/living/face_atom(atom/A)
-	var/old_dir = dir
 	if(!..())
-		update_direction_overlay(old_dir)
-
-/mob/living/proc/update_direction_overlay(old_dir)
-	if(dir != old_dir)
-		switch(dir)
-			if(NORTH)
-				overlay_fullscreen("direction", /obj/screen/fullscreen/direction, 1)
-			if(SOUTH)
-				overlay_fullscreen("direction", /obj/screen/fullscreen/direction, 2)
-			if(WEST)
-				overlay_fullscreen("direction", /obj/screen/fullscreen/direction, 3)
-			if(EAST)
-				overlay_fullscreen("direction", /obj/screen/fullscreen/direction, 4)
+		var/obj/screen/fullscreen/FS = screens["direction"] //for mobs that should not have it, we change the fullscreen's icon_state to null.
+		FS.dir = dir
 
 /obj/screen/click_catcher
 	icon = 'icons/mob/screen_full.dmi'
