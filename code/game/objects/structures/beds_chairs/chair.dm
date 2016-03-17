@@ -60,6 +60,8 @@
 		SK.loc = E
 		SK.master = E
 		qdel(src)
+	else
+		return ..()
 
 /obj/structure/chair/attack_tk(mob/user)
 	if(buckled_mob)

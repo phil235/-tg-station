@@ -161,7 +161,8 @@
 	if(istype(W, /obj/item/weapon/pickaxe))
 		qdel(src)
 		return
-	..()
+	else
+		return ..()
 
 /obj/effect/meteor/proc/make_debris()
 	for(var/throws = dropamt, throws > 0, throws--)

@@ -733,7 +733,6 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 // access to status display signals
 /obj/item/device/pda/attackby(obj/item/C, mob/user, params)
-	..()
 	if(istype(C, /obj/item/weapon/cartridge) && !cartridge)
 		cartridge = C
 		if(!user.unEquip(C))
@@ -782,7 +781,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		var/obj/item/weapon/photo/P = C
 		photo = P.img
 		user << "<span class='notice'>You scan \the [C].</span>"
-	return
+	else
+		return ..()
 
 /obj/item/device/pda/attack(mob/living/carbon/C, mob/living/user)
 	if(istype(C))

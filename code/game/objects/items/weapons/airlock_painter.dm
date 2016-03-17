@@ -10,7 +10,7 @@
 	materials = list(MAT_METAL=50, MAT_GLASS=50)
 	origin_tech = "engineering=1"
 
-	flags = CONDUCT
+	flags = CONDUCT | NOBLUDGEON
 	slot_flags = SLOT_BELT
 
 	var/obj/item/device/toner/ink = null
@@ -57,7 +57,6 @@
 
 
 /obj/item/weapon/airlock_painter/attackby(obj/item/weapon/W, mob/user, params)
-	..()
 	if(istype(W, /obj/item/device/toner))
 		if(ink)
 			user << "<span class='notice'>\the [name] already contains \a [ink].</span>"
@@ -68,7 +67,8 @@
 		user << "<span class='notice'>You install \the [W] into \the [name].</span>"
 		ink = W
 		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
-
+	else
+		return ..()
 
 /obj/item/weapon/airlock_painter/attack_self(mob/user)
 	if(ink)

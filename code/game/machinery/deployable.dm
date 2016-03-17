@@ -54,10 +54,13 @@
 					return
 
 	else
-		user.changeNext_move(CLICK_CD_MELEE)
-		visible_message("<span class='warning'>[user] hits [src] with [I]!</span>", "<span class='warning'>You hit [src] with [I]!</span>")
-		take_damage(I.force)
-		user.do_attack_animation(src)
+		return ..()
+
+
+/obj/structure/barricade/attacked_by(obj/item/I, mob/living/user)
+	..()
+	take_damage(I.force)
+
 
 /obj/structure/barricade/bullet_act(var/obj/item/projectile/P)
 	if(P)

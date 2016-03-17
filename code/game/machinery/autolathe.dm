@@ -90,6 +90,9 @@
 
 	return
 
+/obj/machinery/autolathe/deconstruction() //phil235 test
+	materials.retrieve_all()
+
 /obj/machinery/autolathe/attackby(obj/item/O, mob/user, params)
 	if (busy)
 		user << "<span class=\"alert\">The autolathe is busy. Please wait for completion of previous operation.</span>"
@@ -102,14 +105,12 @@
 	if(exchange_parts(user, O))
 		return
 
-	if(panel_open)
-		if(istype(O, /obj/item/weapon/crowbar))
-			materials.retrieve_all()
-			default_deconstruction_crowbar(O)
-			return 1
-		else if(is_wire_tool(O))
-			wires.interact(user)
-			return 1
+	if(default_deconstruction_crowbar(O))
+		return 1
+
+	if(panel_open && is_wire_tool(O))
+		wires.interact(user)
+		return 1
 	if(stat)
 		return 1
 

@@ -22,8 +22,9 @@
 /obj/structure/grille/blob_act()
 	qdel(src)
 
-/obj/structure/grille/Bumped(atom/user)
-	if(ismob(user)) shock(user, 70)
+/obj/structure/grille/Bumped(atom/A)
+	if(ismob(A))
+		shock(A, 70)
 
 
 /obj/structure/grille/attack_paw(mob/user)
@@ -51,8 +52,6 @@
 
 /obj/structure/grille/attack_alien(mob/living/user)
 	user.do_attack_animation(src)
-	if(istype(user, /mob/living/carbon/alien/larva))
-		return
 	user.changeNext_move(CLICK_CD_MELEE)
 	playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
 	user.visible_message("<span class='warning'>[user] mangles [src].</span>", \
@@ -169,8 +168,6 @@
 			icon_state = "grille"
 			R.use(1)
 			return
-	else if(istype(W, /obj/item/weapon/rcd) && istype(loc, /turf/simulated)) //Do not attack the grille if the user is holding an RCD
-		return
 
 //window placing begin
 	else if(istype(W, /obj/item/stack/sheet/rglass) || istype(W, /obj/item/stack/sheet/glass))
@@ -205,23 +202,20 @@
 				user << "<span class='notice'>You place [WD] on [src].</span>"
 			return
 //window placing end
+	else if(istype(W, /obj/item/weapon/shard) || !shock(user, 70))
+		return ..()
 
-	else if(istype(W, /obj/item/weapon/shard))
-		playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
-		health -= W.force * 0.1
-	else if(!shock(user, 70))
-		switch(W.damtype)
-			if(STAMINA)
-				return
-			if(BURN)
-				playsound(loc, 'sound/items/welder.ogg', 80, 1)
-			else
-				playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
-		health -= W.force * 0.3
-
-	healthcheck()
+/obj/structure/grille/attacked_by(obj/item/I, mob/living/user)
 	..()
-	return
+	switch(I.damtype)
+		if(STAMINA)
+			return
+		if(BURN)
+			playsound(loc, 'sound/items/welder.ogg', 80, 1)
+		else
+			playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
+	health -= I.force * 0.3
+	healthcheck()
 
 
 /obj/structure/grille/proc/healthcheck()

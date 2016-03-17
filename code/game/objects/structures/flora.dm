@@ -30,10 +30,7 @@
 					new /obj/item/weapon/grown/log/tree(get_turf(src))
 
 	else
-		..()
-
-
-
+		return ..()
 
 /obj/structure/flora/tree/pine
 	name = "pine tree"

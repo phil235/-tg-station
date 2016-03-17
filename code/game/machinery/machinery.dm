@@ -130,10 +130,6 @@ Class Procs:
 	dropContents()
 	return ..()
 
-/obj/machinery/attackby(obj/item/weapon/W, mob/user, params)
-	user.changeNext_move(CLICK_CD_MELEE)
-	..()
-
 /obj/machinery/proc/locate_machinery()
 	return
 

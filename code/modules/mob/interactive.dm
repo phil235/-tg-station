@@ -123,16 +123,16 @@
 	set name = "Customize SNPC"
 	set desc = "Customise the SNPC"
 	set category = "Admin"
-	
+
 	if(!holder)
 		return
-	
+
 	if(A)
 		if(!istype(A,/mob/living/carbon/human/interactive))
 			return
 		var/mob/living/carbon/human/interactive/T = A
 		var/cjob = input("Choose Job") as null|anything in SSjob.occupations.Copy()
-	
+
 		if(cjob)
 			T.myjob = cjob
 			T.job = T.myjob.title
@@ -142,7 +142,7 @@
 			T.myjob.equip(T)
 			T.myjob.apply_fingerprints(T)
 			T.doSetup()
-	
+
 		var/doTele = input("Place the SNPC in their department?") as null|anything in list("Yes","No")
 		if(doTele)
 			if(doTele == "Yes")
@@ -420,7 +420,7 @@
 						spawn(0)
 							if(istype(D,/obj/machinery/door/airlock))
 								var/obj/machinery/door/airlock/AL = D
-								AL.p_open = 1
+								AL.panel_open = 1
 								AL.update_icon()
 								AL.shock(src,5)
 								sleep(5)
@@ -432,7 +432,7 @@
 								if(!AL.wires.is_cut(WIRE_POWER2))
 									AL.wires.cut(WIRE_POWER2)
 								sleep(5)
-								AL.p_open = 0
+								AL.panel_open = 0
 								AL.update_icon()
 							D.open()
 

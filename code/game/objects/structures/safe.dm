@@ -153,15 +153,12 @@ FLOOR SAFES
 			I.loc = src
 			user << "<span class='notice'>You put [I] in [src].</span>"
 			updateUsrDialog()
-			return
 		else
 			user << "<span class='notice'>[I] won't fit in [src].</span>"
-			return
+	else if(istype(I, /obj/item/clothing/tie/stethoscope))
+		user << "<span class='warning'>Hold [I] in one of your hands while you manipulate the dial!</span>"
 	else
-		if(istype(I, /obj/item/clothing/tie/stethoscope))
-			user << "<span class='warning'>Hold [I] in one of your hands while you manipulate the dial!</span>"
-			return
-
+		return ..()
 
 obj/structure/safe/blob_act()
 	return

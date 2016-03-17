@@ -76,8 +76,10 @@
 		if(anchored==2)
 			user << "Unscrew the hoses first!"
 			return
-		default_deconstruction_crowbar(I, 1)
-	..()
+		else if(default_deconstruction_crowbar(I, 1))
+			return
+	else
+		return ..()
 
 /obj/machinery/hydroponics/proc/FindConnected()
 
@@ -814,7 +816,8 @@
 			for(var/obj/machinery/hydroponics/h in range(1,src))
 				h.update_icon()
 
-	return
+	else
+		return ..()
 
 /obj/machinery/hydroponics/attack_hand(mob/user)
 	if(istype(user, /mob/living/silicon))		//How does AI know what plant is?
@@ -1059,7 +1062,8 @@
 	return
 
 /obj/machinery/hydroponics/soil/attackby(obj/item/O, mob/user, params)
-	..()
 	if(istype(O, /obj/item/weapon/shovel))
 		user << "<span class='notice'>You clear up [src]!</span>"
 		qdel(src)
+	else
+		return ..()

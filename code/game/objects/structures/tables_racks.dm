@@ -199,8 +199,8 @@
 			return
 		// If the tray IS empty, continue on (tray will be placed on the table like other items)
 
-	if(isrobot(user))
-		return
+	if(isrobot(user) || user.a_intent == "harm")
+		return ..()
 
 	if(!(I.flags & ABSTRACT)) //rip more parems rip in peace ;_;
 		if(user.drop_item())
@@ -369,8 +369,8 @@
 					if(!src || !WT.isOn()) return
 					user << "<span class='notice'>You strengthen the table.</span>"
 					src.status = 2
-			return
-	..()
+	else
+		return ..()
 
 /obj/structure/table/reinforced/attack_paw(mob/user)
 	attack_hand(user)
@@ -494,7 +494,8 @@
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		rack_destroy()
 		return
-
+	if(user.a_intent == "harm")
+		return ..()
 	if(isrobot(user))
 		return
 	if(!user.drop_item())
@@ -502,6 +503,7 @@
 		return
 	W.Move(loc)
 	return 1
+
 
 
 /obj/structure/rack/attack_paw(mob/living/user)
@@ -565,12 +567,12 @@
 	materials = list(MAT_METAL=2000)
 
 /obj/item/weapon/rack_parts/attackby(obj/item/weapon/W, mob/user, params)
-	..()
 	if (istype(W, /obj/item/weapon/wrench))
 		new /obj/item/stack/sheet/metal( user.loc )
 		qdel(src)
 		return
-	return
+	else
+		return ..()
 
 /obj/item/weapon/rack_parts/attack_self(mob/user)
 	user << "<span class='notice'>You start constructing rack...</span>"

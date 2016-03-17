@@ -219,14 +219,13 @@
 			health -= rand(15, 40)
 	healthcheck()
 
-/obj/machinery/portable_atmospherics/canister/attackby(obj/item/weapon/W, mob/user, params)
-	if(!istype(W, /obj/item/weapon/wrench) && !istype(W, /obj/item/weapon/tank) && !istype(W, /obj/item/device/analyzer) && !istype(W, /obj/item/device/pda))
-		investigate_log("was smacked with \a [W] by [key_name(user)].", "atmos")
-		health -= W.force
-		add_fingerprint(user)
-		healthcheck()
-	else
-		..()
+/obj/machinery/portable_atmospherics/canister/attacked_by(obj/item/I, mob/user)
+	..()
+	investigate_log("was smacked with \a [I] by [key_name(user)].", "atmos")
+	health -= I.force
+	add_fingerprint(user)
+	healthcheck()
+
 
 /obj/machinery/portable_atmospherics/canister/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
 															datum/tgui/master_ui = null, datum/ui_state/state = physical_state)

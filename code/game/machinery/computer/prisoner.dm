@@ -77,7 +77,8 @@
 /obj/machinery/computer/prisoner/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/weapon/card/id))
 		return attack_hand(user)
-	..()
+	else
+		return ..()
 
 /obj/machinery/computer/prisoner/process()
 	if(!..())

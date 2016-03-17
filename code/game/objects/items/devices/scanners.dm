@@ -89,7 +89,7 @@ MASS SPECTROMETER
 	else
 		user << "<span class='notice'>You switch the health analyzer to check physical health.</span>"
 		scanchems = 0
-	return
+
 /obj/item/device/healthanalyzer/attack(mob/living/M, mob/living/carbon/human/user)
 
 	// Clumsiness/brain damage check
@@ -109,8 +109,7 @@ MASS SPECTROMETER
 	else
 		chemscan(user, M)
 
-	src.add_fingerprint(user)
-	return
+	add_fingerprint(user)
 
 // Used by the PDA medical scanner too
 /proc/healthscan(mob/living/user, mob/living/M, mode = 1)

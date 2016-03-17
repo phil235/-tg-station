@@ -379,14 +379,10 @@
 	if(Proj.damage)
 		if((Proj.damage_type == BRUTE || Proj.damage_type == BURN))
 			TakeDamage(Proj.damage)
-	..()
+	return ..()
 
-/obj/effect/swarmer/destructible/attackby(obj/item/weapon/I, mob/living/user, params)
-	if(istype(I, /obj/item/weapon))
-		user.changeNext_move(CLICK_CD_MELEE)
-		user.do_attack_animation(src)
-		TakeDamage(I.force)
-	return
+/obj/effect/swarmer/destructible/attacked_by(obj/item/I, mob/living/user)
+	TakeDamage(I.force)
 
 /obj/effect/swarmer/destructible/ex_act()
 	qdel(src)

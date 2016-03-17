@@ -11,15 +11,19 @@
 
 	var/secondsElectrified = 0
 	var/visible = 1
-	var/p_open = 0
 	var/operating = 0
+	var/welded = 0
 	var/glass = 0
 	var/normalspeed = 1
 	var/heat_proof = 0 // For rglass-windowed airlocks and firedoors
 	var/emergency = 0 // Emergency access override
 	var/sub_door = 0 // 1 if it's meant to go under another door.
 	var/closingLayer = 3.1
+	var/autoclose = 0 //does it automatically close after some time
+	var/safe = 1 //whether the door detects things and mobs in its way and reopen or crushes them.
+	var/locked = 0 //whether the door is bolted or not.
 
+	var/auto_close //phil235 to be removed, it's preventing a runtime with map.
 /obj/machinery/door/New()
 	..()
 	if(density)
@@ -75,11 +79,6 @@
 /obj/machinery/door/CanAtmosPass()
 	return !density
 
-/obj/machinery/door/proc/CheckForMobs()
-	if(locate(/mob/living) in get_turf(src))
-		sleep(1)
-		open()
-
 /obj/machinery/door/proc/bumpopen(mob/user)
 	if(operating)
 		return
@@ -104,7 +103,7 @@
 
 
 /obj/machinery/door/attack_hand(mob/user)
-	return src.attackby(user, user)
+	return try_to_activate_door(user)
 
 
 /obj/machinery/door/attack_tk(mob/user)
@@ -112,27 +111,36 @@
 		return
 	..()
 
-/obj/machinery/door/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/device/detective_scanner))
-		return
-	if(isrobot(user))
-		return //borgs can't attack doors open because it conflicts with their AI-like interaction with them.
-	src.add_fingerprint(user)
+/obj/machinery/door/proc/try_to_activate_door(mob/user)
+	add_fingerprint(user)
 	if(operating || emagged)
 		return
-	if(!Adjacent(user))
-		user = null
-	if(!src.requiresID())
-		user = null
-	if(src.allowed(user) || src.emergency == 1)
-		if(src.density)
+	if(!requiresID())
+		user = null //so allowed(user) always succeeds
+	if(allowed(user) || emergency == 1)
+		if(density)
 			open()
 		else
 			close()
 		return
-	if(src.density)
+	if(density)
 		do_animate("deny")
+
+/obj/machinery/door/proc/try_to_weld(obj/item/weapon/weldingtool/W, mob/user)
 	return
+
+obj/machinery/door/proc/try_to_crowbar(obj/item/I, mob/user)
+	return
+
+/obj/machinery/door/attackby(obj/item/I, mob/user, params)
+	if(istype(I, /obj/item/weapon/crowbar) || istype(I, /obj/item/weapon/twohanded/fireaxe))
+		try_to_crowbar(I, user)
+	else if(istype(I, /obj/item/weapon/weldingtool))
+		try_to_weld(I, user)
+	else if(!(I.flags & NOBLUDGEON) && user.a_intent != "harm") //phil235
+		try_to_activate_door(user)
+	else
+		return ..()
 
 /obj/machinery/door/blob_act()
 	if(prob(40))
@@ -171,18 +179,17 @@
 /obj/machinery/door/proc/do_animate(animation)
 	switch(animation)
 		if("opening")
-			if(p_open)
+			if(panel_open)
 				flick("o_doorc0", src)
 			else
 				flick("doorc0", src)
 		if("closing")
-			if(p_open)
+			if(panel_open)
 				flick("o_doorc1", src)
 			else
 				flick("doorc1", src)
 		if("deny")
 			flick("door_deny", src)
-	return
 
 
 /obj/machinery/door/proc/open()
@@ -193,42 +200,55 @@
 	if(!ticker || !ticker.mode)
 		return 0
 	operating = 1
-
 	do_animate("opening")
-	icon_state = "door0"
-	src.SetOpacity(0)
+	SetOpacity(0)
 	sleep(5)
-	src.density = 0
+	density = 0
 	sleep(5)
-	src.layer = 2.7
+	layer = 2.7
 	update_icon()
 	SetOpacity(0)
 	operating = 0
 	air_update_turf(1)
 	update_freelook_sight()
+	if(autoclose)
+		spawn(autoclose)
+			close()
 	return 1
-
 
 /obj/machinery/door/proc/close()
 	if(density)
 		return 1
 	if(operating)
 		return
+	if(safe)
+		for(var/atom/movable/M in get_turf(src))
+			if(M.density && M != src) //something is blocking the door
+				if(autoclose)
+					addtimer(src, "autoclose", 60)
+				return
 	operating = 1
-
 	do_animate("closing")
-	src.layer = closingLayer
+	layer = closingLayer
 	sleep(5)
-	src.density = 1
+	density = 1
 	sleep(5)
 	update_icon()
 	if(visible && !glass)
 		SetOpacity(1)
-	CheckForMobs()
 	operating = 0
 	air_update_turf(1)
 	update_freelook_sight()
-	return
+	if(safe)
+		CheckForMobs()
+	else
+		crush()
+	return 1
+
+/obj/machinery/door/proc/CheckForMobs()
+	if(locate(/mob/living) in get_turf(src))
+		sleep(1)
+		open()
 
 /obj/machinery/door/proc/crush()
 	for(var/mob/living/L in get_turf(src))
@@ -249,6 +269,10 @@
 			location.add_blood_floor(L)
 	for(var/obj/mecha/M in get_turf(src))
 		M.take_damage(DOOR_CRUSH_DAMAGE)
+
+/obj/machinery/door/proc/autoclose()
+	if(!qdeleted(src) && !density && !operating && !locked && !welded && autoclose)
+		close()
 
 /obj/machinery/door/proc/requiresID()
 	return 1

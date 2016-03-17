@@ -196,8 +196,7 @@
 		user << "<span class='notice'>You insert [stack] sheet[stack > 1 ? "s" : ""] to [src].</span>"
 		if((O && O.loc == src) || !stack)
 			qdel(O)
-		return
-	if(istype(O, /obj/item/weapon/weldingtool) && (stat & BROKEN))
+	else if(istype(O, /obj/item/weapon/weldingtool) && (stat & BROKEN))
 		var/obj/item/weapon/weldingtool/WT = O
 		if(!WT.isOn())
 			return
@@ -214,18 +213,20 @@
 							 "<span class='notice'>You restore [src] to operation.</span>")
 		stat -= BROKEN
 		icon_state = icon_on
-		return
-	if(O.force && stat != BROKEN)
-		user.visible_message("<span class='danger'>[user] hits [src] with [O]!</span>", \
-							 "<span class='warning'>You hit [src] with [O]!</span>")
-		playsound(src, O.hitsound, 50, 1)
-		health = Clamp(health - O.force, 0, max_health)
-		if(health <= 0)
-			if(break_message)
-				audible_message("<span class='warning'>[src] [break_message]</span>")
-			if(break_sound)
-				playsound(src, break_sound, 50, 1)
-			stat = BROKEN
-			icon_state = icon_off
-		return
+	else
+		return ..()
+
+/obj/machinery/droneDispenser/attacked_by(obj/item/I, mob/living/user)
 	..()
+	take_damage(I.force)
+
+/obj/machinery/droneDispenser/proc/take_damage(amount)
+	health = max(health - amount, 0)
+	if(!health && !(stat & BROKEN))
+		if(break_message)
+			audible_message("<span class='warning'>[src] [break_message]</span>")
+		if(break_sound)
+			playsound(src, break_sound, 50, 1)
+		stat = BROKEN
+		icon_state = icon_off
+

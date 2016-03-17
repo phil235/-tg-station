@@ -10,6 +10,7 @@
 	can_be_unanchored = 0
 	canSmoothWith = null
 	buildstacktype = null
+	flags = NODECONSTRUCT
 	var/image/nest_overlay
 
 /obj/structure/bed/nest/New()
@@ -78,11 +79,11 @@
 		M.layer = initial(M.layer)
 		overlays -= nest_overlay
 
-/obj/structure/bed/nest/attackby(obj/item/weapon/W, mob/user, params)
-	var/aforce = W.force
+/obj/structure/bed/nest/attacked_by(obj/item/I, mob/user)
+	..()
+	var/aforce = I.force
 	health = max(0, health - aforce)
 	playsound(loc, 'sound/effects/attackblob.ogg', 100, 1)
-	visible_message("<span class='danger'>[user] hits [src] with [W]!</span>")
 	healthcheck()
 
 /obj/structure/bed/nest/proc/healthcheck()

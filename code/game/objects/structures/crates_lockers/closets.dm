@@ -235,8 +235,10 @@
 								"<span class='notice'>You [welded ? "weld" : "unwelded"] \the [src] with \the [WT].</span>",
 								"<span class='italics'>You hear welding.</span>")
 				update_icon()
-		else
+		else if(user.a_intent != "harm")
 			togglelock(user)
+		else
+			return ..()
 
 /obj/structure/closet/MouseDrop_T(atom/movable/O, mob/living/user)
 	if(!istype(O) || O.anchored || istype(O, /obj/screen))

@@ -156,7 +156,6 @@
 	item_color = "red"
 
 /obj/item/weapon/melee/energy/sword/saber/attackby(obj/item/weapon/W, mob/living/user, params)
-	..()
 	if(istype(W, /obj/item/weapon/melee/energy/sword/saber))
 		if(W == src)
 			user << "<span class='notice'>You try to attach the end of the energy sword to... itself. You're not very smart, are you?</span>"
@@ -190,6 +189,8 @@
 
 		else
 			user << "<span class='warning'>It's already fabulous!</span>"
+	else
+		return ..()
 
 /obj/item/weapon/melee/energy/sword/pirate
 	name = "energy cutlass"

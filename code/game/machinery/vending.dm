@@ -179,9 +179,8 @@
 				user << "<span class='notice'>You insert [W] into [src]'s chef compartment.</span>"
 		else
 			user << "<span class='notice'>[src]'s chef compartment does not accept junk food.</span>"
-		return
 
-	if(istype(W, /obj/item/weapon/storage/bag/tray))
+	else if(istype(W, /obj/item/weapon/storage/bag/tray))
 		if(!compartment_access_check(user))
 			return
 		var/obj/item/weapon/storage/T = W
@@ -201,9 +200,9 @@
 		if(loaded)
 			user << "<span class='notice'>You insert [loaded] dishes into [src]'s chef compartment.</span>"
 		updateUsrDialog()
-		return
 
-	..()
+	else
+		return ..()
 
 /obj/machinery/vending/snack/proc/compartment_access_check(user)
 	req_access_txt = chef_compartment_access
@@ -237,16 +236,20 @@
 		if(default_unfasten_wrench(user, W, time = 60))
 			return
 
-		if(component_parts && istype(W, /obj/item/weapon/crowbar))
-			default_deconstruction_crowbar(W)
+	if(component_parts)
+		if(default_deconstruction_crowbar(W))
+			return
 
-	if(istype(W, /obj/item/weapon/screwdriver) && anchored)
-		panel_open = !panel_open
-		user << "<span class='notice'>You [panel_open ? "open" : "close"] the maintenance panel.</span>"
-		overlays.Cut()
-		if(panel_open)
-			overlays += image(icon, "[initial(icon_state)]-panel")
-		updateUsrDialog()
+	if(istype(W, /obj/item/weapon/screwdriver))
+		if(anchored)
+			panel_open = !panel_open
+			user << "<span class='notice'>You [panel_open ? "open" : "close"] the maintenance panel.</span>"
+			overlays.Cut()
+			if(panel_open)
+				overlays += image(icon, "[initial(icon_state)]-panel")
+			updateUsrDialog()
+		else
+			user << "<span class='warning'>You must first secure [src].</span>"
 		return
 	else if(istype(W, /obj/item/device/multitool)||istype(W, /obj/item/weapon/wirecutters))
 		if(panel_open)
@@ -277,7 +280,7 @@
 		else
 			user << "<span class='notice'>You should probably unscrew the service panel first.</span>"
 	else
-		..()
+		return ..()
 
 
 /obj/machinery/vending/default_deconstruction_crowbar(obj/item/O)

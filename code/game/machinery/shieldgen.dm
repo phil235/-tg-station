@@ -33,10 +33,10 @@
 /obj/machinery/shield/CanAtmosPass(turf/T)
 	return !density
 
-/obj/machinery/shield/attackby(obj/item/weapon/W, mob/user, params)
+/obj/machinery/shield/attacked_by(obj/item/I, mob/user)
 	..()
-	if(W.damtype == BRUTE || W.damtype == BURN)
-		take_damage(W.force)
+	if(I.damtype == BRUTE || I.damtype == BURN)
+		take_damage(I.force)
 
 /obj/machinery/shield/bullet_act(obj/item/projectile/Proj)
 	..()
@@ -102,7 +102,6 @@
 		var/active = 0
 		var/malfunction = 0 //Malfunction causes parts of the shield to slowly dissapate
 		var/list/deployed_shields = list()
-		var/is_open = 0 //Whether or not the wires are exposed
 		var/locked = 0
 		var/shield_range = 4
 
@@ -114,9 +113,10 @@
 
 
 /obj/machinery/shieldgen/proc/shields_up()
-	if(active) return 0 //If it's already turned on, how did this get called?
+	if(active)
+		return 0 //If it's already turned on, how did this get called?
 
-	src.active = 1
+	active = 1
 	update_icon()
 
 	for(var/turf/target_tile in range(shield_range, src))
@@ -125,9 +125,10 @@
 				deployed_shields += new /obj/machinery/shield(target_tile)
 
 /obj/machinery/shieldgen/proc/shields_down()
-	if(!active) return 0 //If it's already off, how did this get called?
+	if(!active)
+		return 0 //If it's already off, how did this get called?
 
-	src.active = 0
+	active = 0
 	update_icon()
 
 	for(var/obj/machinery/shield/shield_tile in deployed_shields)
@@ -180,21 +181,21 @@
 	if(locked)
 		user << "<span class='warning'>The machine is locked, you are unable to use it!</span>"
 		return
-	if(is_open)
+	if(panel_open)
 		user << "<span class='warning'>The panel must be closed before operating this machine!</span>"
 		return
 
-	if (src.active)
+	if (active)
 		user.visible_message("[src] [user] deactivated the shield generator.", \
 			"<span class='notice'>[src] You deactivate the shield generator.</span>", \
 			"<span class='italics'>You hear heavy droning fade out.</span>")
-		src.shields_down()
+		shields_down()
 	else
 		if(anchored)
 			user.visible_message("[src] [user] activated the shield generator.", \
 				"<span class='notice'>[src] You activate the shield generator.</span>", \
 				"<span class='italics'>You hear heavy droning.</span>")
-			src.shields_up()
+			shields_up()
 		else
 			user << "<span class='warning'>The device must first be secured to the floor!</span>"
 	return
@@ -202,14 +203,14 @@
 /obj/machinery/shieldgen/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
-		if(is_open)
+		if(panel_open)
 			user << "<span class='notice'>You close the panel.</span>"
-			is_open = 0
+			panel_open = 0
 		else
 			user << "<span class='notice'>You open the panel and expose the wiring.</span>"
-			is_open = 1
+			panel_open = 1
 
-	else if(istype(W, /obj/item/stack/cable_coil) && malfunction && is_open)
+	else if(istype(W, /obj/item/stack/cable_coil) && malfunction && panel_open)
 		var/obj/item/stack/cable_coil/coil = W
 		if (coil.get_amount() < 1)
 			user << "<span class='warning'>You need one length of cable to repair [src]!</span>"
@@ -237,11 +238,11 @@
 			user << "<span class='notice'>You unsecure \the [src] from the floor!</span>"
 			if(active)
 				user << "<span class='notice'>\The [src] shuts off!</span>"
-				src.shields_down()
+				shields_down()
 			anchored = 0
 
 
-	else if(istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/device/pda))
+	else if(W.GetID())
 		if(src.allowed(user))
 			src.locked = !src.locked
 			user << "<span class='notice'>You [src.locked ? "lock" : "unlock"] the controls.</span>"
@@ -249,7 +250,7 @@
 			user << "<span class='danger'>Access denied.</span>"
 
 	else
-		..()
+		return ..()
 
 /obj/machinery/shieldgen/emag_act()
 	if(!malfunction)
@@ -273,6 +274,8 @@
 		anchored = 0
 		density = 1
 		req_access = list(access_teleporter)
+		flags = CONDUCT
+		use_power = 0
 		var/active = 0
 		var/power = 0
 		var/steps = 0
@@ -280,12 +283,8 @@
 		var/check_delay = 10
 		var/recalc = 0
 		var/locked = 1
-		var/destroyed = 0
-//		var/maxshieldload = 200
 		var/obj/structure/cable/attached		// the attached cable
 		var/storedpower = 0
-		flags = CONDUCT
-		use_power = 0
 
 /obj/machinery/shieldwallgen/proc/power()
 	if(!anchored)
@@ -312,8 +311,6 @@
 		if(PN) //runtime errors fixer. They were caused by PN.newload trying to access missing network in case of working on stored power.
 			storedpower += shieldload
 			PN.load += shieldload //uses powernet power.
-//		message_admins("[PN.load]")
-//		use_power(250) //uses APC power
 
 /obj/machinery/shieldwallgen/attack_hand(mob/user)
 	if(!anchored)
@@ -326,21 +323,21 @@
 		user << "<span class='warning'>The shield generator needs to be powered by wire underneath!</span>"
 		return 1
 
-	if(src.active >= 1)
-		src.active = 0
+	if(active)
+		active = 0
 		icon_state = "Shield_Gen"
 
 		user.visible_message("[user] turned the shield generator off.", \
 			"<span class='notice'>You turn off the shield generator.</span>", \
 			"<span class='italics'>You hear heavy droning fade out.</span>")
-		src.cleanup()
+		cleanup()
 	else
-		src.active = 1
+		active = 1
 		icon_state = "Shield_Gen +a"
 		user.visible_message("[user] turned the shield generator on.", \
 			"<span class='notice'>You turn on the shield generator.</span>", \
 			"<span class='italics'>You hear heavy droning.</span>")
-	src.add_fingerprint(user)
+	add_fingerprint(user)
 
 /obj/machinery/shieldwallgen/process()
 	power()
@@ -350,28 +347,26 @@
 		storedpower = maxstoredpower
 	if(storedpower <= 0)
 		storedpower = 0
-//	if(shieldload >= maxshieldload) //there was a loop caused by specifics of process(), so this was needed.
-//		shieldload = maxshieldload
 
 	if(src.active == 1)
 		if(!anchored)
-			src.active = 0
+			active = 0
 			return
 		setup_field(1)
 		setup_field(2)
 		setup_field(4)
 		setup_field(8)
-		src.active = 2
-	if(src.active >= 1)
-		if(src.power == 0)
-			src.visible_message("<span class='danger'>The [src.name] shuts down due to lack of power!</span>", \
+		active = 2
+	if(active >= 1)
+		if(power == 0)
+			visible_message("<span class='danger'>The [src.name] shuts down due to lack of power!</span>", \
 				"<span class='italics'>You hear heavy droning fade out.</span>")
 			icon_state = "Shield_Gen"
-			src.active = 0
-			src.cleanup(1)
-			src.cleanup(2)
-			src.cleanup(4)
-			src.cleanup(8)
+			active = 0
+			cleanup(1)
+			cleanup(2)
+			cleanup(4)
+			cleanup(8)
 
 /obj/machinery/shieldwallgen/proc/setup_field(NSEW = 0)
 	var/turf/T = src.loc
@@ -436,8 +431,8 @@
 			anchored = 0
 			return
 
-	if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
-		if (src.allowed(user))
+	else if(W.GetID())
+		if(src.allowed(user))
 			src.locked = !src.locked
 			user << "<span class='notice'>You [src.locked ? "lock" : "unlock"] the controls.</span>"
 		else
@@ -445,7 +440,7 @@
 
 	else
 		add_fingerprint(user)
-		..()
+		return ..()
 
 /obj/machinery/shieldwallgen/proc/cleanup(NSEW)
 	var/obj/machinery/shieldwall/F

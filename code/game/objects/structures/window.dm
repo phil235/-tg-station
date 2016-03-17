@@ -262,17 +262,16 @@
 				user << "<span class='notice'>You successfully disassemble [src].</span>"
 				qdel(src)
 			return
+	return ..()
 
-	if(istype(I, /obj/item/weapon/rcd)) //Do not attack the window if the user is holding an RCD
-		return
 
+/obj/structure/window/attacked_by(obj/item/I, mob/living/user)
+	..()
 	if(I.damtype == BRUTE || I.damtype == BURN)
-		user.changeNext_move(CLICK_CD_MELEE)
 		hit(I.force)
 	else
 		playsound(loc, 'sound/effects/Glasshit.ogg', 75, 1)
-	..()
-	return
+
 
 /obj/structure/window/mech_melee_attack(obj/mecha/M)
 	if(..())

@@ -120,7 +120,8 @@
 			new /obj/item/stack/cable_coil(get_turf(src),1)
 		stage_change(EMPTY)
 		user << "<span class='notice'>You remove the activation mechanism from the [initial(name)] assembly.</span>"
-
+	else
+		return ..()
 
 /obj/item/weapon/grenade/chem_grenade/proc/stage_change(N)
 	if(N)

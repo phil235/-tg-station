@@ -38,7 +38,8 @@ LINEN BINS
 		new /obj/item/stack/medical/gauze/improvised(src.loc)
 		qdel(src)
 		user << "<span class='notice'>You tear [src] up.</span>"
-	..()
+	else
+		return ..()
 
 /obj/item/weapon/bedsheet/blue
 	icon_state = "sheetblue"

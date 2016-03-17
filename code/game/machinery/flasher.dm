@@ -43,6 +43,7 @@
 
 //Don't want to render prison breaks impossible
 /obj/machinery/flasher/attackby(obj/item/weapon/W, mob/user, params)
+	add_fingerprint(user)
 	if (istype(W, /obj/item/weapon/wirecutters))
 		if (bulb)
 			user.visible_message("[user] begins to disconnect [src]'s flashbulb.", "<span class='notice'>You begin to disconnect [src]'s flashbulb...</span>")
@@ -63,7 +64,8 @@
 			power_change()
 		else
 			user << "<span class='warning'>A flashbulb is already installed in [src]!</span>"
-	add_fingerprint(user)
+	else
+		return ..()
 
 //Let the AI trigger them directly.
 /obj/machinery/flasher/attack_ai()
@@ -140,4 +142,4 @@
 			remove_from_proximity_list(src, range)
 
 	else
-		..()
+		return ..()

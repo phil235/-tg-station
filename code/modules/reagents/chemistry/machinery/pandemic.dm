@@ -16,11 +16,6 @@
 	..()
 	update_icon()
 
-/obj/machinery/computer/pandemic/set_broken()
-	icon_state = (beaker ? "mixer1_b" : "mixer0_b")
-	overlays.Cut()
-	stat |= BROKEN
-
 /obj/machinery/computer/pandemic/proc/GetVirusByIndex(index)
 	if(beaker && beaker.reagents)
 		if(beaker.reagents.reagent_list.len)

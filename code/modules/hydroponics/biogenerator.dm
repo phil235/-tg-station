@@ -54,17 +54,36 @@
 	return
 
 /obj/machinery/biogenerator/attackby(obj/item/O, mob/user, params)
-	if(istype(O, /obj/item/weapon/reagent_containers/glass) && !panel_open)
-		if(beaker)
-			user << "<span class='warning'>A container is already loaded into the machine.</span>"
-		else
-			user.unEquip(O)
-			O.loc = src
-			beaker = O
-			user << "<span class='notice'>You add the container to the machine.</span>"
-			updateUsrDialog()
-	else if(processing)
+	if(processing)
 		user << "<span class='warning'>The biogenerator is currently processing.</span>"
+		return
+
+	if(default_deconstruction_screwdriver(user, "biogen-empty-o", "biogen-empty", O))
+		if(beaker)
+			var/obj/item/weapon/reagent_containers/glass/B = beaker
+			B.loc = loc
+			beaker = null
+		update_icon()
+		return
+
+	if(exchange_parts(user, O))
+		return
+
+	if(default_deconstruction_crowbar(O))
+		return
+
+	if(istype(O, /obj/item/weapon/reagent_containers/glass))
+		if(!panel_open)
+			if(beaker)
+				user << "<span class='warning'>A container is already loaded into the machine.</span>"
+			else
+				user.unEquip(O)
+				O.loc = src
+				beaker = O
+				user << "<span class='notice'>You add the container to the machine.</span>"
+				update_icon()
+				updateUsrDialog()
+
 	else if(istype(O, /obj/item/weapon/storage/bag/plants))
 		var/i = 0
 		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in contents)
@@ -85,9 +104,7 @@
 				user << "<span class='info'>You fill the biogenerator to its capacity.</span>"
 
 
-	else if(!istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown))
-		user << "<span class='warning'>You cannot put this in [src.name]!</span>"
-	else
+	else if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown))
 		var/i = 0
 		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in contents)
 			i++
@@ -98,20 +115,11 @@
 			O.loc = src
 			user << "<span class='info'>You put [O.name] in [src.name]</span>"
 
-	if(!processing)
-		if(default_deconstruction_screwdriver(user, "biogen-empty-o", "biogen-empty", O))
-			if(beaker)
-				var/obj/item/weapon/reagent_containers/glass/B = beaker
-				B.loc = loc
-				beaker = null
+	else if(user.a_intent != "harm")
+		user << "<span class='warning'>You cannot put this in [src.name]!</span>"
+	else
+		return ..()
 
-	if(exchange_parts(user, O))
-		return
-
-	default_deconstruction_crowbar(O)
-
-	update_icon()
-	return
 
 /obj/machinery/biogenerator/interact(mob/user)
 	if(stat & BROKEN || panel_open)

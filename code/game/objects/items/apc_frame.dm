@@ -45,7 +45,7 @@
 
 
 /obj/item/wallframe/attackby(obj/item/weapon/W, mob/user, params)
-	..()
+	. = ..()
 	if(istype(W, /obj/item/weapon/screwdriver))
 		// For camera-building borgs
 		var/turf/T = get_step(get_turf(user), user.dir)

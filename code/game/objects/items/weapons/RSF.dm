@@ -20,7 +20,6 @@ RSF
 	return
 
 /obj/item/weapon/rsf/attackby(obj/item/weapon/W, mob/user, params)
-	..()
 	if (istype(W, /obj/item/weapon/rcd_ammo))
 		if ((matter + 10) > 30)
 			user << "The RSF can't hold any more matter."
@@ -30,7 +29,8 @@ RSF
 		playsound(src.loc, 'sound/machines/click.ogg', 10, 1)
 		user << "The RSF now holds [matter]/30 fabrication-units."
 		desc = "A RSF. It currently holds [matter]/30 fabrication-units."
-		return
+	else
+		return ..()
 
 /obj/item/weapon/rsf/attack_self(mob/user)
 	playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)

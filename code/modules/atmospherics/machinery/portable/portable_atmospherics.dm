@@ -69,13 +69,14 @@
 	return air_contents
 
 /obj/machinery/portable_atmospherics/attackby(obj/item/weapon/W, mob/user, params)
-	if((istype(W, /obj/item/weapon/tank) && !destroyed))
-		var/obj/item/weapon/tank/T = W
-		if(holding || !user.drop_item())
-			return
-		T.loc = src
-		holding = T
-		update_icon()
+	if(istype(W, /obj/item/weapon/tank))
+		if(!destroyed)
+			var/obj/item/weapon/tank/T = W
+			if(holding || !user.drop_item())
+				return
+			T.loc = src
+			holding = T
+			update_icon()
 	else if(istype(W, /obj/item/weapon/wrench))
 		if(connected_port)
 			disconnect()
@@ -103,4 +104,4 @@
 	else if((istype(W, /obj/item/device/analyzer)) && Adjacent(user))
 		atmosanalyzer_scan(air_contents, user)
 	else
-		..()
+		return ..()

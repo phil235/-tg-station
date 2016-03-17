@@ -175,8 +175,6 @@ var/list/obj/machinery/newscaster/allCasters = list()
 	verb_say = "beeps"
 	verb_ask = "beeps"
 	verb_exclaim = "beeps"
-	var/isbroken = 0
-	var/ispowered = 1
 	var/screen = 0
 	var/paper_remaining = 15
 	var/securityCaster = 0
@@ -217,13 +215,12 @@ var/list/obj/machinery/newscaster/allCasters = list()
 	return ..()
 
 /obj/machinery/newscaster/update_icon()
-	if(!ispowered || isbroken)
+	overlays.Cut()
+	if(stat & (NOPOWER|BROKEN))
 		icon_state = "newscaster_off"
-		if(isbroken)
-			overlays.Cut()
+		if(stat & BROKEN)
 			overlays += image(icon, "crack3")
 		return
-	overlays.Cut()
 	if(news_network.wanted_issue.active)
 		icon_state = "newscaster_wanted"
 		return
@@ -234,15 +231,13 @@ var/list/obj/machinery/newscaster/allCasters = list()
 	icon_state = "newscaster_normal"
 
 /obj/machinery/newscaster/power_change()
-	if(isbroken)
+	if(stat & BROKEN)
 		return
 	if(powered())
-		ispowered = 1
 		stat &= ~NOPOWER
 		update_icon()
 	else
 		spawn(rand(0, 15))
-			ispowered = 0
 			stat |= NOPOWER
 			update_icon()
 
@@ -251,21 +246,21 @@ var/list/obj/machinery/newscaster/allCasters = list()
 		if(1)
 			qdel(src)
 		if(2)
-			isbroken=1
+			stat |= BROKEN
 			if(prob(50))
 				qdel(src)
 			else
 				update_icon()
 		else
 			if(prob(50))
-				isbroken=1
+				stat |= BROKEN
 			update_icon()
 
 /obj/machinery/newscaster/attack_ai(mob/user)
 	return attack_hand(user)
 
 /obj/machinery/newscaster/attack_hand(mob/user)
-	if(!ispowered || isbroken)
+	if(stat & (NOPOWER|BROKEN))
 		return
 	if(istype(user, /mob/living/carbon/human) || istype(user,/mob/living/silicon) )
 		var/mob/living/human_or_robot_user = user
@@ -729,30 +724,30 @@ var/list/obj/machinery/newscaster/allCasters = list()
 			playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 			qdel(src)
 		return
-	if(isbroken)
+	else
+		return ..()
+
+/obj/machinery/newscaster/attacked_by(obj/item/I, mob/living/user)
+	if(stat & BROKEN)
 		playsound(loc, 'sound/effects/hit_on_shattered_glass.ogg', 100, 1)
 		audible_message("<span class='danger'>[user.name] further abuses the shattered [name].</span>", null, 5 )
 	else
-		if(istype(I, /obj/item/weapon))
-			user.do_attack_animation(src)
-			var/obj/item/weapon/W = I
-			if(W.damtype == STAMINA)
-				return
-			if(W.force <15)
-				audible_message("<span class='danger'>[user.name] hits the [name] with the [W.name] with no visible effect.</span>", null , 5 )
-				playsound(loc, 'sound/effects/Glasshit.ogg', 100, 1)
-			else
-				hitstaken++
-				if(hitstaken==3)
-					audible_message("<span class='danger'>[user.name] smashes the [name]!</span>", null, 5 )
-					isbroken=1
-					playsound(loc, 'sound/effects/Glassbr3.ogg', 100, 1)
-				else
-					audible_message("<span class='danger'>[user.name] forcefully slams the [name] with the [I.name]!</span>", null, 5 )
-					playsound(loc, 'sound/effects/Glasshit.ogg', 100, 1)
+		if(I.damtype == STAMINA)
+			return
+		if(I.force <15)
+			audible_message("<span class='danger'>[user.name] hits the [name] with the [I.name] with no visible effect.</span>", null , 5 )
+			playsound(loc, 'sound/effects/Glasshit.ogg', 100, 1)
 		else
-			user << "<span class='warning'>This does nothing!</span>"
-	update_icon()
+			hitstaken++
+			if(hitstaken==3)
+				audible_message("<span class='danger'>[user.name] smashes the [name]!</span>", null, 5 )
+				stat |= BROKEN
+				playsound(loc, 'sound/effects/Glassbr3.ogg', 100, 1)
+				update_icon()
+			else
+				audible_message("<span class='danger'>[user.name] forcefully slams the [name] with the [I.name]!</span>", null, 5 )
+				playsound(loc, 'sound/effects/Glasshit.ogg', 100, 1)
+
 
 /obj/machinery/newscaster/attack_paw(mob/user)
 	user << "<span class='warning'>The newscaster controls are far too complicated for your tiny brain!</span>"

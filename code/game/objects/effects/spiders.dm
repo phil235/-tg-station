@@ -19,37 +19,33 @@
 				qdel(src)
 	return
 
-/obj/effect/spider/attackby(obj/item/weapon/W, mob/user, params)
-	if(W.attack_verb.len)
-		visible_message("<span class='danger'>[user] has [pick(W.attack_verb)] \the [src] with \the [W]!</span>")
-	else
-		visible_message("<span class='danger'>[user] has attacked \the [src] with \the [W]!</span>")
+/obj/effect/spider/attacked_by(obj/item/I, mob/user)
+	..()
+	var/damage = I.force
+	if(I.damtype != "fire")
+		damage *= 0.25
 
-	var/damage = W.force / 4
-
-	if(istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	if(istype(I, /obj/item/weapon/weldingtool))
+		var/obj/item/weapon/weldingtool/WT = I
 
 		if(WT.remove_fuel(0, user))
 			damage = 15
 			playsound(loc, 'sound/items/Welder.ogg', 100, 1)
 
-	health -= damage
-	healthcheck()
+	take_damage(damage)
 
 /obj/effect/spider/bullet_act(obj/item/projectile/Proj)
-	..()
-	health -= Proj.damage
-	healthcheck()
+	. = ..()
+	take_damage(Proj.damage)
 
-/obj/effect/spider/proc/healthcheck()
+/obj/effect/spider/proc/take_damage(amount)
+	health -= amount
 	if(health <= 0)
 		qdel(src)
 
 /obj/effect/spider/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > 300)
-		health -= 5
-		healthcheck()
+		take_damage(5)
 
 /obj/effect/spider/stickyweb
 	icon_state = "stickyweb1"
@@ -129,7 +125,8 @@
 	visible_message("<span class='alert'>[src] dies!</span>")
 	qdel(src)
 
-/obj/effect/spider/spiderling/healthcheck()
+/obj/effect/spider/spiderling/take_damage(amount)
+	health -= amount
 	if(health <= 0)
 		die()
 

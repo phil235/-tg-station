@@ -58,7 +58,7 @@
 	if(assembly)
 		qdel(assembly)
 		assembly = null
-	if(istype(bug))
+	if(bug)
 		bug.bugged_cameras -= src.c_tag
 		if(bug.current == src)
 			bug.current = null
@@ -118,16 +118,19 @@
 		return
 	user.electrocute_act(10, src)
 
-/obj/machinery/camera/attack_paw(mob/living/carbon/alien/humanoid/user)
-	if(!istype(user))
-		return
+/obj/machinery/camera/attack_alien(mob/living/carbon/alien/humanoid/user)
+	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src)
 	add_hiddenprint(user)
 	visible_message("<span class='warning'>\The [user] slashes at [src]!</span>")
 	playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
-	health = max(0, health - 30)
-	if(!health && status)
-		toggle_cam(user, 0)
+	take_damage(30, user)
+
+/obj/machinery/camera/attack_animal(mob/living/simple_animal/M)
+	M.changeNext_move(CLICK_CD_MELEE)
+	M.do_attack_animation(src)
+	if(M.melee_damage_upper > 0 && (M.melee_damage_type == BRUTE || M.melee_damage_type == BURN))
+		take_damage(M.melee_damage_upper, M)
 
 /obj/machinery/camera/attackby(obj/W, mob/living/user, params)
 	var/msg = "<span class='notice'>You attach [W] into the assembly's inner circuits.</span>"
@@ -168,6 +171,7 @@
 				user << "[msg]"
 			else
 				user << "[msg2]"
+			return
 
 		else if(istype(W, /obj/item/stack/sheet/mineral/plasma))
 			if(!isEmpProof())
@@ -176,6 +180,7 @@
 				qdel(W)
 			else
 				user << "[msg2]"
+			return
 		else if(istype(W, /obj/item/device/assembly/prox_sensor))
 			if(!isMotion())
 				upgradeMotion()
@@ -183,6 +188,7 @@
 				qdel(W)
 			else
 				user << "[msg2]"
+			return
 
 	// OTHER
 	if((istype(W, /obj/item/weapon/paper) || istype(W, /obj/item/device/pda)) && isliving(user))
@@ -215,34 +221,42 @@
 			else if (O.client && O.client.eye == src)
 				O << "[U] holds \a [itemname] up to one of the cameras ..."
 				O << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", itemname, info), text("window=[]", itemname))
-
-	else if (istype(W, /obj/item/device/camera_bug))
-		if (!src.can_use())
+		return
+	else if(istype(W, /obj/item/device/camera_bug))
+		if(!can_use())
 			user << "<span class='notice'>Camera non-functional.</span>"
 			return
-		if(istype(src.bug))
+		if(bug)
 			user << "<span class='notice'>Camera bug removed.</span>"
-			src.bug.bugged_cameras -= src.c_tag
-			src.bug = null
+			bug.bugged_cameras -= c_tag
+			bug = null
 		else
 			user << "<span class='notice'>Camera bugged.</span>"
-			src.bug = W
-			src.bug.bugged_cameras[src.c_tag] = src
-
+			bug = W
+			bug.bugged_cameras[c_tag] = src
+		return
+	else if(istype(W, /obj/item/weapon/pai_cable))
+		var/obj/item/weapon/pai_cable/cable = W
+		cable.plugin(src, user)
+		return
 	else if(istype(W, /obj/item/device/laser_pointer))
 		var/obj/item/device/laser_pointer/L = W
 		L.laser_act(src, user)
+		return
 
-	else
-		if(W.force >= 10) //fairly simplistic, but will do for now.
-			user.changeNext_move(CLICK_CD_MELEE)
-			visible_message("<span class='warning'>[user] hits [src] with [W]!</span>", "<span class='warning'>You hit [src] with [W]!</span>")
-			health = max(0, health - W.force)
-			user.do_attack_animation(src)
-			if(!health && status)
-				triggerCameraAlarm()
-				toggle_cam(user, 1)
-	return
+	return ..()
+
+
+/obj/machinery/camera/attacked_by(obj/item/I, mob/living/user)
+	if(I.force >= 10) //fairly simplistic, but will do for now.
+		visible_message("<span class='warning'>[user] hits [src] with [I]!</span>", "<span class='warning'>You hit [src] with [I]!</span>")
+		take_damage(I.force, user)
+
+/obj/machinery/camera/proc/take_damage(amount, mob/living/user)
+	health = max(0, health - amount)
+	if(!health && status)
+		triggerCameraAlarm()
+		toggle_cam(user, 0)
 
 /obj/machinery/camera/proc/toggle_cam(mob/user, displaymessage = 1)
 	status = !status
@@ -369,11 +383,9 @@
 		src.SetLuminosity(0)
 
 /obj/machinery/camera/bullet_act(obj/item/projectile/proj)
+	. = ..() //phil235
 	if(proj.damage_type == BRUTE)
-		health = max(0, health - proj.damage)
-		if(!health && status)
-			triggerCameraAlarm()
-			toggle_cam(null, 1)
+		take_damage(proj.damage)
 
 /obj/machinery/camera/portable //Cameras which are placed inside of things, such as helmets.
 	var/turf/prev_turf

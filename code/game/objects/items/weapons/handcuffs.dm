@@ -132,7 +132,6 @@
 	icon_state = "handcuffGag"
 
 /obj/item/weapon/restraints/handcuffs/cable/attackby(obj/item/I, mob/user, params)
-	..()
 	if(istype(I, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = I
 		if (R.use(1))
@@ -159,6 +158,8 @@
 			if(!remove_item_from_storage(user))
 				user.unEquip(src)
 			qdel(src)
+	else
+		return ..()
 
 /obj/item/weapon/restraints/handcuffs/cable/zipties/cyborg/attack(mob/living/carbon/C, mob/user)
 	if(isrobot(user))

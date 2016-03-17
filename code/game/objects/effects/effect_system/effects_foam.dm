@@ -267,11 +267,7 @@
 	user.do_attack_animation(src)
 	user << "<span class='warning'>You hit the metal foam but bounce off it!</span>"
 
-
-/obj/structure/foamedmetal/attackby(obj/item/I, mob/user, params)
-	user.changeNext_move(CLICK_CD_MELEE)
-	user.do_attack_animation(src)
-
+/obj/structure/foamedmetal/attacked_by(obj/item/I, mob/living/user)
 	if(prob(I.force*20 - metal*25))
 		user.visible_message("<span class='danger'>[user] smashes through the foamed metal!</span>", \
 						"<span class='danger'>You smash through the foamed metal with \the [I]!</span>")
@@ -279,6 +275,8 @@
 	else
 		user << "<span class='warning'>You hit the metal foam to no effect!</span>"
 
+/obj/structure/foamedmetal/play_item_attack_sounds(obj/item/I) //no sound when attacking foamed metal with weapons.
+	return
 
 /obj/structure/foamedmetal/CanPass(atom/movable/mover, turf/target, height=1.5)
 	return !density

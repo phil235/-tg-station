@@ -100,7 +100,7 @@
 		else
 			user << "<span class='warning'>[payload] is already loaded into [src]! You'll have to remove it first.</span>"
 	else
-		..()
+		return ..()
 
 /obj/machinery/syndicatebomb/attack_hand(mob/user)
 	interact(user)

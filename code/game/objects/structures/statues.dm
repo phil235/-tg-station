@@ -76,10 +76,10 @@
 								 "<span class='notice'>You slice apart the [name]!</span>")
 			Dismantle(1)
 
-	else
-		hardness -= W.force/100
-		..()
-		CheckHardness()
+/obj/structure/statue/attacked_by(obj/item/I, mob/living/user)
+	..()
+	hardness -= I.force/100
+	CheckHardness()
 
 /obj/structure/statue/attack_hand(mob/living/user)
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -158,7 +158,7 @@
 
 /obj/structure/statue/uranium/attackby(obj/item/weapon/W, mob/user, params)
 	radiate()
-	..()
+	return ..()
 
 /obj/structure/statue/uranium/Bumped(atom/user)
 	radiate()
@@ -220,8 +220,8 @@
 		message_admins("Plasma statue ignited by [key_name_admin(user)](<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[user]'>FLW</A>) in ([x],[y],[z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)",0,1)
 		log_game("Plasma statue ignited by [key_name(user)] in ([x],[y],[z])")
 		ignite(W.is_hot())
-		return
-	..()
+	else
+		return ..()
 
 /obj/structure/statue/plasma/proc/PlasmaBurn()
 	atmos_spawn_air(SPAWN_HEAT | SPAWN_TOXINS, 400)
@@ -323,7 +323,7 @@
 
 /obj/structure/statue/bananium/attackby(obj/item/weapon/W, mob/user, params)
 	honk()
-	..()
+	return ..()
 
 /obj/structure/statue/bananium/attack_hand(mob/user)
 	honk()

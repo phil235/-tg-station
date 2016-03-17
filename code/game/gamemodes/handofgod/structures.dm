@@ -66,9 +66,10 @@
 			visible_message("<span class='boldnotice'>\The [src] has been captured by [user]!</span>")
 		return
 
-	user.changeNext_move(CLICK_CD_MELEE)
-	user.do_attack_animation(src)
-	playsound(get_turf(src), I.hitsound, 50, 1)
+	else
+		return ..()
+
+/obj/structure/divine/attacked_by(obj/item/I, mob/living/user)
 	visible_message("<span class='danger'>\The [src] has been attacked with \the [I][(user ? " by [user]" : ".")]!</span>")
 	health = max(0, health-I.force)
 	healthcheck()
@@ -77,7 +78,7 @@
 /obj/structure/divine/bullet_act(obj/item/projectile/Proj)
 	if(!Proj)
 		return 0
-
+	. = ..() //phil235
 	if(Proj.damage_type == BRUTE || Proj.damage_type == BURN)
 		health = max(0, health-Proj.damage)
 		healthcheck()
@@ -192,7 +193,8 @@
 			user << "<span class='notice'>\The [src] does not require any more greater gems!"
 		return
 
-	..()
+	else
+		return ..()
 
 
 /obj/structure/divine/construction_holder/proc/check_completion()

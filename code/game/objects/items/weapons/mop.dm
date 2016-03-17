@@ -42,7 +42,6 @@ obj/item/weapon/mop/proc/clean(turf/simulated/A)
 	var/turf/simulated/turf = A
 	if(is_cleanable(A))
 		turf = A.loc
-	A = null
 
 	if(istype(turf))
 		user.visible_message("[user] begins to clean \the [turf] with [src].", "<span class='notice'>You begin to clean \the [turf] with [src]...</span>")
@@ -52,7 +51,7 @@ obj/item/weapon/mop/proc/clean(turf/simulated/A)
 			clean(turf)
 
 
-/obj/effect/attackby(obj/item/I, mob/user, params)
+/obj/effect/attackby(obj/item/I, mob/user, params) //phil235
 	if(istype(I, /obj/item/weapon/mop) || istype(I, /obj/item/weapon/soap))
 		return
 	..()

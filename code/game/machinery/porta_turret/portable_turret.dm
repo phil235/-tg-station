@@ -301,7 +301,7 @@
 			invisibility = 0
 			qdel(cover) //deletes the cover, and the turret instance itself becomes its own cover.
 
-	else if(istype(I, /obj/item/weapon/card/id)||istype(I, /obj/item/device/pda))
+	else if(I.GetID())
 		//Behavior lock/unlock mangement
 		if(allowed(user))
 			locked = !locked
@@ -313,16 +313,16 @@
 		M.buffer = src
 		user << "<span class='notice'>You add [src] to multitool buffer.</span>"
 	else
-		//if the turret was attacked with the intention of harming it:
-		user.changeNext_move(CLICK_CD_MELEE)
-		take_damage(I.force * 0.5)
-		if(I.force * 0.5 > 1) //if the force of impact dealt at least 1 damage, the turret gets pissed off
-			if(!attacked && !emagged)
-				attacked = 1
-				spawn()
-					sleep(60)
-					attacked = 0
-		..()
+		return ..()
+
+/obj/machinery/porta_turret/attacked_by(obj/item/I, mob/user)
+	..()
+	take_damage(I.force * 0.5)
+	if(I.force * 0.5 > 1) //if the force of impact dealt at least 1 damage, the turret gets pissed off
+		if(!attacked && !emagged)
+			attacked = 1
+			spawn(60)
+				attacked = 0
 
 /obj/machinery/porta_turret/attack_animal(mob/living/simple_animal/M)
 	M.changeNext_move(CLICK_CD_MELEE)
@@ -606,7 +606,7 @@
 	if(!(faction in target.faction))
 		return 0
 	return 1
-	
+
 /obj/machinery/porta_turret/proc/target(atom/movable/target)
 	if(disabled)
 		return

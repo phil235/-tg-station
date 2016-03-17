@@ -33,19 +33,24 @@
 			return
 		else if(glass_hp > 0)
 			toggle_open()
+	else
+		return ..()
 
-	else if(istype(I, /obj/item/weapon))
-		user.changeNext_move(CLICK_CD_MELEE)
-		var/obj/item/weapon/W = I
-		user.do_attack_animation(src)
-		playsound(src, 'sound/effects/Glasshit.ogg', 100, 1)
-		if(W.force >= 10)
-			glass_hp -= W.force
-			if(glass_hp <= 0)
-				playsound(src, 'sound/effects/Glassbr3.ogg', 100, 1)
-			update_icon()
-		else
-			user << "<span class='warning'>The [name]'s protective glass glances off the hit.</span>"
+/obj/structure/fireaxecabinet/attacked_by(obj/item/I, mob/living/user)
+	..()
+	take_damage(I.force, user)
+
+/obj/structure/fireaxecabinet/proc/take_damage(amount, mob/user)
+	if(open || glass_hp <= 0)
+		return
+	playsound(src, 'sound/effects/Glasshit.ogg', 100, 1)
+	if(amount >= 10)
+		glass_hp -= amount
+		if(glass_hp <= 0)
+			playsound(src, 'sound/effects/Glassbr3.ogg', 100, 1)
+		update_icon()
+	else if(user)
+		user << "<span class='warning'>The [name]'s protective glass glances off the hit.</span>"
 
 /obj/structure/fireaxecabinet/ex_act(severity, target)
 	switch(severity)
@@ -63,10 +68,8 @@
 /obj/structure/fireaxecabinet/bullet_act(obj/item/projectile/Proj)
 	if((Proj.damage_type == BRUTE || Proj.damage_type == BURN))
 		if(Proj.damage)
-			glass_hp -= Proj.damage
-			if(glass_hp <= 0)
-				playsound(src, 'sound/effects/Glassbr3.ogg', 100, 1)
-		update_icon()
+			take_damage(Proj.damage)
+	..()
 
 /obj/structure/fireaxecabinet/blob_act()
 	if(fireaxe)
@@ -90,10 +93,19 @@
 		update_icon()
 		return
 
-/obj/structure/fireaxecabinet/attack_paw(mob/user)
-	if(ismonkey(user)) //no fire-axe wielding aliens allowed
-		attack_hand(user)
-	return
+/obj/structure/fireaxecabinet/attack_paw(mob/living/user)
+	attack_hand(user)
+
+/obj/structure/fireaxecabinet/attack_alien(mob/living/user)
+	take_damage(20, user)
+	user.visible_message("<span class='warning'>[user] slashes [src].</span>")
+
+/obj/structure/fireaxecabinet/attack_animal(mob/living/simple_animal/M)
+	if(M.melee_damage_upper == 0 || (M.melee_damage_type != BRUTE && M.melee_damage_type != BURN))
+		return
+	M.visible_message("<span class='warning'>[M] smashes against [src].</span>", \
+					  "<span class='danger'>You smash against [src].</span>")
+	take_damage(M.melee_damage_upper, M)
 
 /obj/structure/fireaxecabinet/attack_ai(mob/user)
 	toggle_lock(user)

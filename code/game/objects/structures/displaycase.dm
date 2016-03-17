@@ -148,11 +148,13 @@
 			health = initial(health)
 			update_icon()
 	else
-		user.changeNext_move(CLICK_CD_MELEE)
-		src.health -= W.force
-		src.healthcheck()
-		..()
-	return
+		return ..()
+
+/obj/structure/displaycase/attacked_by(obj/item/weapon/W, mob/living/user)
+	..()
+	health -= W.force
+	healthcheck()
+
 
 /obj/structure/displaycase/attack_paw(mob/user)
 	return src.attack_hand(user)
@@ -191,16 +193,16 @@
 			playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 			new /obj/item/stack/sheet/mineral/wood(get_turf(src))
 			qdel(src)
-			return
-	if(istype(I, /obj/item/weapon/electronics/airlock))
+
+	else if(istype(I, /obj/item/weapon/electronics/airlock))
 		user << "<span class='notice'>You start installing the electronics into [src]...</span>"
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		if(user.unEquip(I) && do_after(user, 30, target = src))
 			I.loc = src
 			electronics = I
 			user << "<span class='notice'>You install the airlock electronics.</span>"
-			return
-	if(istype(I, /obj/item/stack/sheet/glass))
+
+	else if(istype(I, /obj/item/stack/sheet/glass))
 		var/obj/item/stack/sheet/glass/G = I
 		if(G.get_amount() < 10)
 			user << "<span class='warning'>You need ten glass sheets to do this!</span>"
@@ -217,8 +219,8 @@
 				else
 					display.req_access = electronics.accesses
 			qdel(src)
-		return
-	return
+	else
+		return ..()
 
 
 /obj/structure/displaycase/captain

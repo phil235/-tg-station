@@ -43,9 +43,8 @@
 /obj/machinery/pdapainter/attackby(obj/item/O, mob/user, params)
 	if(default_unfasten_wrench(user, O))
 		power_change()
-		return
 
-	if(istype(O, /obj/item/device/pda))
+	else if(istype(O, /obj/item/device/pda))
 		if(storedpda)
 			user << "<span class='warning'>There is already a PDA inside!</span>"
 			return
@@ -58,6 +57,8 @@
 				P.loc = src
 				P.add_fingerprint(user)
 				update_icon()
+	else
+		return ..()
 
 
 /obj/machinery/pdapainter/attack_hand(mob/user)

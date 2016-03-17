@@ -241,7 +241,7 @@
 			P.loc = src.loc
 			user << "<span class='notice'>You fit the pipe into \the [src].</span>"
 	else
-		..()
+		return ..()
 
 /obj/structure/girder/CanPass(atom/movable/mover, turf/target, height=0)
 	if(height==0)
@@ -349,6 +349,8 @@
 		transfer_fingerprints_to(R)
 		D.playDigSound()
 		qdel(src)
+	else
+		return ..()
 
 /obj/structure/cultgirder/blob_act()
 	if(prob(40))

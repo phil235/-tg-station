@@ -33,7 +33,8 @@
 				qdel(src)
 				return
 	if(W.is_hot()) //todo: make heating a reagent holder proc
-		if(istype(W, /obj/item/clothing/mask/cigarette)) return
+		if(istype(W, /obj/item/clothing/mask/cigarette))
+			return
 		else
 			var/hotness = W.is_hot()
 			var/added_heat = (hotness / 100)

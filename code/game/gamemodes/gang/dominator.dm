@@ -147,10 +147,6 @@
 /obj/machinery/dominator/blob_act()
 	healthcheck(110)
 
-/obj/machinery/dominator/attackby(obj/I, mob/user, params)
-
-	return
-
 /obj/machinery/dominator/attack_hand(mob/user)
 	if(operating)
 		examine(user)
@@ -225,15 +221,12 @@
 	"<span class='italics'>You hear metal being slammed.</span>")
 	healthcheck(5)
 
-/obj/machinery/dominator/attackby(obj/item/weapon/I, mob/living/user, params)
-	if(istype(I, /obj/item/weapon))
-		add_fingerprint(user)
-		user.changeNext_move(CLICK_CD_MELEE)
-		user.do_attack_animation(src)
-		if( (I.flags&NOBLUDGEON) || !I.force )
-			return
-		playsound(src, 'sound/weapons/smash.ogg', 50, 1)
-		visible_message("<span class='danger'>[user] has hit \the [src] with [I].</span>")
-		if(I.damtype == BURN || I.damtype == BRUTE)
-			healthcheck(I.force)
+/obj/machinery/dominator/attacked_by(obj/item/I, mob/living/user)
+	add_fingerprint(user)
+	if(!I.force)
 		return
+	playsound(src, 'sound/weapons/smash.ogg', 50, 1)
+	visible_message("<span class='danger'>[user] has hit \the [src] with [I].</span>")
+	if(I.damtype == BURN || I.damtype == BRUTE)
+		healthcheck(I.force)
+

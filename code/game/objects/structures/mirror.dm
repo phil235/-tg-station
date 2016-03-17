@@ -61,13 +61,10 @@
 
 
 /obj/structure/mirror/attackby(obj/item/I, mob/living/user, params)
-	user.changeNext_move(CLICK_CD_MELEE)
-	user.do_attack_animation(src)
-	if(I.damtype == STAMINA)
-		return
-	if(shattered)
-		if(istype(I, /obj/item/weapon/weldingtool))
-			var/obj/item/weapon/weldingtool/WT = I
+	if(istype(I, /obj/item/weapon/weldingtool) && user.a_intent != "harm")
+		var/obj/item/weapon/weldingtool/WT = I
+		if(shattered)
+			user.changeNext_move(CLICK_CD_MELEE)
 			if(WT.remove_fuel(0, user))
 				user << "<span class='notice'>You begin repairing [src]...</span>"
 				playsound(src, 'sound/items/Welder.ogg', 100, 1)
@@ -78,10 +75,15 @@
 					shattered = 0
 					icon_state = initial(icon_state)
 					desc = initial(desc)
-				return
+	else
+		return ..()
+
+/obj/structure/mirror/attacked_by(obj/item/I, mob/living/user)
+	if(I.damtype == STAMINA)
+		return
+	if(shattered)
 		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 70, 1)
 		return
-
 	if(prob(I.force * 2))
 		visible_message("<span class='warning'>[user] smashes [src] with [I].</span>")
 		shatter()
@@ -114,7 +116,7 @@
 		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 70, 1)
 		return
 	user.visible_message("<span class='danger'>[user] smashes [src]!</span>")
-	shatter()
+	shatter() //phil235 mirror needs a take damage proc to avoid copypasta
 
 
 /obj/structure/mirror/attack_slime(mob/living/user)

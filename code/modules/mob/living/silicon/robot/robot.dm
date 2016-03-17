@@ -442,7 +442,7 @@
 
 /mob/living/silicon/robot/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/restraints/handcuffs)) // fuck i don't even know why isrobot() in handcuff code isn't working so this will have to do
-		return
+		return //phil235
 
 	if(istype(W, /obj/item/weapon/weldingtool) && (user.a_intent != "harm" || user == src))
 		user.changeNext_move(CLICK_CD_MELEE)
@@ -466,6 +466,7 @@
 			return
 
 	else if(istype(W, /obj/item/stack/cable_coil) && wiresexposed)
+		user.changeNext_move(CLICK_CD_MELEE)
 		var/obj/item/stack/cable_coil/coil = W
 		if (getFireLoss() > 0)
 			if(src == user)
@@ -603,7 +604,7 @@
 
 	else
 		if(W.force && W.damtype != STAMINA && src.stat != DEAD) //only sparks if real damage is dealt.
-			spark_system.start()
+			spark_system.start() //phil235
 		return ..()
 
 /mob/living/silicon/robot/emag_act(mob/user)

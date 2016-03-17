@@ -103,7 +103,8 @@
 				det_time = 1
 				user << "<span class='notice'>You set the [name] for instant detonation.</span>"
 		add_fingerprint(user)
-	..()
+	else
+		return ..()
 
 /obj/item/weapon/grenade/attack_hand()
 	walk(src, null, null)

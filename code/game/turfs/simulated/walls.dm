@@ -139,7 +139,7 @@
 		return
 
 	//get the user's location
-	if( !istype(user.loc, /turf) )
+	if( !istype(user.loc, /turf) ) //phil235 probably no longer needed, need testing.
 		return	//can't do this stuff whilst inside objects and such
 
 	add_fingerprint(user)
@@ -148,7 +148,7 @@
 	if( thermite )
 		if(W.is_hot())
 			thermitemelt(user)
-		return
+			return
 
 	var/turf/T = user.loc	//get user's location for delay checks
 

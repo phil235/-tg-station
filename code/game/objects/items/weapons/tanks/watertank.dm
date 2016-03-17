@@ -99,8 +99,8 @@
 /obj/item/weapon/watertank/attackby(obj/item/W, mob/user, params)
 	if(W == noz)
 		remove_noz()
-		return
-	..()
+	else
+		return ..()
 
 // This mister item is intended as an extension of the watertank and always attached to it.
 // Therefore, it's designed to be "locked" to the player's hands or extended back onto

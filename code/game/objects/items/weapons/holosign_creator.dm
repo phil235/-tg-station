@@ -84,10 +84,8 @@
 	anchored = 1
 	var/holo_integrity = 1
 
-/obj/effect/overlay/holograph/attackby(obj/item/weapon/W, mob/user, params)
-	if(!W.force || (W.flags & (ABSTRACT|NOBLUDGEON)))
-		return
-	if(W.force >= 10)
+/obj/effect/overlay/holograph/attacked_by(obj/item/I, mob/user)
+	if(I.force >= 10)
 		take_damage(3, user)
 	else
 		take_damage(1, user)

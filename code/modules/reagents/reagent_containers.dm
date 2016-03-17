@@ -38,10 +38,10 @@
 				return
 
 /obj/item/weapon/reagent_containers/attack(mob/M, mob/user, def_zone)
-	return
+	return //phil235
 
 /obj/item/weapon/reagent_containers/afterattack(obj/target, mob/user , flag)
-	return
+	return //phil235
 
 /obj/item/weapon/reagent_containers/proc/reagentlist(obj/item/weapon/reagent_containers/snack) //Attack logs for regents in pills
 	var/data

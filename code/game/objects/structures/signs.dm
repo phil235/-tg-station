@@ -29,7 +29,7 @@
 							 "<span class='notice'>You unfasten [src].</span>")
 		new /obj/item/sign_backing(get_turf(user))
 		qdel(src)
-	if(istype(O, /obj/item/weapon/pen))
+	else if(istype(O, /obj/item/weapon/pen))
 		var/list/sign_types = list("Secure Area", "Biohazard", "High Voltage", "Radiation", "Hard Vacuum Ahead", "Disposal: Leads To Space", "Danger: Fire", "No Smoking", "Medbay", "Science", "Chemistry", \
 		"Hydroponics", "Xenobiology")
 		var/sign_type
@@ -66,6 +66,8 @@
 			return
 		new sign_type(get_turf(src))
 		qdel(src)
+	else
+		return ..()
 
 /obj/item/sign_backing
 	name = "sign backing"

@@ -282,7 +282,6 @@
 	item_color = "red"
 
 /obj/item/weapon/twohanded/dualsaber/attackby(obj/item/weapon/W, mob/user, params)
-	..()
 	if(istype(W, /obj/item/device/multitool))
 		if(hacked == 0)
 			hacked = 1
@@ -291,7 +290,8 @@
 			update_icon()
 		else
 			user << "<span class='warning'>It's starting to look like a triple rainbow - no, nevermind.</span>"
-
+	else
+		return ..()
 
 //spears
 /obj/item/weapon/twohanded/spear

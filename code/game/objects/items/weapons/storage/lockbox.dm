@@ -18,7 +18,7 @@
 
 
 /obj/item/weapon/storage/lockbox/attackby(obj/item/weapon/W, mob/user, params)
-	if (W.GetID())
+	if(W.GetID())
 		if(src.broken)
 			user << "<span class='danger'>It appears to be broken.</span>"
 			return
@@ -36,10 +36,9 @@
 			user << "<span class='danger'>Access Denied.</span>"
 			return
 	if(!locked)
-		..()
+		return ..()
 	else
 		user << "<span class='danger'>It's locked!</span>"
-	return
 
 /obj/item/weapon/storage/lockbox/MouseDrop(over_object, src_location, over_location)
 	if (locked)

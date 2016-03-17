@@ -40,7 +40,7 @@
 
 
 /obj/item/device/mmi/attackby(obj/item/O, mob/user, params)
-	user.changeNext_move(CLICK_CD_MELEE)
+	user.changeNext_move(CLICK_CD_MELEE) //phil235
 	if(istype(O,/obj/item/organ/internal/brain)) //Time to stick a brain in it --NEO
 		var/obj/item/organ/internal/brain/newbrain = O
 		if(brain)

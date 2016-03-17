@@ -82,8 +82,8 @@
 	..()
 
 /obj/structure/lattice/catwalk/attackby(obj/item/C, mob/user, params)
-	..()
 	if(istype(C, /obj/item/stack/cable_coil))
 		var/turf/T = get_turf(src)
 		T.attackby(C, user) //catwalks 'enable' coil laying on space tiles, not the catwalks themselves
-		return
+	else
+		return ..()

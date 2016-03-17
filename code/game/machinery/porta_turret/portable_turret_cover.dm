@@ -35,7 +35,7 @@
 
 /obj/machinery/porta_turret_cover/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/weapon/wrench) && !parent_turret.on)
-		if(parent_turret.raised) 
+		if(parent_turret.raised)
 			return
 
 		if(!parent_turret.anchored)
@@ -62,17 +62,20 @@
 		M.buffer = parent_turret
 		user << "<span class='notice'>You add [parent_turret] to multitool buffer.</span>"
 	else
-		user.changeNext_move(CLICK_CD_MELEE)
-		parent_turret.health -= I.force * 0.5
-		if(parent_turret.health <= 0)
-			parent_turret.die()
-		if(I.force * 0.5 > 2)
-			if(!parent_turret.attacked && !parent_turret.emagged)
-				parent_turret.attacked = 1
-				spawn()
-					sleep(30)
+		return ..()
+
+/obj/machinery/porta_turret_cover/attacked_by(obj/item/I, mob/user)
+	..()
+	parent_turret.health -= I.force * 0.5
+	if(parent_turret.health <= 0)
+		parent_turret.die()
+	else if(I.force * 0.5 > 2)
+		if(!parent_turret.attacked && !parent_turret.emagged)
+			parent_turret.attacked = 1
+			spawn(30)
+				if(parent_turret)
 					parent_turret.attacked = 0
-		..()
+
 
 /obj/machinery/porta_turret_cover/can_be_overridden()
 	. = 0
