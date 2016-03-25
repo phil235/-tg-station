@@ -170,10 +170,9 @@ It is possible to destroy the net by the occupant or someone else.
 
 
 
-/obj/effect/energy_net/attackby(obj/item/weapon/W, mob/user, params)
-	var/aforce = W.force
-	health = max(0, health - aforce)
-	healthcheck()
+/obj/effect/energy_net/attacked_by(obj/item/weapon/W, mob/user)
 	..()
-	return
+	health = max(0, health - W.force)
+	healthcheck()
+
 

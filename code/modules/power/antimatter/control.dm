@@ -181,11 +181,13 @@
 				"<span class='italics'>You hear a thunk.</span>")
 		return
 
+	return ..()
+
+/obj/machinery/power/am_control_unit/attacked_by(obj/item/W, mob/user)
+	..()
 	if(W.force >= 20)
 		stability -= W.force/2
 		check_stability()
-	..()
-
 
 
 /obj/machinery/power/am_control_unit/attack_hand(mob/user)

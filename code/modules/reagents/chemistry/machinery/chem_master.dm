@@ -37,10 +37,10 @@
 		return
 
 	if(istype(I, /obj/item/weapon/reagent_containers) && (I.flags & OPENCONTAINER))
-		if(isrobot(user))
-			return
+		if(panel_open)
+			user << "<span class='warning'>You can't use the [src.name] while its panel is opened!</span>"
 		if(beaker)
-			user << "<span class='warning'>A beaker is already loaded into the machine!</span>"
+			user << "<span class='warning'>A container is already loaded in the machine!</span>"
 			return
 		if(!user.drop_item())
 			return
@@ -62,8 +62,8 @@
 		bottle.loc = src
 		user << "<span class='notice'>You add the pill bottle into the dispenser slot.</span>"
 		src.updateUsrDialog()
-
-	return
+	else
+		return ..()
 
 /obj/machinery/chem_master/Topic(href, href_list)
 	if(..())
@@ -352,40 +352,11 @@
 			bottle = null
 		return
 
-	if(exchange_parts(user, B))
+	else if(exchange_parts(user, B))
 		return
 
-	if(panel_open)
-		if(istype(B, /obj/item/weapon/crowbar))
-			default_deconstruction_crowbar(B)
-			return 1
-		else
-			user << "<span class='warning'>You can't use the [src.name] while it's panel is opened!</span>"
-			return 1
+	else if(default_deconstruction_crowbar(B))
+		return
 
-	if(istype(B, /obj/item/weapon/reagent_containers) && (B.flags & OPENCONTAINER))
-		if(beaker)
-			user << "<span class='warning'>A beaker is already loaded into the machine!</span>"
-			return
-		if(!user.drop_item())
-			return
-
-		beaker = B
-		beaker.loc = src
-		user << "<span class='notice'>You add the beaker to the machine.</span>"
-		src.updateUsrDialog()
-		icon_state = "mixer1"
-
-	else if(!condi && istype(B, /obj/item/weapon/storage/pill_bottle))
-		if(bottle)
-			user << "<span class='warning'>A pill bottle is already loaded into the machine!</span>"
-			return
-		if(!user.drop_item())
-			return
-
-		src.bottle = B
-		B.loc = src
-		user << "<span class='notice'>You add the pill bottle into the dispenser slot.</span>"
-		src.updateUsrDialog()
-
-	return
+	else
+		return ..()

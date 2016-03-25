@@ -100,57 +100,57 @@
 
 
 /obj/machinery/reagentgrinder/attackby(obj/item/I, mob/user, params)
-		if(default_unfasten_wrench(user, I))
+	if(default_unfasten_wrench(user, I))
+		return
+
+	if(istype(I, /obj/item/weapon/reagent_containers) && (I.flags & OPENCONTAINER) )
+		if(beaker)
+			user << "<span class='warning'>A container is already loaded in the machine!</span>"
+			return
+		else
+			if(!user.drop_item())
 				return
+			beaker =  I
+			beaker.loc = src
+			update_icon()
+			src.updateUsrDialog()
+		return
 
-		if (istype(I, /obj/item/weapon/reagent_containers) && (I.flags & OPENCONTAINER) )
-				if (beaker)
-						return 1
-				else
-						if(!user.drop_item())
-								return 1
-						beaker =  I
-						beaker.loc = src
-						update_icon()
-						src.updateUsrDialog()
-						return 0
-
-		if(is_type_in_list(I, dried_items))
-				if(istype(I, /obj/item/weapon/reagent_containers/food/snacks/grown))
-						var/obj/item/weapon/reagent_containers/food/snacks/grown/G = I
-						if(!G.dry)
-								user << "<span class='warning'>You must dry that first!</span>"
-								return 1
-
-		if(holdingitems && holdingitems.len >= limit)
-				usr << "The machine cannot hold anymore items."
+	if(is_type_in_list(I, dried_items))
+		if(istype(I, /obj/item/weapon/reagent_containers/food/snacks/grown))
+			var/obj/item/weapon/reagent_containers/food/snacks/grown/G = I
+			if(!G.dry)
+				user << "<span class='warning'>You must dry that first!</span>"
 				return 1
 
-		//Fill machine with a bag!
-		if(istype(I, /obj/item/weapon/storage/bag))
-				var/obj/item/weapon/storage/bag/B = I
-				for (var/obj/item/weapon/reagent_containers/food/snacks/grown/G in B.contents)
-						B.remove_from_storage(G, src)
-						holdingitems += G
-						if(holdingitems && holdingitems.len >= limit) //Sanity checking so the blender doesn't overfill
-								user << "<span class='notice'>You fill the All-In-One grinder to the brim.</span>"
-								break
+	if(holdingitems && holdingitems.len >= limit)
+		user << "The machine cannot hold anymore items."
+		return 1
 
-				if(!I.contents.len)
-						user << "<span class='notice'>You empty the plant bag into the All-In-One grinder.</span>"
+	//Fill machine with a bag!
+	if(istype(I, /obj/item/weapon/storage/bag))
+		var/obj/item/weapon/storage/bag/B = I
+		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in B.contents)
+			B.remove_from_storage(G, src)
+			holdingitems += G
+			if(holdingitems && holdingitems.len >= limit) //Sanity checking so the blender doesn't overfill
+				user << "<span class='notice'>You fill the All-In-One grinder to the brim.</span>"
+				break
 
-				src.updateUsrDialog()
-				return 0
+		if(!I.contents.len)
+			user << "<span class='notice'>You empty the plant bag into the All-In-One grinder.</span>"
+			updateUsrDialog()
+			return 0
 
-		if (!is_type_in_list(I, blend_items) && !is_type_in_list(I, juice_items))
-				user << "<span class='warning'>Cannot refine into a reagent!</span>"
-				return 1
+	if (!is_type_in_list(I, blend_items) && !is_type_in_list(I, juice_items))
+		user << "<span class='warning'>Cannot refine into a reagent!</span>"
+		return 1
 
-		user.unEquip(I)
-		I.loc = src
-		holdingitems += I
-		src.updateUsrDialog()
-		return 0
+	user.unEquip(I)
+	I.loc = src
+	holdingitems += I
+	src.updateUsrDialog()
+	return 0
 
 /obj/machinery/reagentgrinder/attack_paw(mob/user)
 		return src.attack_hand(user)

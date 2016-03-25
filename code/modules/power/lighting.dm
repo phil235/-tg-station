@@ -276,16 +276,12 @@
 	//Light replacer code
 	if(istype(W, /obj/item/device/lightreplacer))
 		var/obj/item/device/lightreplacer/LR = W
-		if(isliving(user))
-			var/mob/living/U = user
-			LR.ReplaceLight(src, U)
-			return
+		LR.ReplaceLight(src, user)
 
 	// attempt to insert light
-	if(istype(W, /obj/item/weapon/light))
+	else if(istype(W, /obj/item/weapon/light))
 		if(status != LIGHT_EMPTY)
 			user << "<span class='warning'>There is a [fitting] already inserted!</span>"
-			return
 		else
 			src.add_fingerprint(user)
 			var/obj/item/weapon/light/L = W
@@ -306,7 +302,6 @@
 					explode()
 			else
 				user << "<span class='warning'>This type of light requires a [fitting]!</span>"
-				return
 
 	// attempt to stick weapon into light socket
 	else if(status == LIGHT_EMPTY)
@@ -327,15 +322,14 @@
 			newlight.stage = 2
 			transfer_fingerprints_to(newlight)
 			qdel(src)
-			return
-
-		user << "<span class='userdanger'>You stick \the [W] into the light socket!</span>"
-		if(has_power() && (W.flags & CONDUCT))
-			var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
-			s.set_up(3, 1, src)
-			s.start()
-			if (prob(75))
-				electrocute_mob(user, get_area(src), src, rand(0.7,1.0))
+		else
+			user << "<span class='userdanger'>You stick \the [W] into the light socket!</span>"
+			if(has_power() && (W.flags & CONDUCT))
+				var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+				s.set_up(3, 1, src)
+				s.start()
+				if (prob(75))
+					electrocute_mob(user, get_area(src), src, rand(0.7,1.0))
 	else
 		return ..()
 

@@ -9,18 +9,19 @@
 	density = 1
 	pressure_resistance = 5*ONE_ATMOSPHERE
 
-/obj/structure/ore_box/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
+/obj/structure/ore_box/attackby(obj/item/weapon/W, mob/user, params)
 	if (istype(W, /obj/item/weapon/ore))
 		if(!user.drop_item())
 			return
 		W.loc = src
-	if (istype(W, /obj/item/weapon/storage))
+	else if(istype(W, /obj/item/weapon/storage))
 		var/obj/item/weapon/storage/S = W
-		S.hide_from(usr)
+		S.hide_from(user)
 		for(var/obj/item/weapon/ore/O in S.contents)
 			S.remove_from_storage(O, src) //This will move the item to this item's contents
 		user << "<span class='notice'>You empty the satchel into the box.</span>"
-	return
+	else
+		return ..()
 
 /obj/structure/ore_box/attack_hand(mob/user)
 	var/amt_gold = 0

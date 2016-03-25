@@ -103,8 +103,7 @@ var/global/list/rad_collectors = list()
 			user << "<span class='danger'>Access denied.</span>"
 			return 1
 	else
-		..()
-		return 1
+		return ..()
 
 
 /obj/machinery/power/rad_collector/ex_act(severity, target)

@@ -132,11 +132,11 @@
 		shutdown_core()
 
 
-/obj/machinery/am_shielding/attackby(obj/item/W, mob/user, params)
+/obj/machinery/am_shielding/attacked_by(obj/item/W, mob/user)
+	..()
 	if(W.force > 10)
 		stability -= W.force/2
 		check_stability()
-	..()
 
 
 //Call this to link a detected shilding unit to the controller

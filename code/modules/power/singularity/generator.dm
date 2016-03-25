@@ -32,5 +32,5 @@
 				"<span class='italics'>You hear a ratchet.</span>")
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 			anchored = 0
-		return
-	return ..()
+	else
+		return ..()

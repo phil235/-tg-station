@@ -66,12 +66,14 @@
 			playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 			user.visible_message("[user] takes the glass off the solar panel.", "<span class='notice'>You take the glass off the solar panel.</span>")
 			qdel(src)
-		return
-	else if (W)
-		src.add_fingerprint(user)
-		src.health -= W.force
-		src.healthcheck()
+	else
+		return ..()
+
+/obj/machinery/power/solar/attacked_by(obj/item/weapon/W, mob/living/user)
 	..()
+	add_fingerprint(user)
+	health -= W.force
+	healthcheck()
 
 /obj/machinery/power/solar/proc/healthcheck()
 	if (src.health <= 0)
@@ -443,9 +445,10 @@
 				A.icon_state = "4"
 				A.anchored = 1
 				qdel(src)
-	else
+	else if(user.a_intent != "harm")
 		src.attack_hand(user)
-	return
+	else
+		return ..()
 
 /obj/machinery/power/solar_control/process()
 	lastgen = gen

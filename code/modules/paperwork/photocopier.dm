@@ -267,6 +267,8 @@
 				return
 			user << "<span class='notice'>You [anchored ? "unwrench" : "wrench"] [src].</span>"
 			anchored = !anchored
+	else
+		return ..()
 
 /obj/machinery/photocopier/ex_act(severity, target)
 	switch(severity)

@@ -155,7 +155,8 @@
 		cups++
 		return
 	else
-		..()
+		return ..()
+
 /obj/structure/reagent_dispensers/beerkeg
 	name = "beer keg"
 	desc = "A beer keg"

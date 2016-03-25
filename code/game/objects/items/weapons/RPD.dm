@@ -529,7 +529,7 @@ var/global/list/RPD_recipes=list(
 
 	if(istype(A,/area/shuttle)||istype(A,/turf/space/transit))
 		return 0
-	
+
 	//So that changing the menu settings doesn't affect the pipes already being built.
 	var/queued_p_type = p_type
 	var/queued_p_dir = p_dir
@@ -608,7 +608,7 @@ var/global/list/RPD_recipes=list(
 				activate()
 
 				C.add_fingerprint(usr)
-				C.update()
+				C.update_icon()
 				return 1
 			return 0
 		else

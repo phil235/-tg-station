@@ -56,6 +56,8 @@
 				new /obj/item/weapon/c_tube( get_turf(user) )
 		else
 			user << "<span class='warning'>You need more paper!</span>"
+	else
+		return ..()
 
 
 /obj/item/smallDelivery

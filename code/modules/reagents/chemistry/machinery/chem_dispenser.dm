@@ -147,28 +147,28 @@
 	if(default_unfasten_wrench(user, I))
 		return
 
-	if(isrobot(user))
-		return
+	if(istype(I, /obj/item/weapon/reagent_containers) && (I.flags & OPENCONTAINER))
+		var/obj/item/weapon/reagent_containers/B = I
 
-	var/obj/item/weapon/reagent_containers/B = I // Get a beaker from it?
-	if(!istype(B))
-		return // Not a beaker?
+		if(beaker)
+			user << "<span class='warning'>A container is already loaded into the machine!</span>"
+			return
 
-	if(beaker)
-		user << "<span class='warning'>A beaker is already loaded into the machine!</span>"
-		return
+		if(!user.drop_item()) // Can't let go?
+			return
 
-	if(!user.drop_item()) // Can't let go?
-		return
+		beaker = B
+		beaker.loc = src
+		user << "<span class='notice'>You add \the [B] to the machine.</span>"
 
-	beaker = B
-	beaker.loc = src
-	user << "<span class='notice'>You add the beaker to the machine.</span>"
-
-	if(!icon_beaker)
-		icon_beaker = image('icons/obj/chemical.dmi', src, "disp_beaker") //randomize beaker overlay position.
-	icon_beaker.pixel_x = rand(-10,5)
-	overlays += icon_beaker
+		if(!icon_beaker)
+			icon_beaker = image('icons/obj/chemical.dmi', src, "disp_beaker") //randomize beaker overlay position.
+		icon_beaker.pixel_x = rand(-10,5)
+		overlays += icon_beaker
+	else if(user.a_intent != "harm")
+		user << "<span class='warning'>You can't load \the [I] into the machine!</span>"
+	else
+		return ..()
 
 /obj/machinery/chem_dispenser/constructable
 	name = "portable chem dispenser"
@@ -252,21 +252,21 @@
 			dispensable_reagents |= dispensable_reagent_tiers[i]
 	dispensable_reagents = sortList(dispensable_reagents)
 
-/obj/machinery/chem_dispenser/constructable/attackby(var/obj/item/I, var/mob/user, params)
-	..()
+/obj/machinery/chem_dispenser/constructable/attackby(obj/item/I, mob/user, params)
 	if(default_deconstruction_screwdriver(user, "minidispenser-o", "minidispenser", I))
 		return
 
 	if(exchange_parts(user, I))
 		return
 
-	if(panel_open)
-		if(istype(I, /obj/item/weapon/crowbar))
-			if(beaker)
-				beaker.loc = loc
-				beaker = null
-			default_deconstruction_crowbar(I)
-			return 1
+	if(default_deconstruction_crowbar(I))
+		return
+	return ..()
+
+/obj/machinery/chem_dispenser/constructable/deconstruction()
+	if(beaker)
+		beaker.loc = loc
+		beaker = null
 
 /obj/machinery/chem_dispenser/drinks
 	name = "soda dispenser"
@@ -293,21 +293,6 @@
 		"limejuice",
 		"tomatojuice"
 	)
-
-/obj/machinery/chem_dispenser/drinks/attackby(obj/item/I, mob/user)
-	if(default_unfasten_wrench(user, I))
-		return
-
-	if(istype(I, /obj/item/weapon/reagent_containers) && (I.flags & OPENCONTAINER))
-		if (beaker)
-			return 1
-		else
-			if(!user.drop_item())
-				return 1
-			src.beaker =  I
-			beaker.loc = src
-			update_icon()
-			return
 
 /obj/machinery/chem_dispenser/drinks/beer
 	name = "booze dispenser"

@@ -208,7 +208,7 @@ var/const/GRAV_NEEDS_WRENCH = 3
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 				set_fix()
 		else
-			..()
+			return ..()
 	if(old_broken_state != broken_state)
 		update_icon()
 

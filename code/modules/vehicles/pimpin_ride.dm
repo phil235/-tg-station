@@ -64,14 +64,16 @@
 			user << "<span class='notice'>You hook the trashbag onto \the [name].</span>"
 			I.loc = src
 			mybag = I
+		update_icon()
 	else if(istype(I, /obj/item/janiupgrade))
 		if(keytype == /obj/item/key/janitor)
 			floorbuffer = 1
 			qdel(I)
 			user << "<span class='notice'>You upgrade \the [name] with the floor buffer.</span>"
-	update_icon()
+		update_icon()
 
-	..()
+	else
+		return ..()
 
 
 /obj/vehicle/janicart/update_icon()

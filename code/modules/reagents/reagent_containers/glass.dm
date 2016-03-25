@@ -109,9 +109,6 @@
 	else if(istype(target, /obj/item/clothing/suit/space/space_ninja))
 		return
 
-	else if(istype(target, /obj/effect/decal/cleanable)) //stops splashing while scooping up fluids
-		return
-
 	else if(reagents.total_volume)
 		if(user.a_intent == "harm")
 			user.visible_message("<span class='danger'>[user] splashes the contents of [src] onto [target]!</span>", \

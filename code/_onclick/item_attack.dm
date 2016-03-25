@@ -8,8 +8,6 @@
 	return
 
 /obj/attackby(obj/item/I, mob/living/user, params)
-	if(I.interaction_obj(src)) //phil235
-		return 1 //so no afterattack
 	I.attack_obj(src, user)
 
 /mob/living/attackby(obj/item/I, mob/user, params)
@@ -115,8 +113,3 @@
 		attack_message = "[user] has [message_verb] [src][message_hit_area] with [I]!"
 	visible_message("<span class='danger'>[attack_message]</span>",
 		"<span class='userdanger'>[attack_message]</span>")
-
-
-//phil235 probably to move in items.dm
-/obj/item/proc/interaction_obj(obj/O) //potential proc to have same use as special version of attack() but for object target.
-	return

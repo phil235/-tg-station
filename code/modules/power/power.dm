@@ -115,22 +115,17 @@
 /obj/machinery/power/attackby(obj/item/weapon/W, mob/user, params)
 
 	if(istype(W, /obj/item/stack/cable_coil))
-
 		var/obj/item/stack/cable_coil/coil = W
-
 		var/turf/T = user.loc
-
 		if(T.intact || !istype(T, /turf/simulated/floor))
 			return
-
 		if(get_dist(src, user) > 1)
 			return
-
 		coil.place_turf(T, user)
-		return
+
 	else
-		..()
-	return
+		return ..()
+
 
 ///////////////////////////////////////////
 // Powernet handling helpers

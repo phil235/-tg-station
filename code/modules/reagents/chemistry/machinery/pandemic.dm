@@ -267,13 +267,13 @@
 
 /obj/machinery/computer/pandemic/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/weapon/reagent_containers) && (I.flags & OPENCONTAINER))
-		if(stat & (NOPOWER|BROKEN)) return
+		if(stat & (NOPOWER|BROKEN))
+			return
 		if(beaker)
 			user << "<span class='warning'>A beaker is already loaded into the machine!</span>"
 			return
 		if(!user.drop_item())
 			return
-
 		beaker =  I
 		beaker.loc = src
 		user << "<span class='notice'>You add the beaker to the machine.</span>"
@@ -282,9 +282,8 @@
 
 	else if(istype(I, /obj/item/weapon/screwdriver))
 		if(src.beaker)
-			beaker.loc = get_turf(src)
+			beaker.loc = get_turf(src) //phil235 need to be moved to a proc called by the default computer screwdriving proc.
 		..()
-		return
 	else
-		..()
-	return
+		return ..()
+
