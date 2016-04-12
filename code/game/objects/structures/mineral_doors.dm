@@ -136,8 +136,9 @@
 
 /obj/structure/mineral_door/attacked_by(obj/item/I, mob/user)
 	..()
-	hardness -= I.force/100
-	CheckHardness()
+	if(I.damtype != STAMINA)
+		hardness -= I.force/100
+		CheckHardness()
 
 
 /obj/structure/mineral_door/bullet_act(obj/item/projectile/Proj)

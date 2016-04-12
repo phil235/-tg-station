@@ -65,6 +65,9 @@
 
 	return ..()
 
+/obj/machinery/door/firedoor/try_to_activate_door(mob/user)
+	return
+
 /obj/machinery/door/firedoor/try_to_weld(obj/item/weapon/weldingtool/W, mob/user)
 	if(W.remove_fuel(0, user))
 		welded = !welded

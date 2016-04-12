@@ -248,9 +248,10 @@
 
 
 /obj/machinery/camera/attacked_by(obj/item/I, mob/living/user)
-	if(I.force >= 10) //fairly simplistic, but will do for now.
-		visible_message("<span class='warning'>[user] hits [src] with [I]!</span>", "<span class='warning'>You hit [src] with [I]!</span>")
-		take_damage(I.force, user)
+	..()
+	if(I.damtype != STAMINA)
+		if(I.force >= 10)
+			take_damage(I.force, user)
 
 /obj/machinery/camera/proc/take_damage(amount, mob/living/user)
 	health = max(0, health - amount)

@@ -149,14 +149,13 @@
 
 /obj/machinery/portable_atmospherics/canister/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > temperature_resistance)
-		health -= 5
-		healthcheck()
+		take_damage(5)
 
-/obj/machinery/portable_atmospherics/canister/proc/healthcheck()
+/obj/machinery/portable_atmospherics/canister/proc/take_damage(damage)
 	if(destroyed)
 		return
-
-	if(health <= 10)
+	health = max( health - damage, 0)
+	if(!health)
 		var/turf/T = get_turf(src)
 		T.assume_air(air_contents)
 		air_update_turf()
@@ -191,14 +190,12 @@
 	update_icon()
 
 /obj/machinery/portable_atmospherics/canister/blob_act()
-	health = 0
-	healthcheck()
+	take_damage(100)
 
 /obj/machinery/portable_atmospherics/canister/bullet_act(obj/item/projectile/P)
 	if((P.damage_type == BRUTE || P.damage_type == BURN))
 		if(P.damage)
-			health -= round(P.damage / 2)
-			healthcheck()
+			take_damage(round(P.damage / 2))
 	..()
 
 /obj/machinery/portable_atmospherics/canister/ex_act(severity, target)
@@ -206,25 +203,23 @@
 		if(1)
 			if(destroyed || prob(30))
 				qdel(src)
-				return
 			else
-				health = 0
+				take_damage(100)
 		if(2)
 			if(destroyed)
 				qdel(src)
-				return
 			else
-				health -= rand(40, 100)
+				take_damage(rand(40, 110))
 		if(3)
-			health -= rand(15, 40)
-	healthcheck()
+			take_damage(rand(15, 40))
+
 
 /obj/machinery/portable_atmospherics/canister/attacked_by(obj/item/I, mob/user)
 	..()
 	investigate_log("was smacked with \a [I] by [key_name(user)].", "atmos")
-	health -= I.force
 	add_fingerprint(user)
-	healthcheck()
+	if(I.damtype != STAMINA)
+		take_damage(I.force)
 
 
 /obj/machinery/portable_atmospherics/canister/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \

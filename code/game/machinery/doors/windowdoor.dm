@@ -322,11 +322,10 @@
 
 
 /obj/machinery/door/window/attacked_by(obj/item/I, mob/living/user)
-	var/aforce = I.force
 	playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)
 	visible_message("<span class='danger'>[user] has hit \the [src] with [I].</span>")
 	if(I.damtype == BURN || I.damtype == BRUTE)
-		take_damage(aforce)
+		take_damage(I.force)
 
 /obj/machinery/door/window/try_to_crowbar(obj/item/I, mob/user)
 	if(!hasPower())

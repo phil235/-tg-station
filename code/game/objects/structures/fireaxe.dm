@@ -38,7 +38,8 @@
 
 /obj/structure/fireaxecabinet/attacked_by(obj/item/I, mob/living/user)
 	..()
-	take_damage(I.force, user)
+	if(I.damtype != STAMINA)
+		take_damage(I.force, user)
 
 /obj/structure/fireaxecabinet/proc/take_damage(amount, mob/user)
 	if(open || glass_hp <= 0)

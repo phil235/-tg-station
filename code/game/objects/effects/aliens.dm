@@ -18,25 +18,37 @@
 
 /obj/structure/alien/attacked_by(obj/item/I, mob/user)
 	..()
-	playsound(loc, 'sound/effects/attackblob.ogg', 100, 1)
 	var/damage = I.force
-	if(I.damtype != "fire")
-		damage *= 0.25
-	if(istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = I
-		if(WT.remove_fuel(0, user))
-			damage = 15
-			playsound(loc, 'sound/items/Welder.ogg', 100, 1)
-	take_damage(damage)
+	switch(I.damtype)
+		if(BRUTE)
+			damage *= 0.25
+		if(BURN)
+			damage *= 2
+		else
+			damage = 0 //stamina damage does no damage
+	take_damage(damage, I.damtype)
 
-obj/structure/alien/proc/take_damage(amount)
+/obj/structure/alien/play_item_attack_sounds(obj/item/I)
+	if(I.damtype == BURN) //the gooeyness of the alien structures mutes all item attack sounds except fire dam type.
+		playsound(loc, 'sound/items/Welder.ogg', 100, 1)
+
+obj/structure/alien/proc/take_damage(amount, damage_type = BRUTE, sound_effect = 1)
+	if(sound_effect)
+		switch(damage_type)
+			if(BRUTE)
+				playsound(loc, 'sound/effects/attackblob.ogg', 100, 1)
+			if(BURN)
+				playsound(loc, 'sound/items/Welder.ogg', 100, 1)
 	health = max(health - amount, 0)
 	if(!health)
-		qdel(src)
+		Break()
+
+obj/structure/alien/proc/Break()
+	qdel(src)
 
 /obj/structure/alien/bullet_act(obj/item/projectile/Proj)
 	. = ..()
-	take_damage(Proj.damage)
+	take_damage(Proj.damage, Proj.dam_type)
 
 /*
  * Resin
@@ -99,15 +111,15 @@ obj/structure/alien/proc/take_damage(amount)
 /obj/structure/alien/resin/ex_act(severity, target)
 	switch(severity)
 		if(1)
-			take_damage(150)
+			take_damage(150, BRUTE, 0)
 		if(2)
-			take_damage(100)
+			take_damage(100, BRUTE, 0)
 		if(3)
-			take_damage(50)
+			take_damage(50, BRUTE, 0)
 
 
 /obj/structure/alien/blob_act()
-	take_damage(50)
+	take_damage(50, BRUTE, 0)
 
 /obj/structure/alien/resin/hitby(atom/movable/AM)
 	..()
@@ -122,7 +134,7 @@ obj/structure/alien/proc/take_damage(amount)
 
 /obj/structure/alien/resin/attack_hulk(mob/living/carbon/human/user)
 	..(user, 1)
-	user.do_attack_animation(src)
+	user.do_attack_animation(src) //phil235 why no changenext here? if it's in the ..() then why is attack anim not there as well?
 	user.visible_message("<span class='danger'>[user] destroys [src]!</span>")
 	take_damage(200)
 
@@ -134,8 +146,9 @@ obj/structure/alien/proc/take_damage(amount)
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src)
 	user.visible_message("<span class='danger'>[user] claws at the resin!</span>")
-	playsound(loc, 'sound/effects/attackblob.ogg', 100, 1)
 	take_damage(50)
+
+//phil235 no attack_animal?
 
 
 /obj/structure/alien/resin/CanPass(atom/movable/mover, turf/target, height=0)
@@ -208,7 +221,7 @@ obj/structure/alien/proc/take_damage(amount)
 
 /obj/structure/alien/weeds/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > 300)
-		take_damage(5)
+		take_damage(5, BURN, 0)
 
 
 /obj/structure/alien/weeds/proc/updateWeedOverlays()
@@ -347,18 +360,16 @@ obj/structure/alien/proc/take_damage(amount)
 	remove_from_proximity_list(src, 1)
 	..()
 
-/obj/structure/alien/egg/take_damage(amount)
-	health = max(health - amount, 0)
-	if(!health)
-		if(status != BURST && status != BURSTING)
-			Burst()
-		else if(status == BURST && prob(50))
-			qdel(src)	//Remove the egg after it has been hit after bursting.
+/obj/structure/alien/egg/Break()
+	if(status != BURST && status != BURSTING)
+		Burst()
+	else if(status == BURST)
+		qdel(src)	//Remove the egg after it has been hit after bursting.
 
 
 /obj/structure/alien/egg/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > 500)
-		take_damage(5)
+		take_damage(5, BURN, 0)
 
 
 /obj/structure/alien/egg/HasProximity(atom/movable/AM)

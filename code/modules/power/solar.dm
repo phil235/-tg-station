@@ -69,22 +69,21 @@
 	else
 		return ..()
 
-/obj/machinery/power/solar/attacked_by(obj/item/weapon/W, mob/living/user)
+/obj/machinery/power/solar/attacked_by(obj/item/I, mob/living/user)
 	..()
 	add_fingerprint(user)
-	health -= W.force
-	healthcheck()
+	if(I.damtype != STAMINA)
+		take_damage(I.force)
 
-/obj/machinery/power/solar/proc/healthcheck()
-	if (src.health <= 0)
+/obj/machinery/power/solar/proc/take_damage(dam_amount)
+	health = max(health - dam_amount, 0)
+	if(!health)
 		if(!(stat & BROKEN))
 			set_broken()
 		else
 			new /obj/item/weapon/shard(src.loc)
 			new /obj/item/weapon/shard(src.loc)
 			qdel(src)
-			return
-	return
 
 
 /obj/machinery/power/solar/update_icon()

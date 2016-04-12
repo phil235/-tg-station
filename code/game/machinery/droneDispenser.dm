@@ -218,9 +218,18 @@
 
 /obj/machinery/droneDispenser/attacked_by(obj/item/I, mob/living/user)
 	..()
-	take_damage(I.force)
+	take_damage(I.force, I.damtype)
 
-/obj/machinery/droneDispenser/proc/take_damage(amount)
+/obj/machinery/droneDispenser/proc/take_damage(amount, damage_type = BRUTE, sound_effect = 1)
+	switch(damage_type)
+		if(BURN)
+			if(sound_effect)
+				playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
+		if(BRUTE)
+			if(sound_effect)
+				playsound(src, 'sound/weapons/smash.ogg', 50, 1)
+		else
+			return
 	health = max(health - amount, 0)
 	if(!health && !(stat & BROKEN))
 		if(break_message)

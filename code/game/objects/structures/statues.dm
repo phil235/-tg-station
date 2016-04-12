@@ -75,11 +75,14 @@
 			user.visible_message("[user] slices apart the [name].", \
 								 "<span class='notice'>You slice apart the [name]!</span>")
 			Dismantle(1)
+	else
+		return ..()
 
 /obj/structure/statue/attacked_by(obj/item/I, mob/living/user)
 	..()
-	hardness -= I.force/100
-	CheckHardness()
+	if(I.damtype != STAMINA)
+		hardness -= I.force/100
+		CheckHardness()
 
 /obj/structure/statue/attack_hand(mob/living/user)
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -91,10 +94,10 @@
 	return !density
 
 /obj/structure/statue/bullet_act(obj/item/projectile/Proj)
-	hardness -= Proj.damage
+	if(Proj.damage_type == BRUTE || Proj.damage_type == BURN)
+		hardness -= Proj.damage
 	..()
 	CheckHardness()
-	return
 
 /obj/structure/statue/proc/CheckHardness()
 	if(hardness <= 0)

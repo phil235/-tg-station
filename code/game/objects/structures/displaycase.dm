@@ -28,12 +28,10 @@
 			qdel(src)
 		if (2)
 			if (prob(50))
-				src.health -= 15
-				src.healthcheck()
+				take_damage(15)
 		if (3)
 			if (prob(50))
-				src.health -= 5
-				src.healthcheck()
+				take_damage(5)
 
 /obj/structure/displaycase/examine(mob/user)
 	..()
@@ -44,11 +42,12 @@
 
 
 /obj/structure/displaycase/bullet_act(obj/item/projectile/Proj)
+	var/dealt_damage = 0
 	if((Proj.damage_type == BRUTE || Proj.damage_type == BURN))
-		health -= Proj.damage
-	..()
-	src.healthcheck()
-	return
+		dealt_damage = Proj.damage
+	..() //phil235
+	if(dealt_damage)
+		take_damage(dealt_damage)
 
 /obj/structure/displaycase/proc/dump()
 	if (showpiece)
@@ -61,24 +60,22 @@
 		dump()
 		qdel(src)
 
-/obj/structure/displaycase/proc/healthcheck()
-	if (src.health <= 0)
-		if (!( src.destroyed ))
-			src.density = 0
-			src.destroyed = 1
-			new /obj/item/weapon/shard( src.loc )
-			playsound(src, "shatter", 70, 1)
-			update_icon()
+/obj/structure/displaycase/proc/take_damage(damage)
+	playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)
+	health = max( health - damage, 0)
+	if(!health && !destroyed)
+		density = 0
+		destroyed = 1
+		new /obj/item/weapon/shard( src.loc )
+		playsound(src, "shatter", 70, 1)
+		update_icon()
 
-			//Activate Anti-theft
-			if(alert)
-				var/area/alarmed = get_area(src)
-				alarmed.burglaralert(src)
-				playsound(src, "sound/effects/alert.ogg", 50, 1)
+		//Activate Anti-theft
+		if(alert)
+			var/area/alarmed = get_area(src)
+			alarmed.burglaralert(src)
+			playsound(src, "sound/effects/alert.ogg", 50, 1)
 
-	else
-		playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)
-	return
 
 /obj/structure/displaycase/proc/is_directional(atom/A)
 	try
@@ -152,8 +149,8 @@
 
 /obj/structure/displaycase/attacked_by(obj/item/weapon/W, mob/living/user)
 	..()
-	health -= W.force
-	healthcheck()
+	if(W.damtype != STAMINA)
+		take_damage(W.force)
 
 
 /obj/structure/displaycase/attack_paw(mob/user)
@@ -168,11 +165,11 @@
 		update_icon()
 		return
 	else
+		user.do_attack_animation(src)
 		user.visible_message("<span class='danger'>[user] kicks the display case.</span>", \
 						 "<span class='notice'>You kick the display case.</span>")
-		src.health -= 2
-		healthcheck()
-		return
+		take_damage(2)
+
 
 
 /obj/structure/displaycase_chassis

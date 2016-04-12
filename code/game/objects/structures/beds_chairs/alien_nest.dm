@@ -81,13 +81,13 @@
 
 /obj/structure/bed/nest/attacked_by(obj/item/I, mob/user)
 	..()
-	var/aforce = I.force
-	health = max(0, health - aforce)
 	playsound(loc, 'sound/effects/attackblob.ogg', 100, 1)
-	healthcheck()
+	if(I.damtype != STAMINA)
+		take_damage(I.force)
 
-/obj/structure/bed/nest/proc/healthcheck()
+/obj/structure/bed/nest/proc/take_damage(damage_amount)
+	health = max(0, health - damage_amount)
 	if(health <=0)
 		density = 0
 		qdel(src)
-	return
+

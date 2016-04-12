@@ -35,12 +35,11 @@
 
 /obj/machinery/shield/attacked_by(obj/item/I, mob/user)
 	..()
-	if(I.damtype == BRUTE || I.damtype == BURN)
-		take_damage(I.force)
+	take_damage(I.force, I.damtype)
 
 /obj/machinery/shield/bullet_act(obj/item/projectile/Proj)
 	..()
-	take_damage(Proj.damage)
+	take_damage(Proj.damage, Proj.damtype)
 
 /obj/machinery/shield/ex_act(severity, target)
 	switch(severity)
@@ -60,8 +59,7 @@
 		if(1)
 			qdel(src)
 		if(2)
-			if(prob(50))
-				qdel(src)
+			take_damage(50, BRUTE, 0)
 
 /obj/machinery/shield/blob_act()
 	qdel(src)
@@ -77,14 +75,21 @@
 	..()
 	take_damage(tforce)
 
-/obj/machinery/shield/proc/take_damage(damage)
-	playsound(loc, 'sound/effects/EMPulse.ogg', 75, 1)
+/obj/machinery/shield/proc/take_damage(damage, damage_type = BRUTE, sound_effect = 1)
+	switch(damage_type)
+		if(BURN)
+			if(sound_effect)
+				playsound(loc, 'sound/effects/EMPulse.ogg', 75, 1)
+		if(BRUTE)
+			if(sound_effect)
+				playsound(loc, 'sound/effects/EMPulse.ogg', 75, 1)
+		else
+			return
 	opacity = 1
 	spawn(20)
 		opacity = 0
 	health -= damage
 	if(health <= 0)
-		visible_message("<span class='notice'>[src] dissipates.</span>")
 		qdel(src)
 
 /obj/machinery/shieldgen
@@ -142,13 +147,14 @@
 
 	return
 
-/obj/machinery/shieldgen/proc/checkhp()
+/obj/machinery/shieldgen/proc/take_damage(amount, damage_type = BRUTE, sound_effect = 1)
+	health = max(health - amount, 0)
 	if(health <= 30)
-		src.malfunction = 1
+		malfunction = 1 //phil235 TOFINISH
+		update_icon()
 	if(health <= 0)
 		qdel(src)
-	update_icon()
-	return
+
 
 /obj/machinery/shieldgen/ex_act(severity, target)
 	switch(severity)

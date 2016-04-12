@@ -187,23 +187,24 @@
 /obj/effect/blob/ex_act(severity, target)
 	..()
 	var/damage = 150 - 20 * severity
-	take_damage(damage, BRUTE)
+	take_damage(damage, BRUTE, null, 0)
 
 /obj/effect/blob/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	..()
 	var/damage = Clamp(0.01 * exposed_temperature, 0, 4)
-	take_damage(damage, BURN)
+	take_damage(damage, BURN, null, 0)
 
 /obj/effect/blob/bullet_act(var/obj/item/projectile/Proj)
 	..()
-	take_damage(Proj.damage, Proj.damage_type, Proj)
+	take_damage(Proj.damage, Proj.damage_type, Proj, 0)
 	return 0
-
+/*
+/obj/effect/blob/play_item_attack_sounds(obj/item/I)
+	if(I.damtype == BURN) //the gooeyness of the blob mutes all item attack sounds except fire dam type.
+		playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
+*/
 /obj/effect/blob/attacked_by(obj/item/I, mob/living/user)
-	playsound(src.loc, 'sound/effects/attackblob.ogg', 50, 1)
 	user.visible_message("<span class='danger'>[user] has attacked the [src.name] with \the [I]!</span>", "<span class='danger'>You attacked the [src.name] with \the [I]!</span>")
-	if(I.damtype == BURN)
-		playsound(src.loc, 'sound/items/Welder.ogg', 100, 1) //phil235 need to not play the default weapon's sound.
 	take_damage(I.force, I.damtype, user)
 
 /obj/effect/blob/attack_animal(mob/living/simple_animal/M)
@@ -211,32 +212,32 @@
 		return
 	M.changeNext_move(CLICK_CD_MELEE)
 	M.do_attack_animation(src)
-	playsound(src.loc, 'sound/effects/attackblob.ogg', 50, 1)
 	visible_message("<span class='danger'>\The [M] has attacked the [src.name]!</span>")
 	var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
 	take_damage(damage, M.melee_damage_type, M)
-	return
 
 /obj/effect/blob/attack_alien(mob/living/carbon/alien/humanoid/M)
 	M.changeNext_move(CLICK_CD_MELEE)
 	M.do_attack_animation(src)
-	playsound(src.loc, 'sound/effects/attackblob.ogg', 50, 1)
 	visible_message("<span class='danger'>[M] has slashed the [src.name]!</span>")
 	var/damage = rand(15, 30)
 	take_damage(damage, BRUTE, M)
-	return
 
-/obj/effect/blob/proc/take_damage(damage, damage_type, cause = null, overmind_reagent_trigger = 1)
+/obj/effect/blob/proc/take_damage(damage, damage_type, cause = null, sound_effect = 1)
 	switch(damage_type) //blobs only take brute and burn damage
 		if(BRUTE)
+			if(sound_effect)
+				playsound(src.loc, 'sound/effects/attackblob.ogg', 50, 1)
 			damage = max(damage * brute_resist, 0)
 		if(BURN)
+			if(sound_effect)
+				playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
 			damage = max(damage * fire_resist, 0)
 		if(CLONE) //this is basically a marker for 'don't modify the damage'
 
 		else
 			damage = 0
-	if(overmind && overmind_reagent_trigger)
+	if(overmind)
 		damage = overmind.blob_reagent_datum.damage_reaction(src, health, damage, damage_type, cause) //pass the blob, its health before damage, the damage being done, the type of damage being done, and the cause.
 	health -= damage
 	update_icon()

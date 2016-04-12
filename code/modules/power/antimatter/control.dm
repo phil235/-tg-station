@@ -182,12 +182,13 @@
 		return
 
 	return ..()
-
+//phil235 bullet_act attack_alien, attack_animal, etc, shitty code.
 /obj/machinery/power/am_control_unit/attacked_by(obj/item/W, mob/user)
 	..()
-	if(W.force >= 20)
-		stability -= W.force/2
-		check_stability()
+	if(W.damtype != STAMINA)
+		if(W.force >= 20)
+			stability -= W.force/2
+			check_stability()
 
 
 /obj/machinery/power/am_control_unit/attack_hand(mob/user)

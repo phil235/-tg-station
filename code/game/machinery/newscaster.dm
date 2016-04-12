@@ -218,17 +218,16 @@ var/list/obj/machinery/newscaster/allCasters = list()
 	overlays.Cut()
 	if(stat & (NOPOWER|BROKEN))
 		icon_state = "newscaster_off"
-		if(stat & BROKEN)
-			overlays += image(icon, "crack3")
-		return
-	if(news_network.wanted_issue.active)
-		icon_state = "newscaster_wanted"
-		return
-	if(alert)
-		overlays += "newscaster_alert"
-	if(hitstaken > 0)
+	else
+		if(news_network.wanted_issue.active)
+			icon_state = "newscaster_wanted"
+		else
+			icon_state = "newscaster_normal"
+			if(alert)
+				overlays += "newscaster_alert"
+	if(hitstaken)
 		overlays += image(icon, "crack[hitstaken]")
-	icon_state = "newscaster_normal"
+
 
 /obj/machinery/newscaster/power_change()
 	if(stat & BROKEN)
@@ -719,11 +718,33 @@ var/list/obj/machinery/newscaster/allCasters = list()
 		user << "<span class='notice'>You start [anchored ? "un" : ""]securing [name]...</span>"
 		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
 		if(do_after(user, 60/I.toolspeed, target = src))
-			user << "<span class='notice'>You [anchored ? "un" : ""]secure [name].</span>"
-			new /obj/item/wallframe/newscaster(loc)
 			playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
+			if(stat & BROKEN)
+				user << "<span class='warning'>The broken remains of [src] fall on the ground.</span>"
+				new /obj/item/stack/sheet/metal(loc, 5)
+				new /obj/item/weapon/shard(loc)
+				new /obj/item/weapon/shard(loc)
+			else
+				user << "<span class='notice'>You [anchored ? "un" : ""]secure [name].</span>"
+				new /obj/item/wallframe/newscaster(loc)
 			qdel(src)
-		return
+	else if(istype(I, /obj/item/weapon/weldingtool) && user.a_intent != "harm")
+		var/obj/item/weapon/weldingtool/WT = I
+		if(stat & BROKEN)
+			if(WT.remove_fuel(0,user))
+				user.visible_message("[user] is repairing [src].", \
+								"<span class='notice'>You begin repairing [src]...</span>", \
+								"<span class='italics'>You hear welding.</span>")
+				playsound(loc, 'sound/items/Welder.ogg', 40, 1)
+				if(do_after(user,40/WT.toolspeed, 1, target = src))
+					if(!WT.isOn() || !(stat & BROKEN))
+						return
+					user << "<span class='notice'>You repair [src].</span>"
+					playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
+					stat &= ~BROKEN
+					update_icon()
+		else
+			user << "<span class='notice'>[src] does not need repairs.</span>"
 	else
 		return ..()
 
@@ -743,15 +764,13 @@ var/list/obj/machinery/newscaster/allCasters = list()
 				audible_message("<span class='danger'>[user.name] smashes the [name]!</span>", null, 5 )
 				stat |= BROKEN
 				playsound(loc, 'sound/effects/Glassbr3.ogg', 100, 1)
-				update_icon()
 			else
 				audible_message("<span class='danger'>[user.name] forcefully slams the [name] with the [I.name]!</span>", null, 5 )
-				playsound(loc, 'sound/effects/Glasshit.ogg', 100, 1)
-
+				playsound(loc, 'sound/effects/hit_on_shattered_glass.ogg', 100, 1)
+			update_icon()
 
 /obj/machinery/newscaster/attack_paw(mob/user)
 	user << "<span class='warning'>The newscaster controls are far too complicated for your tiny brain!</span>"
-	return
 
 /obj/machinery/newscaster/proc/AttachPhoto(mob/user)
 	if(photo)

@@ -293,24 +293,24 @@
 /obj/item/weapon/storage/proc/handle_item_insertion(obj/item/W, prevent_warning = 0, mob/user)
 	if(!istype(W))
 		return 0
-	if(user)
-		if(!user.unEquip(W))
+	if(usr)
+		if(!usr.unEquip(W))
 			return 0
 	if(silent)
 		prevent_warning = 1
 	W.loc = src
 	W.on_enter_storage(src)
-	if(user)
-		if(user.client && user.s_active != src)
-			user.client.screen -= W
+	if(usr)
+		if(usr.client && usr.s_active != src)
+			usr.client.screen -= W
 
-		add_fingerprint(user)
+		add_fingerprint(usr)
 
-		if(!prevent_warning && !istype(W, /obj/item/weapon/gun/energy/kinetic_accelerator/crossbow))
-			for(var/mob/M in viewers(user, null))
+		if(!prevent_warning)
+			for(var/mob/M in viewers(usr, null))
 				if(M == usr)
 					usr << "<span class='notice'>You put [W] [preposition]to [src].</span>"
-				else if(in_range(M, user)) //If someone is standing close enough, they can tell what it is...
+				else if(in_range(M, usr)) //If someone is standing close enough, they can tell what it is...
 					M.show_message("<span class='notice'>[usr] puts [W] [preposition]to [src].</span>", 1)
 				else if(W && W.w_class >= 3) //Otherwise they can only see large or normal items from a distance...
 					M.show_message("<span class='notice'>[usr] puts [W] [preposition]to [src].</span>", 1)

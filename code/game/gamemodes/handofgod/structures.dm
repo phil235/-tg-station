@@ -52,9 +52,6 @@
 
 
 /obj/structure/divine/attackby(obj/item/I, mob/user)
-	if(!I || (I.flags & ABSTRACT))
-		return 0
-
 	//Structure conversion/capture
 	if(istype(I, /obj/item/weapon/godstaff))
 		if(!is_handofgod_cultist(user))
@@ -70,14 +67,12 @@
 		return ..()
 
 /obj/structure/divine/attacked_by(obj/item/I, mob/living/user)
-	visible_message("<span class='danger'>\The [src] has been attacked with \the [I][(user ? " by [user]" : ".")]!</span>")
+	..()
 	health = max(0, health-I.force)
 	healthcheck()
 
 
 /obj/structure/divine/bullet_act(obj/item/projectile/Proj)
-	if(!Proj)
-		return 0
 	. = ..() //phil235
 	if(Proj.damage_type == BRUTE || Proj.damage_type == BURN)
 		health = max(0, health-Proj.damage)

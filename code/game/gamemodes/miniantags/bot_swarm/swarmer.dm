@@ -371,6 +371,7 @@
 	var/health = 30
 
 /obj/effect/swarmer/destructible/proc/TakeDamage(damage)
+	playsound(loc, 'sound/weapons/Egloves.ogg', 80, 1)
 	health -= damage
 	if(health <= 0)
 		qdel(src)
@@ -379,9 +380,10 @@
 	if(Proj.damage)
 		if((Proj.damage_type == BRUTE || Proj.damage_type == BURN))
 			TakeDamage(Proj.damage)
-	return ..()
+	return ..() //phil235
 
 /obj/effect/swarmer/destructible/attacked_by(obj/item/I, mob/living/user)
+	..()
 	TakeDamage(I.force)
 
 /obj/effect/swarmer/destructible/ex_act()

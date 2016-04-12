@@ -33,8 +33,7 @@
 /obj/structure/grille/attack_hulk(mob/living/carbon/human/user)
 	..(user, 1)
 	shock(user, 70)
-	health -= 5
-	healthcheck()
+	take_damage(5)
 
 /obj/structure/grille/attack_hand(mob/living/user)
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -43,12 +42,8 @@
 	user.visible_message("<span class='warning'>[user] hits [src].</span>", \
 						 "<span class='danger'>You hit [src].</span>", \
 						 "<span class='italics'>You hear twisting metal.</span>")
-
-	if(shock(user, 70))
-		return
-	else
-		health -= rand(1,2)
-	healthcheck()
+	if(!shock(user, 70))
+		take_damage(rand(1,2))
 
 /obj/structure/grille/attack_alien(mob/living/user)
 	user.do_attack_animation(src)
@@ -57,11 +52,8 @@
 	user.visible_message("<span class='warning'>[user] mangles [src].</span>", \
 						 "<span class='danger'>You mangle [src].</span>", \
 						 "<span class='italics'>You hear twisting metal.</span>")
-
 	if(!shock(user, 70))
-		health -= 5
-		healthcheck()
-		return
+		take_damage(5)
 
 /obj/structure/grille/attack_slime(mob/living/simple_animal/slime/user)
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -73,10 +65,7 @@
 	user.visible_message("<span class='warning'>[user] smashes against [src].</span>", \
 						 "<span class='danger'>You smash against [src].</span>", \
 						 "<span class='italics'>You hear twisting metal.</span>")
-
-	health -= rand(1,2)
-	healthcheck()
-	return
+	take_damage(rand(1,2))
 
 /obj/structure/grille/attack_animal(var/mob/living/simple_animal/M)
 	M.changeNext_move(CLICK_CD_MELEE)
@@ -87,17 +76,13 @@
 	M.visible_message("<span class='warning'>[M] smashes against [src].</span>", \
 					  "<span class='danger'>You smash against [src].</span>", \
 					  "<span class='italics'>You hear twisting metal.</span>")
-
-	health -= M.melee_damage_upper
-	healthcheck()
-	return
+	take_damage(M.melee_damage_upper)
 
 
 /obj/structure/grille/mech_melee_attack(obj/mecha/M)
 	if(..())
 		playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
-		health -= M.force * 0.5
-		healthcheck()
+		take_damage(M.force * 0.5)
 
 
 /obj/structure/grille/CanPass(atom/movable/mover, turf/target, height=0)
@@ -117,13 +102,9 @@
 		. = . || mover.checkpass(PASSGRILLE)
 
 /obj/structure/grille/bullet_act(var/obj/item/projectile/Proj)
-	if(!Proj)
-		return
-	..()
+	..() //phil235
 	if((Proj.damage_type != STAMINA)) //Grilles can't be exhausted to death
-		src.health -= Proj.damage*0.3
-		healthcheck()
-	return
+		take_damage(Proj.damage*0.3)
 
 /obj/structure/grille/Deconstruct()
 	if(!loc) //if already qdel'd somehow, we do nothing
@@ -214,18 +195,18 @@
 			playsound(loc, 'sound/items/welder.ogg', 80, 1)
 		else
 			playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
-	health -= I.force * 0.3
-	healthcheck()
+	take_damage(I.force * 0.3)
 
 
-/obj/structure/grille/proc/healthcheck()
+/obj/structure/grille/proc/take_damage(damage)
+	health -= damage
 	if(health <= 0)
 		if(!destroyed)
 			Break()
 		else
 			if(health <= -6)
 				Deconstruct()
-	return
+
 
 // shock user with probability prb (if all connections & power are working)
 // returns 1 if shocked, 0 otherwise
@@ -252,8 +233,7 @@
 /obj/structure/grille/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(!destroyed)
 		if(exposed_temperature > T0C + 1500)
-			health -= 1
-			healthcheck()
+			take_damage(1)
 	..()
 
 /obj/structure/grille/hitby(AM as mob|obj)
@@ -265,8 +245,7 @@
 		var/obj/item/I = AM
 		tforce = max(0, I.throwforce * 0.5)
 	playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
-	health = max(0, health - tforce)
-	healthcheck()
+	take_damage(tforce)
 
 /obj/structure/grille/storage_contents_dump_act(obj/item/weapon/storage/src_object, mob/user)
 	return 0

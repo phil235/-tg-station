@@ -85,6 +85,7 @@
 	var/holo_integrity = 1
 
 /obj/effect/overlay/holograph/attacked_by(obj/item/I, mob/user)
+	..()
 	if(I.force >= 10)
 		take_damage(3, user)
 	else
@@ -94,13 +95,13 @@
 	qdel(src)
 
 /obj/effect/overlay/holograph/attack_animal(mob/living/simple_animal/M)
-	take_damage(5, M)
+	attack_generic(5, M)
 
 /obj/effect/overlay/holograph/attack_alien(mob/living/carbon/alien/A)
-	take_damage(5, A)
+	attack_generic(5, A)
 
 /obj/effect/overlay/holograph/attack_hand(mob/living/user)
-	take_damage(1, user)
+	attack_generic(1, user)
 
 /obj/effect/overlay/holograph/mech_melee_attack(obj/mecha/M)
 	playsound(loc, 'sound/weapons/Egloves.ogg', 80, 1)
@@ -109,16 +110,19 @@
 
 /obj/effect/overlay/holograph/attack_slime(mob/living/simple_animal/slime/S)
 	if(S.is_adult)
-		take_damage(5, S)
+		attack_generic(5, S)
 	else
-		take_damage(2, S)
+		attack_generic(2, S)
 
-/obj/effect/overlay/holograph/proc/take_damage(amount, mob/living/user)
+/obj/effect/overlay/holograph/proc/attack_generic(damage_amount, mob/user)
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src)
-	playsound(loc, 'sound/weapons/Egloves.ogg', 80, 1)
 	user.visible_message("<span class='danger'>[user] hits [src].</span>", \
 						 "<span class='danger'>You hit [src].</span>" )
+	take_damage(damage_amount)
+
+/obj/effect/overlay/holograph/proc/take_damage(amount)
+	playsound(loc, 'sound/weapons/Egloves.ogg', 80, 1)
 	holo_integrity -= amount
 	if(holo_integrity <= 0)
 		qdel(src)
@@ -131,16 +135,12 @@
 	else if(isobj(AM))
 		var/obj/item/I = AM
 		tforce = max(1, I.throwforce * 0.2)
-	playsound(loc, 'sound/weapons/Egloves.ogg', 80, 1)
-	holo_integrity -= tforce
-	if(holo_integrity <= 0)
-		qdel(src)
+	take_damage(tforce)
 
 /obj/effect/overlay/holograph/bullet_act(obj/item/projectile/P)
 	if((P.damage_type == BRUTE || P.damage_type == BURN))
-		holo_integrity -= P.damage * 0.5
-		if(holo_integrity <= 0)
-			qdel(src)
+		take_damage(P.damage * 0.5)
+//phil235 call ..() ?
 
 /obj/effect/overlay/holograph/wetsign
 	name = "wet floor sign"

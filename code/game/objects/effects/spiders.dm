@@ -22,23 +22,27 @@
 /obj/effect/spider/attacked_by(obj/item/I, mob/user)
 	..()
 	var/damage = I.force
-	if(I.damtype != "fire")
-		damage *= 0.25
-
-	if(istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = I
-
-		if(WT.remove_fuel(0, user))
-			damage = 15
-			playsound(loc, 'sound/items/Welder.ogg', 100, 1)
-
-	take_damage(damage)
-
+	switch(I.damtype)
+		if(BRUTE)
+			damage *= 0.25
+		if(BURN)
+			damage *= 2
+		else
+			damage = 0 //stamina damage does no damage
+	take_damage(damage, I.damtype, 1)
+/*
+/obj/effect/spider/play_item_attack_sounds(obj/item/I)
+	if(I.damtype == BURN) //the stickiness of the web mutes all item attack sounds except fire dam type.
+		playsound(loc, 'sound/items/Welder.ogg', 100, 1)
+*/
 /obj/effect/spider/bullet_act(obj/item/projectile/Proj)
 	. = ..()
 	take_damage(Proj.damage)
 
-/obj/effect/spider/proc/take_damage(amount)
+/obj/effect/spider/proc/take_damage(amount, damage_type = BRUTE, play_sound = 0)
+	if(play_sound)
+		if(damage_type == BURN) //the stickiness of the web mutes all attack sounds except fire damage type.
+			playsound(loc, 'sound/items/Welder.ogg', 100, 1)
 	health -= amount
 	if(health <= 0)
 		qdel(src)
@@ -124,11 +128,6 @@
 /obj/effect/spider/spiderling/proc/die()
 	visible_message("<span class='alert'>[src] dies!</span>")
 	qdel(src)
-
-/obj/effect/spider/spiderling/take_damage(amount)
-	health -= amount
-	if(health <= 0)
-		die()
 
 /obj/effect/spider/spiderling/process()
 	if(travelling_in_vent)

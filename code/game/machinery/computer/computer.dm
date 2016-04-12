@@ -106,7 +106,8 @@
 
 /obj/machinery/computer/attacked_by(obj/item/I, mob/user)
 	..()
-	take_damage(I.force, 1)
+	if(I.damtype != STAMINA)
+		take_damage(I.force, I.damtype, 1)
 
 /obj/machinery/computer/attack_paw(mob/living/user)
 	user.do_attack_animation(src)
@@ -114,8 +115,7 @@
 	user.visible_message("<span class='danger'>[user.name] smashes against the [src.name] with its paws.</span>",\
 	"<span class='danger'>You smash against the [src.name] with your paws.</span>",\
 	"<span class='italics'>You hear a clicking sound.</span>")
-	if(circuit)
-		take_damage(4, 1)
+	take_damage(4, BRUTE, 1)
 
 /obj/machinery/computer/attack_alien(mob/living/user)
 	user.do_attack_animation(src)
@@ -123,8 +123,7 @@
 	user.visible_message("<span class='danger'>[user.name] smashes against the [src.name] with its claws.</span>",\
 	"<span class='danger'>You smash against the [src.name] with your claws.</span>",\
 	"<span class='italics'>You hear a clicking sound.</span>")
-	if(circuit)
-		take_damage(20, 1)
+	take_damage(20, BRUTE, 1)
 
 /obj/machinery/computer/attack_animal(mob/living/simple_animal/M)
 	M.do_attack_animation(src)
@@ -133,17 +132,21 @@
 		M.visible_message("<span class='danger'>[M.name] smashes against the [src.name].</span>",\
 		"<span class='danger'>You smash against the [src.name].</span>",\
 		"<span class='italics'>You hear a clicking sound.</span>")
-		if(circuit)
-			take_damage(M.melee_damage_upper, 1)
+		take_damage(M.melee_damage_upper, M.melee_damage_type, 1)
 
-/obj/machinery/computer/proc/take_damage(amount, attack_sound = 0)
+/obj/machinery/computer/proc/take_damage(amount, damage_type = BRUTE, attack_sound = 0)
 	if(attack_sound)
-		if(stat & BROKEN)
-			playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 70, 1)
-		else
-			playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)
+		switch(damage_type)
+			if(BRUTE)
+				if(stat & BROKEN)
+					playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 70, 1)
+				else
+					playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)
+			if(BURN)
+				playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
 	computer_health = max(computer_health - amount, 0)
 	if(circuit) //no circuit, no breaking
 		if(!computer_health && !(stat && BROKEN))
+			playsound(loc, 'sound/effects/Glassbr3.ogg', 100, 1)
 			stat |= BROKEN
 			update_icon()

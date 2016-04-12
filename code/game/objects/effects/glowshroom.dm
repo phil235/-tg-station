@@ -119,8 +119,9 @@ obj/effect/glowshroom/glowcap
 
 /obj/effect/glowshroom/attacked_by(obj/item/I, mob/user)
 	..()
-	endurance -= I.force
-	CheckEndurance()
+	if(I.damtype != STAMINA)
+		endurance -= I.force
+		CheckEndurance()
 
 /obj/effect/glowshroom/ex_act(severity, target)
 	switch(severity)

@@ -118,7 +118,8 @@
 	shatter()
 
 /obj/structure/closet/statue/attacked_by(obj/item/I, mob/living/user)
-	health -= I.force
+	if(I.damtype != STAMINA)
+		health -= I.force
 	visible_message("<span class='danger'>[user] strikes [src] with [I].</span>")
 	if(health <= 0)
 		shatter()

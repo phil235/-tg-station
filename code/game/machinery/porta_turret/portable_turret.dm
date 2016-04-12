@@ -317,12 +317,9 @@
 
 /obj/machinery/porta_turret/attacked_by(obj/item/I, mob/user)
 	..()
-	take_damage(I.force * 0.5)
-	if(I.force * 0.5 > 1) //if the force of impact dealt at least 1 damage, the turret gets pissed off
-		if(!attacked && !emagged)
-			attacked = 1
-			spawn(60)
-				attacked = 0
+	if(I.damtype != STAMINA)
+		take_damage(I.force * 0.5)
+
 
 /obj/machinery/porta_turret/attack_animal(mob/living/simple_animal/M)
 	M.changeNext_move(CLICK_CD_MELEE)
@@ -335,7 +332,6 @@
 		take_damage(M.melee_damage_upper)
 	else
 		M << "<span class='danger'>That object is useless to you.</span>"
-	return
 
 /obj/machinery/porta_turret/attack_alien(mob/living/carbon/alien/humanoid/M)
 	M.changeNext_move(CLICK_CD_MELEE)
@@ -362,13 +358,6 @@
 		on = 1 //turns it back on. The cover popUp() popDown() are automatically called in process(), no need to define it here
 
 /obj/machinery/porta_turret/bullet_act(obj/item/projectile/Proj)
-	if(on)
-		if(!attacked && !emagged)
-			attacked = 1
-			spawn()
-				sleep(60)
-				attacked = 0
-
 	var/damage_dealt = 0
 	if((Proj.damage_type == BRUTE || Proj.damage_type == BURN))
 		damage_dealt = Proj.damage
@@ -380,18 +369,17 @@
 			spark_system.start()
 		take_damage(damage_dealt)
 
-	if(lasercolor == "b" && disabled == 0)
-		if(istype(Proj, /obj/item/projectile/beam/lasertag/redtag))
-			disabled = 1
-			qdel(Proj)
-			sleep(100)
-			disabled = 0
-	if(lasercolor == "r" && disabled == 0)
-		if(istype(Proj, /obj/item/projectile/beam/lasertag/bluetag))
-			disabled = 1
-			qdel(Proj)
-			sleep(100)
-			disabled = 0
+	if(!disabled)
+		if(lasercolor == "b")
+			if(istype(Proj, /obj/item/projectile/beam/lasertag/redtag))
+				disabled = 1
+				spawn(100)
+					disabled = 0
+		else if(lasercolor == "r")
+			if(istype(Proj, /obj/item/projectile/beam/lasertag/bluetag))
+				disabled = 1
+				spawn(100)
+					disabled = 0
 
 
 /obj/machinery/porta_turret/emp_act(severity)
@@ -418,6 +406,11 @@
 
 
 /obj/machinery/porta_turret/proc/take_damage(damage)
+	if(on && damage > 1) //if the force of impact dealt at least 1 damage, the turret gets pissed off
+		if(!attacked && !emagged)
+			attacked = 1
+			spawn(60)
+				attacked = 0
 	health -= damage
 	if(health <= 0)
 		die()

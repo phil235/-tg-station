@@ -189,9 +189,7 @@
 			W.spawnfragments() // this will qdel and spawn shards
 		else if(istype(A,/obj/structure/grille))
 			var/obj/structure/grille/G = A
-			G.health = -6
-			G.destroyed += prob(25) // If this is set, healthcheck will completely remove the grille
-			G.healthcheck()
+			G.take_damage(16)
 
 
 /*

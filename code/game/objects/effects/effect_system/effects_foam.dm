@@ -275,8 +275,8 @@
 	else
 		user << "<span class='warning'>You hit the metal foam to no effect!</span>"
 
-/obj/structure/foamedmetal/play_item_attack_sounds(obj/item/I) //no sound when attacking foamed metal with weapons.
-	return
+/obj/structure/foamedmetal/play_item_attack_sounds(obj/item/I)
+	playsound(I.loc, 'sound/weapons/tap.ogg', 100, 1) //the item attack sound is muffled by the foam.
 
 /obj/structure/foamedmetal/CanPass(atom/movable/mover, turf/target, height=1.5)
 	return !density

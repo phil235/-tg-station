@@ -131,7 +131,7 @@
 	else if(processing)
 		shutdown_core()
 
-
+//phil235 no attack_animal, shitty bullet_act, shitty ex_act etc
 /obj/machinery/am_shielding/attacked_by(obj/item/W, mob/user)
 	..()
 	if(W.force > 10)

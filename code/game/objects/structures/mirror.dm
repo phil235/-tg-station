@@ -42,23 +42,15 @@
 
 
 /obj/structure/mirror/proc/shatter()
-	if(shattered)
-		return
-	shattered = 1
 	icon_state = "mirror_broke"
 	playsound(src, "shatter", 70, 1)
 	desc = "Oh no, seven years of bad luck!"
 
 
 /obj/structure/mirror/bullet_act(obj/item/projectile/Proj)
-	if(prob(Proj.damage * 2))
-		if((Proj.damage_type == BRUTE || Proj.damage_type == BURN))
-			if(!shattered)
-				shatter()
-			else
-				playsound(src, 'sound/effects/hit_on_shattered_glass.ogg', 70, 1)
+	if(Proj.damage_type == BRUTE || Proj.damage_type == BURN)
+		take_damage(Proj.damage)
 	..()
-
 
 /obj/structure/mirror/attackby(obj/item/I, mob/living/user, params)
 	if(istype(I, /obj/item/weapon/weldingtool) && user.a_intent != "harm")
@@ -79,54 +71,33 @@
 		return ..()
 
 /obj/structure/mirror/attacked_by(obj/item/I, mob/living/user)
-	if(I.damtype == STAMINA)
-		return
-	if(shattered)
-		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 70, 1)
-		return
-	if(prob(I.force * 2))
-		visible_message("<span class='warning'>[user] smashes [src] with [I].</span>")
-		shatter()
-	else
-		visible_message("<span class='warning'>[user] hits [src] with [I]!</span>")
-		playsound(src.loc, 'sound/effects/Glasshit.ogg', 70, 1)
+	..()
+	if(I.damtype != STAMINA)
+		take_damage(I.force)
 
+/obj/structure/mirror/proc/take_damage(damage)
+	if(!shattered)
+		if(damage)
+			shatter()
+	else
+		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 70, 1)
+
+/obj/structure/mirror/proc/attack_generic(mob/living/user)
+	user.changeNext_move(CLICK_CD_MELEE)
+	user.do_attack_animation(src)
+	user.visible_message("<span class='danger'>[user] smashes [src]!</span>")
+	take_damage(5)
 
 /obj/structure/mirror/attack_alien(mob/living/user)
-	user.changeNext_move(CLICK_CD_MELEE)
-	user.do_attack_animation(src)
-	if(islarva(user))
-		return
-	if(shattered)
-		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 70, 1)
-		return
-	user.visible_message("<span class='danger'>[user] smashes [src]!</span>")
-	shatter()
+	attack_generic(user)
 
-
-/obj/structure/mirror/attack_animal(mob/living/user)
-	if(!isanimal(user))
-		return
-	var/mob/living/simple_animal/M = user
+/obj/structure/mirror/attack_animal(mob/living/simple_animal/M)
 	if(M.melee_damage_upper <= 0)
 		return
-	user.changeNext_move(CLICK_CD_MELEE)
-	M.do_attack_animation(src)
-	if(shattered)
-		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 70, 1)
-		return
-	user.visible_message("<span class='danger'>[user] smashes [src]!</span>")
-	shatter() //phil235 mirror needs a take damage proc to avoid copypasta
-
+	attack_generic(M)
 
 /obj/structure/mirror/attack_slime(mob/living/user)
-	user.changeNext_move(CLICK_CD_MELEE)
-	user.do_attack_animation(src)
-	if(shattered)
-		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 70, 1)
-		return
-	user.visible_message("<span class='danger'>[user] smashes [src]!</span>")
-	shatter()
+	attack_generic(user)
 
 /obj/structure/mirror/magic
 	name = "magic mirror"

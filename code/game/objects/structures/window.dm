@@ -127,7 +127,7 @@
 	user.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!"))
 	user.visible_message("<span class='danger'>[user] smashes through [src]!</span>")
 	add_fingerprint(user)
-	hit(50)
+	take_damage(50)
 	return 1
 
 /obj/structure/window/attack_hand(mob/user)
@@ -268,14 +268,15 @@
 /obj/structure/window/attacked_by(obj/item/I, mob/living/user)
 	..()
 	if(I.damtype == BRUTE || I.damtype == BURN)
-		hit(I.force)
-	else
-		playsound(loc, 'sound/effects/Glasshit.ogg', 75, 1)
-
-
+		take_damage(I.force)
+/*
+/obj/structure/window/play_item_attack_sounds(obj/item/I)
+	if(I.damtype == BURN)
+		playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
+*/
 /obj/structure/window/mech_melee_attack(obj/mecha/M)
 	if(..())
-		hit(M.force, 1)
+		take_damage(M.force)
 
 
 /obj/structure/window/proc/can_be_reached(mob/user)
@@ -286,16 +287,19 @@
 					return 0
 	return 1
 
-/obj/structure/window/proc/hit(damage, sound_effect = 1)
+/obj/structure/window/proc/take_damage(damage, damage_type = BRUTE, sound_effect = 1)
 	if(reinf)
 		damage *= 0.5
 	health = max(0, health - damage)
 	update_nearby_icons()
 	if(sound_effect)
-		playsound(loc, 'sound/effects/Glasshit.ogg', 75, 1)
+		switch(damage_type)
+			if(BRUTE)
+				playsound(loc, 'sound/effects/Glasshit.ogg', 75, 1)
+			if(BURN)
+				playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
 	if(health <= 0)
 		spawnfragments()
-		return
 
 /obj/structure/window/proc/spawnfragments()
 	if(qdeleted())
@@ -423,7 +427,7 @@
 
 /obj/structure/window/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > T0C + (reinf ? 1600 : 800))
-		hit(round(exposed_volume / 100), 0)
+		take_damage(round(exposed_volume / 100), BURN, 0)
 	..()
 
 /obj/structure/window/storage_contents_dump_act(obj/item/weapon/storage/src_object, mob/user)
