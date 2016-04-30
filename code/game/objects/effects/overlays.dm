@@ -121,6 +121,30 @@
 	icon_state = "purplecrack"
 	duration = 6
 
+/obj/effect/overlay/temp/bullet_impact
+	name = "bullet_impact"
+	icon = 'icons/effects/projectile_effects.dmi'
+	icon_state = ""
+	duration = 10
+
+/obj/effect/overlay/temp/bullet_impact/New(loc, new_icon)
+	icon_state = new_icon
+	pixel_x = -4 + rand(0,8)
+	pixel_y = -4 + rand(0,8)
+	..()
+
+/obj/effect/overlay/temp/firing_flash
+	name = "firing flash"
+	icon = 'icons/effects/projectile_effects.dmi'
+	icon_state = ""
+	duration = 10
+
+/obj/effect/overlay/temp/firing_flash/New(loc, new_icon)
+	icon_state = new_icon
+	pixel_x = -3 + rand(0,6)
+	pixel_y = -3 + rand(0,6)
+	..()
+
 
 /obj/effect/overlay/temp/emp
 	name = "emp sparks"

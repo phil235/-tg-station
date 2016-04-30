@@ -40,6 +40,9 @@
 	var/jitter = 0
 	var/forcedodge = 0 //to pass through everything
 
+	var/firing_icon = "bullet_flash" //the icon for the overlay appearing on the gun's turf when fired
+	var/impact_icon = "bullet_impact" //the icon for the overlay appearing on the target's turf when hit
+
 /obj/item/projectile/New()
 	permutated = list()
 	return ..()
@@ -53,6 +56,9 @@
 	qdel(src)
 
 /obj/item/projectile/proc/on_hit(atom/target, blocked = 0, hit_zone)
+	var/turf/T = get_turf(target)
+	if(!suppressed)
+		new /obj/effect/overlay/temp/bullet_impact(T, impact_icon)
 	if(!isliving(target))
 		return 0
 	var/mob/living/L = target

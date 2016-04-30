@@ -55,9 +55,13 @@
 			BB.p_x = text2num(mouse_control["icon-x"])
 		if(mouse_control["icon-y"])
 			BB.p_y = text2num(mouse_control["icon-y"])
-	if(BB)
-		BB.fire()
+
+	BB.fire()
+	var/turf/ammo_loc = get_turf(src)
+	if(!BB.suppressed)
+		new /obj/effect/overlay/temp/firing_flash(ammo_loc, BB.firing_icon)
 	BB = null
+
 	return 1
 
 /obj/item/ammo_casing/proc/spread(turf/target, turf/current, distro)
