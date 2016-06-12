@@ -46,7 +46,7 @@
 		src.add_fingerprint(usr)
 		usr << "<span class='warning'>It's locked!</span>"
 		return 0
-	..()
+	..() //phil235
 
 /obj/item/weapon/storage/lockbox/emag_act(mob/user)
 	if(!broken)

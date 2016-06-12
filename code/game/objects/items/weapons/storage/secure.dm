@@ -78,7 +78,7 @@
 		src.add_fingerprint(usr)
 		usr << "<span class='warning'>It's locked!</span>"
 		return 0
-	..()
+	..()//phil235
 
 /obj/item/weapon/storage/secure/attack_self(mob/user)
 	user.set_machine(src)

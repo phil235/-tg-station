@@ -14,6 +14,8 @@
 	evidencebagEquip(I, user)
 
 /obj/item/weapon/evidencebag/attackby(obj/item/I, mob/user, params)
+	if(I.no_direct_insertion)
+		return ..()
 	if(evidencebagEquip(I, user))
 		return 1
 

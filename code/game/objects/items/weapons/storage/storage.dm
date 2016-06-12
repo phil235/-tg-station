@@ -43,11 +43,14 @@
 			show_to(M)
 			return
 
-		if(!M.restrained() && !M.stat)
+		if(!M.incapacitated())
 			if(!istype(over_object, /obj/screen))
-				return content_can_dump(over_object, M)
+				if(no_direct_insertion && istype(over_object, /obj/item/weapon/storage))
+					return ..()
+				else
+					return content_can_dump(over_object, M)
 
-			if(loc != usr || (loc && loc.loc == usr))
+			if(loc != usr)
 				return
 
 			playsound(loc, "rustle", 50, 1, -5)
@@ -64,6 +67,15 @@
 						M.put_in_l_hand(src)
 
 			add_fingerprint(usr)
+
+/obj/item/weapon/storage/MouseDrop_T(atom/movable/O, mob/user)
+	if(istype(O, /obj/item))
+		var/obj/item/I = O
+		if(iscarbon(user) || isdrone(user))
+			var/mob/living/L = user
+			if(!L.incapacitated() && I == L.get_active_hand())
+				if(can_be_inserted(I, 0 , L))
+					handle_item_insertion(I, 0 , L)
 
 //Check if this storage can dump the items
 /obj/item/weapon/storage/proc/content_can_dump(atom/dest_object, mob/user)
@@ -243,7 +255,7 @@
 		return 0 //Means the item is already in the storage item
 	if(contents.len >= storage_slots)
 		if(!stop_messages)
-			usr << "<span class='warning'>[src] is full, make some space!</span>"
+			user << "<span class='warning'>[src] is full, make some space!</span>"
 		return 0 //Storage item is full
 
 	if(can_hold.len)
@@ -254,18 +266,18 @@
 				break
 		if(!ok)
 			if(!stop_messages)
-				usr << "<span class='warning'>[src] cannot hold [W]!</span>"
+				user << "<span class='warning'>[src] cannot hold [W]!</span>"
 			return 0
 
 	for(var/A in cant_hold) //Check for specific items which this container can't hold.
 		if(istype(W, A))
 			if(!stop_messages)
-				usr << "<span class='warning'>[src] cannot hold [W]!</span>"
+				user << "<span class='warning'>[src] cannot hold [W]!</span>"
 			return 0
 
 	if(W.w_class > max_w_class)
 		if(!stop_messages)
-			usr << "<span class='warning'>[W] is too big for [src]!</span>"
+			user << "<span class='warning'>[W] is too big for [src]!</span>"
 		return 0
 
 	var/sum_w_class = W.w_class
@@ -274,13 +286,13 @@
 
 	if(sum_w_class > max_combined_w_class)
 		if(!stop_messages)
-			usr << "<span class='warning'>[W] won't fit in [src], make some space!</span>"
+			user << "<span class='warning'>[W] won't fit in [src], make some space!</span>"
 		return 0
 
 	if(W.w_class >= w_class && (istype(W, /obj/item/weapon/storage)))
 		if(!istype(src, /obj/item/weapon/storage/backpack/holding))	//bohs should be able to hold backpacks again. The override for putting a boh in a boh is in backpack.dm.
 			if(!stop_messages)
-				usr << "<span class='warning'>[src] cannot hold [W] as it's a storage item of the same size!</span>"
+				user << "<span class='warning'>[src] cannot hold [W] as it's a storage item of the same size!</span>"
 			return 0 //To prevent the stacking of same sized storage items.
 
 	if(W.flags & NODROP) //SHOULD be handled in unEquip, but better safe than sorry.
@@ -366,16 +378,46 @@
 		remove_from_storage(Item, src.loc, burn)
 
 //This proc is called when you want to place an item into the storage item.
-/obj/item/weapon/storage/attackby(obj/item/W, mob/user, params)
-	..()
-	. = 1 //no afterattack
-	if(isrobot(user))
-		return	//Robots can't interact with storage items.
+/obj/item/weapon/storage/attackby(obj/item/I, mob/user, params)
+	if(I.no_direct_insertion)
+		return 0
+	if(can_be_inserted(I, 0, user))
+		handle_item_insertion(I, 0, user)
+		return 1 //no afterattack
 
-	if(!can_be_inserted(W, 0 , user))
+/obj/item/weapon/storage/afterattack(atom/A, mob/user, proximity, params)
+	if(!proximity || !istype(A, /obj/item))
 		return
+	var/obj/item/W = A
+	if(use_to_pickup)
+		if(collection_mode) //Mode is set to collect multiple items on a tile and we clicked on a valid one.
+			if(isturf(W.loc))
+				var/list/rejections = list()
+				var/success = 0
+				var/failure = 0
 
-	handle_item_insertion(W, 0 , user)
+				for(var/obj/item/I in W.loc)
+					if(collection_mode == 2 && !istype(I, W.type)) // We're only picking up items of the target type
+						failure = 1
+						continue
+					if(I.type in rejections) // To limit bag spamming: any given type only complains once
+						continue
+					if(!can_be_inserted(I, 0, user))// Note can_be_inserted still makes noise when the answer is no
+						rejections += I.type	// therefore full bags are still a little spammy
+						failure = 1
+						continue
+
+					success = 1
+					handle_item_insertion(I, 1)	//The 1 stops the "You put the [src] into [S]" insertion message from being displayed.
+				if(success && !failure)
+					user << "<span class='notice'>You put everything [preposition] [src].</span>"
+				else if(success)
+					user << "<span class='notice'>You put some things [preposition] [src].</span>"
+				else
+					user << "<span class='warning'>You fail to pick anything up with [src]!</span>"
+
+		else if(can_be_inserted(W, 0, user))
+			handle_item_insertion(W)
 
 
 /obj/item/weapon/storage/attack_hand(mob/user)
@@ -433,7 +475,7 @@
 	set name = "Empty Contents"
 	set category = "Object"
 
-	if((!ishuman(usr) && (loc != usr)) || usr.stat || usr.restrained() ||!usr.canmove)
+	if((!ishuman(usr) && (loc != usr)) || usr.incapacitated())
 		return
 
 	do_quick_empty()

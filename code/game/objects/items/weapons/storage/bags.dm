@@ -39,6 +39,7 @@
 	storage_slots = 30
 	can_hold = list() // any
 	cant_hold = list(/obj/item/weapon/disk/nuclear)
+	no_direct_insertion = 1
 
 /obj/item/weapon/storage/bag/trash/suicide_act(mob/user)
 	user.visible_message("<span class='suicide'>[user] puts the [src.name] over their head and starts chomping at the insides! Disgusting!</span>")
@@ -156,17 +157,17 @@
 	//verbs -= /obj/item/weapon/storage/verb/quick_empty
 	//verbs += /obj/item/weapon/storage/bag/sheetsnatcher/quick_empty
 
-/obj/item/weapon/storage/bag/sheetsnatcher/can_be_inserted(obj/item/W, stop_messages = 0)
+/obj/item/weapon/storage/bag/sheetsnatcher/can_be_inserted(obj/item/W, stop_messages = 0, mob/user)
 	if(!istype(W,/obj/item/stack/sheet) || istype(W,/obj/item/stack/sheet/mineral/sandstone) || istype(W,/obj/item/stack/sheet/mineral/wood))
 		if(!stop_messages)
-			usr << "The snatcher does not accept [W]."
+			user << "The snatcher does not accept [W]."
 		return 0 //I don't care, but the existing code rejects them for not being "sheets" *shrug* -Sayu
 	var/current = 0
 	for(var/obj/item/stack/sheet/S in contents)
 		current += S.amount
 	if(capacity == current)//If it's full, you're done
 		if(!stop_messages)
-			usr << "<span class='danger'>The snatcher is full.</span>"
+			user << "<span class='danger'>The snatcher is full.</span>"
 		return 0
 	return 1
 
