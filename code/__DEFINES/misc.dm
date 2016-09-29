@@ -531,3 +531,5 @@ var/global/list/ghost_others_options = list(GHOST_OTHERS_SIMPLE, GHOST_OTHERS_DE
 #define MIN_NTNET_LOGS 10
 //TODO Move to a pref
 #define STATION_GOAL_BUDGET  1
+
+//test
