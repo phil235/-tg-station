@@ -7,7 +7,7 @@
 /mob/living/carbon/human/UnarmedAttack(atom/A, proximity)
 
 	if(!has_active_hand()) //can't attack without a hand.
-		src << "<span class='notice'>You look at your arm and sigh.</span>"
+		to_chat(src, "<span class='notice'>You look at your arm and sigh.</span>")
 		return
 
 	// Special glove functions:
@@ -20,7 +20,7 @@
 	var/override = 0
 
 	for(var/datum/mutation/human/HM in dna.mutations)
-		override += HM.on_attack_hand(src, A)
+		override += HM.on_attack_hand(src, A, proximity)
 
 	if(override)
 		return
@@ -82,7 +82,7 @@
 /mob/living/carbon/monkey/RestrainedClickOn(atom/A)
 	if(..())
 		return
-	if(a_intent != "harm" || !ismob(A))
+	if(a_intent != INTENT_HARM || !ismob(A))
 		return
 	if(is_muzzled())
 		return
@@ -200,5 +200,5 @@
 	New Players:
 	Have no reason to click on anything at all.
 */
-/mob/new_player/ClickOn()
+/mob/dead/new_player/ClickOn()
 	return

@@ -26,7 +26,7 @@
 	status_flags = 0
 	faction = list("cult")
 	status_flags = CANPUSH
-	flying = 1
+	movement_type = FLYING
 	loot = list(/obj/item/weapon/ectoplasm)
 	del_on_death = 1
 
@@ -50,7 +50,7 @@
 			M.visible_message("<span class='danger'>[M] heals \the <b>[src]</b>.</span>", \
 					   "<span class='cult'>You heal <b>[src]</b>, leaving <b>[src]</b> at <b>[health]/[maxHealth]</b> health.</span>")
 		else
-			M << "<span class='cult'>You cannot heal <b>[src]</b>, as [p_they()] [p_are()] unharmed!</span>"
+			to_chat(M, "<span class='cult'>You cannot heal <b>[src]</b>, as [p_they()] [p_are()] unharmed!</span>")
 	else if(src != M)
 		..()
 

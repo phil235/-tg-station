@@ -90,7 +90,7 @@
 
 /mob/living/carbon/monkey/attack_alien(mob/living/carbon/alien/humanoid/M)
 	if(..()) //if harm or disarm intent.
-		if (M.a_intent == "harm")
+		if (M.a_intent == INTENT_HARM)
 			if ((prob(95) && health > 0))
 				playsound(loc, 'sound/weapons/slice.ogg', 25, 1, -1)
 				var/damage = rand(15, 30)
@@ -117,7 +117,7 @@
 				playsound(loc, 'sound/weapons/slashmiss.ogg', 25, 1, -1)
 				visible_message("<span class='danger'>[M] has attempted to lunge at [name]!</span>", \
 						"<span class='userdanger'>[M] has attempted to lunge at [name]!</span>", null, COMBAT_MESSAGE_RANGE)
-		if (M.a_intent == "disarm")
+		if (M.a_intent == INTENT_DISARM)
 			playsound(loc, 'sound/weapons/pierce.ogg', 25, 1, -1)
 			if(prob(95))
 				Weaken(10)
@@ -167,13 +167,13 @@
 			if(!(wear_mask.resistance_flags & UNACIDABLE))
 				wear_mask.acid_act(acidpwr)
 			else
-				src << "<span class='warning'>Your mask protects you from the acid.</span>"
+				to_chat(src, "<span class='warning'>Your mask protects you from the acid.</span>")
 			return
 		if(head)
 			if(!(head.resistance_flags & UNACIDABLE))
 				head.acid_act(acidpwr)
 			else
-				src << "<span class='warning'>Your hat protects you from the acid.</span>"
+				to_chat(src, "<span class='warning'>Your hat protects you from the acid.</span>")
 			return
 	take_bodypart_damage(acidpwr * min(0.6, acid_volume*0.1))
 

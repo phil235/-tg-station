@@ -89,7 +89,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	if(!unreceived || !unreceived.len)
 		return 0
 	if (unreceived.len >= ASSET_CACHE_TELL_CLIENT_AMOUNT)
-		client << "Sending Resources..."
+		to_chat(client, "Sending Resources...")
 	for(var/asset in unreceived)
 		if (asset in SSasset.cache)
 			client << browse_rsc(SSasset.cache[asset], asset)
@@ -176,7 +176,13 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 /datum/asset/simple/tgui
 	assets = list(
 		"tgui.css"	= 'tgui/assets/tgui.css',
-		"tgui.js"	= 'tgui/assets/tgui.js'
+		"tgui.js"	= 'tgui/assets/tgui.js',
+		"font-awesome.min.css" = 'tgui/assets/font-awesome.min.css',
+		"fontawesome-webfont.eot" = 'tgui/assets/fonts/fontawesome-webfont.eot',
+		"fontawesome-webfont.woff2" = 'tgui/assets/fonts/fontawesome-webfont.woff2',
+		"fontawesome-webfont.woff" = 'tgui/assets/fonts/fontawesome-webfont.woff',
+		"fontawesome-webfont.ttf" = 'tgui/assets/fonts/fontawesome-webfont.ttf',
+		"fontawesome-webfont.svg" = 'tgui/assets/fonts/fontawesome-webfont.svg'
 	)
 
 /datum/asset/simple/headers

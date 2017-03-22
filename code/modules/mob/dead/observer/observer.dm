@@ -2,6 +2,9 @@ var/list/image/ghost_darkness_images = list() //this is a list of images for thi
 var/list/image/ghost_images_full = list() //this is a list of full images of the ghosts themselves
 var/list/image/ghost_images_default = list() //this is a list of the default (non-accessorized, non-dir) images of the ghosts themselves
 var/list/image/ghost_images_simple = list() //this is a list of all ghost images as the simple white ghost
+
+var/global/static/observer_default_invisibility = INVISIBILITY_OBSERVER
+
 /mob/dead/observer
 	name = "ghost"
 	desc = "It's a g-g-g-g-ghooooost!" //jinkies!
@@ -31,6 +34,7 @@ var/list/image/ghost_images_simple = list() //this is a list of all ghost images
 	var/image/ghostimage_simple = null //this mob with the simple white ghost sprite
 	var/ghostvision = 1 //is the ghost able to see things humans can't?
 	var/seedarkness = 1
+	var/mob/observetarget = null	//The target mob that the ghost is observing. Used as a reference in logout()
 	var/ghost_hud_enabled = 1 //did this ghost disable the on-screen HUD?
 	var/data_huds_on = 0 //Are data HUDs currently enabled?
 	var/list/datahuds = list(DATA_HUD_SECURITY_ADVANCED, DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC) //list of data HUDs shown to ghosts.
@@ -55,10 +59,12 @@ var/list/image/ghost_images_simple = list() //this is a list of all ghost images
 	// of the mob
 	var/deadchat_name
 
-/mob/dead/observer/New(mob/body)
+/mob/dead/observer/Initialize()
+	invisibility = observer_default_invisibility
+
 	verbs += /mob/dead/observer/proc/dead_tele
 
-	if(global.cross_allowed)
+	if(config.cross_allowed)
 		verbs += /mob/dead/observer/proc/server_hop
 
 	ghostimage = image(src.icon,src,src.icon_state)
@@ -73,9 +79,10 @@ var/list/image/ghost_images_simple = list() //this is a list of all ghost images
 	updateallghostimages()
 
 	var/turf/T
+	var/mob/body = loc
 	if(ismob(body))
 		T = get_turf(body)				//Where is the body located?
-		attack_log = body.attack_log	//preserve our attack logs by copying them to our ghost
+		logging = body.logging			//preserve our logs by copying them to our ghost
 
 		gender = body.gender
 		if(body.mind && body.mind.name)
@@ -89,17 +96,22 @@ var/list/image/ghost_images_simple = list() //this is a list of all ghost images
 		mind = body.mind	//we don't transfer the mind but we keep a reference to it.
 		if(ishuman(body))
 			var/mob/living/carbon/human/body_human = body
-			if(HAIR in body_human.dna.species.specflags)
+			if(HAIR in body_human.dna.species.species_traits)
 				hair_style = body_human.hair_style
 				hair_color = brighten_color(body_human.hair_color)
-			if(FACEHAIR in body_human.dna.species.specflags)
+			if(FACEHAIR in body_human.dna.species.species_traits)
 				facial_hair_style = body_human.facial_hair_style
 				facial_hair_color = brighten_color(body_human.facial_hair_color)
 
 	update_icon()
 
 	if(!T)
-		T = pick(latejoin)			//Safety in case we cannot find the body's position
+		var/list/turfs = get_area_turfs(/area/shuttle/arrival)
+		if(turfs.len)
+			T = pick(turfs)
+		else
+			T = locate(round(world.maxx/2), round(world.maxy/2), ZLEVEL_STATION)	//middle of the station
+
 	loc = T
 
 	if(!name)							//To prevent nameless ghosts
@@ -117,13 +129,13 @@ var/list/image/ghost_images_simple = list() //this is a list of all ghost images
 	var/old_color = color
 	color = "#960000"
 	animate(src, color = old_color, time = 10)
-	addtimer(src, "update_atom_colour", 10)
+	addtimer(CALLBACK(src, /atom/proc/update_atom_colour), 10)
 
 /mob/dead/observer/ratvar_act()
 	var/old_color = color
 	color = "#FAE48C"
 	animate(src, color = old_color, time = 10)
-	addtimer(src, "update_atom_colour", 10)
+	addtimer(CALLBACK(src, /atom/proc/update_atom_colour), 10)
 
 /mob/dead/observer/Destroy()
 	ghost_images_full -= ghostimage
@@ -157,13 +169,13 @@ var/list/image/ghost_images_simple = list() //this is a list of all ghost images
 		ghost_others = client.prefs.ghost_others
 
 	if(hair_image)
-		overlays -= hair_image
-		ghostimage.overlays -= hair_image
+		cut_overlay(hair_image)
+		ghostimage.add_overlay(hair_image)
 		hair_image = null
 
 	if(facial_hair_image)
-		overlays -= facial_hair_image
-		ghostimage.overlays -= facial_hair_image
+		cut_overlay(facial_hair_image)
+		ghostimage.add_overlay(facial_hair_image)
 		facial_hair_image = null
 
 
@@ -186,21 +198,21 @@ var/list/image/ghost_images_simple = list() //this is a list of all ghost images
 		if(facial_hair_style)
 			S = facial_hair_styles_list[facial_hair_style]
 			if(S)
-				facial_hair_image = image("icon" = S.icon, "icon_state" = "[S.icon_state]_s", "layer" = -HAIR_LAYER)
+				facial_hair_image = image("icon" = S.icon, "icon_state" = "[S.icon_state]", "layer" = -HAIR_LAYER)
 				if(facial_hair_color)
 					facial_hair_image.color = "#" + facial_hair_color
 				facial_hair_image.alpha = 200
 				add_overlay(facial_hair_image)
-				ghostimage.overlays += facial_hair_image
+				ghostimage.add_overlay(facial_hair_image)
 		if(hair_style)
 			S = hair_styles_list[hair_style]
 			if(S)
-				hair_image = image("icon" = S.icon, "icon_state" = "[S.icon_state]_s", "layer" = -HAIR_LAYER)
+				hair_image = image("icon" = S.icon, "icon_state" = "[S.icon_state]", "layer" = -HAIR_LAYER)
 				if(hair_color)
 					hair_image.color = "#" + hair_color
 				hair_image.alpha = 200
 				add_overlay(hair_image)
-				ghostimage.overlays += hair_image
+				ghostimage.add_overlay(hair_image)
 
 /*
  * Increase the brightness of a color by calculating the average distance between the R, G and B values,
@@ -277,7 +289,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		loc = NewLoc
 		for(var/obj/effect/step_trigger/S in NewLoc)
 			S.Crossed(src)
-
+		update_parallax_contents()
 		return
 	loc = get_turf(src) //Get out of closets and such as a ghost
 	if((direct & NORTH) && y < world.maxy)
@@ -298,7 +310,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/dead/observer/Stat()
 	..()
 	if(statpanel("Status"))
-		stat(null, "Station Time: [worldtime2text()]")
 		if(ticker && ticker.mode)
 			for(var/datum/gang/G in ticker.mode.gangs)
 				if(G.is_dominating)
@@ -314,21 +325,24 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!client)
 		return
 	if(!(mind && mind.current))
-		src << "<span class='warning'>You have no body.</span>"
+		to_chat(src, "<span class='warning'>You have no body.</span>")
 		return
 	if(!can_reenter_corpse)
-		src << "<span class='warning'>You cannot re-enter your body.</span>"
+		to_chat(src, "<span class='warning'>You cannot re-enter your body.</span>")
 		return
 	if(mind.current.key && copytext(mind.current.key,1,2)!="@")	//makes sure we don't accidentally kick any clients
-		usr << "<span class='warning'>Another consciousness is in your body...It is resisting you.</span>"
+		to_chat(usr, "<span class='warning'>Another consciousness is in your body...It is resisting you.</span>")
 		return
+	client.view = world.view
 	SStgui.on_transfer(src, mind.current) // Transfer NanoUIs.
 	mind.current.key = key
 	return 1
 
-/mob/dead/observer/proc/notify_cloning(var/message, var/sound, var/atom/source)
+/mob/dead/observer/proc/notify_cloning(var/message, var/sound, var/atom/source, flashwindow = TRUE)
+	if(flashwindow)
+		window_flash(client)
 	if(message)
-		src << "<span class='ghostalert'>[message]</span>"
+		to_chat(src, "<span class='ghostalert'>[message]</span>")
 		if(source)
 			var/obj/screen/alert/A = throw_alert("\ref[source]_notify_cloning", /obj/screen/alert/notify_cloning)
 			if(A)
@@ -342,7 +356,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 				A.add_overlay(source)
 				source.layer = old_layer
 				source.plane = old_plane
-	src << "<span class='ghostalert'><a href=?src=\ref[src];reenter=1>(Click to re-enter)</a></span>"
+	to_chat(src, "<span class='ghostalert'><a href=?src=\ref[src];reenter=1>(Click to re-enter)</a></span>")
 	if(sound)
 		src << sound(sound)
 
@@ -351,7 +365,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Teleport"
 	set desc= "Teleport to a location"
 	if(!isobserver(usr))
-		usr << "Not when you're not dead!"
+		to_chat(usr, "Not when you're not dead!")
 		return
 	var/A
 	A = input("Area to jump to", "BOOYEA", A) as null|anything in sortedAreas
@@ -364,9 +378,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		L+=T
 
 	if(!L || !L.len)
-		usr << "No area available."
+		to_chat(usr, "No area available.")
 
 	usr.loc = pick(L)
+	update_parallax_contents()
 
 /mob/dead/observer/verb/follow()
 	set category = "Ghost"
@@ -389,7 +404,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	orbitsize -= (orbitsize/world.icon_size)*(world.icon_size*0.25)
 
 	if(orbiting && orbiting.orbiting != target)
-		src << "<span class='notice'>Now orbiting [target].</span>"
+		to_chat(src, "<span class='notice'>Now orbiting [target].</span>")
 
 	var/rot_seg
 
@@ -440,8 +455,32 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 			if(T && isturf(T))	//Make sure the turf exists, then move the source to that destination.
 				A.loc = T
+				A.update_parallax_contents()
 			else
-				A << "This mob is not located in the game world."
+				to_chat(A, "This mob is not located in the game world.")
+
+/mob/dead/observer/verb/change_view_range()
+	set category = "Ghost"
+	set name = "View Range"
+	set desc = "Change your view range."
+
+	var/max_view = client.prefs.unlock_content ? GHOST_MAX_VIEW_RANGE_MEMBER : GHOST_MAX_VIEW_RANGE_DEFAULT
+	if(client.view == world.view)
+		var/list/views = list()
+		for(var/i in 1 to max_view)
+			views |= i
+		var/new_view = input("Choose your new view", "Modify view range", 7) as null|anything in views
+		if(new_view)
+			client.view = Clamp(new_view, 1, max_view)
+	else
+		client.view = world.view
+
+/mob/dead/observer/verb/add_view_range(input as num)
+	set name = "Add View Range"
+	set hidden = TRUE
+	var/max_view = client.prefs.unlock_content ? GHOST_MAX_VIEW_RANGE_MEMBER : GHOST_MAX_VIEW_RANGE_DEFAULT
+	if(input)
+		client.view = Clamp(client.view + input, 1, max_view)
 
 /mob/dead/observer/verb/boo()
 	set category = "Ghost"
@@ -460,11 +499,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/dead/observer/memory()
 	set hidden = 1
-	src << "<span class='danger'>You are dead! You have no mind to store memory!</span>"
+	to_chat(src, "<span class='danger'>You are dead! You have no mind to store memory!</span>")
 
 /mob/dead/observer/add_memory()
 	set hidden = 1
-	src << "<span class='danger'>You are dead! You have no mind to store memory!</span>"
+	to_chat(src, "<span class='danger'>You are dead! You have no mind to store memory!</span>")
 
 /mob/dead/observer/verb/toggle_ghostsee()
 	set name = "Toggle Ghost Vision"
@@ -472,7 +511,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set category = "Ghost"
 	ghostvision = !(ghostvision)
 	updateghostsight()
-	usr << "You [(ghostvision?"now":"no longer")] have ghost vision."
+	to_chat(usr, "You [(ghostvision?"now":"no longer")] have ghost vision.")
 
 /mob/dead/observer/verb/toggle_darkness()
 	set name = "Toggle Darkness"
@@ -494,6 +533,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	updateghostimages()
 
 /proc/updateallghostimages()
+	listclearnulls(ghost_images_full)
+	listclearnulls(ghost_images_default)
+	listclearnulls(ghost_images_simple)
+	listclearnulls(ghost_darkness_images)
+
 	for (var/mob/dead/observer/O in player_list)
 		O.updateghostimages()
 
@@ -548,14 +592,14 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return 0
 
 	if(ismegafauna(target))
-		src << "<span class='warning'>This creature is too powerful for you to possess!</span>"
+		to_chat(src, "<span class='warning'>This creature is too powerful for you to possess!</span>")
 		return 0
 
 	if(can_reenter_corpse || (mind && mind.current))
-		if(alert(src, "Your soul is still tied to your former life as [mind.current.name], if you go foward there is no going back to that life. Are you sure you wish to continue?", "Move On", "Yes", "No") == "No")
+		if(alert(src, "Your soul is still tied to your former life as [mind.current.name], if you go forward there is no going back to that life. Are you sure you wish to continue?", "Move On", "Yes", "No") == "No")
 			return 0
 	if(target.key)
-		src << "<span class='warning'>Someone has taken this body while you were choosing!</span>"
+		to_chat(src, "<span class='warning'>Someone has taken this body while you were choosing!</span>")
 		return 0
 
 	target.key = key
@@ -566,14 +610,32 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set category = "Ghost"
 	set name = "Server Hop!"
 	set desc= "Jump to the other server"
-	if (alert(src, "Jump to server running at [global.cross_address]?", "Server Hop", "Yes", "No") != "Yes")
+	if(notransform)
+		return
+	if(!config.cross_allowed)
+		verbs -= /mob/dead/observer/proc/server_hop
+		to_chat(src, "<span class='notice'>Server Hop has been disabled.</span>")
+		return
+	if (alert(src, "Jump to server running at [config.cross_address]?", "Server Hop", "Yes", "No") != "Yes")
 		return 0
-	if (client && global.cross_allowed)
-		src << "<span class='notice'>Sending you to [global.cross_address].</span>"
+	if (client && config.cross_allowed)
+		to_chat(src, "<span class='notice'>Sending you to [config.cross_address].</span>")
+		new /obj/screen/splash(client)
+		notransform = TRUE
+		sleep(29)	//let the animation play
+		notransform = FALSE
 		winset(src, null, "command=.options") //other wise the user never knows if byond is downloading resources
-		client << link(global.cross_address)
+		client << link(config.cross_address + "?server_hop=[key]")
 	else
-		src << "<span class='error'>There is no other server configured!</span>"
+		to_chat(src, "<span class='error'>There is no other server configured!</span>")
+
+/proc/show_server_hop_transfer_screen(expected_key)
+	//only show it to incoming ghosts
+	for(var/mob/dead/observer/O in player_list)
+		if(O.key == expected_key)
+			if(O.client)
+				new /obj/screen/splash(O.client, TRUE)
+			break
 
 //this is a mob verb instead of atom for performance reasons
 //see /mob/verb/examinate() in mob.dm for more info
@@ -610,8 +672,18 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			var/atom/movable/target = locate(href_list["follow"])
 			if(istype(target) && (target != src))
 				ManualFollow(target)
+				return
+		if(href_list["x"] && href_list["y"] && href_list["z"])
+			var/tx = text2num(href_list["x"])
+			var/ty = text2num(href_list["y"])
+			var/tz = text2num(href_list["z"])
+			var/turf/target = locate(tx, ty, tz)
+			if(istype(target))
+				forceMove(target)
+				return
 		if(href_list["reenter"])
 			reenter_corpse()
+			return
 
 //We don't want to update the current var
 //But we will still carry a mind.
@@ -635,11 +707,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	if(data_huds_on) //remove old huds
 		remove_data_huds()
-		src << "<span class='notice'>Data HUDs disabled.</span>"
+		to_chat(src, "<span class='notice'>Data HUDs disabled.</span>")
 		data_huds_on = 0
 	else
 		show_data_huds()
-		src << "<span class='notice'>Data HUDs enabled.</span>"
+		to_chat(src, "<span class='notice'>Data HUDs enabled.</span>")
 		data_huds_on = 1
 
 /mob/dead/observer/verb/restore_ghost_apperance()
@@ -661,10 +733,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(client.prefs.be_random_body)
 		client.prefs.random_character(gender)
 
-	if(HAIR in client.prefs.pref_species.specflags)
+	if(HAIR in client.prefs.pref_species.species_traits)
 		hair_style = client.prefs.hair_style
 		hair_color = brighten_color(client.prefs.hair_color)
-	if(FACEHAIR in client.prefs.pref_species.specflags)
+	if(FACEHAIR in client.prefs.pref_species.species_traits)
 		facial_hair_style = client.prefs.facial_hair_style
 		facial_hair_color = brighten_color(client.prefs.facial_hair_color)
 
@@ -678,7 +750,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/dead/observer/is_literate()
 	return 1
 
-/mob/dead/observer/on_varedit(var_name)
+/mob/dead/observer/vv_edit_var(var_name, var_value)
 	. = ..()
 	switch(var_name)
 		if("icon")
@@ -696,3 +768,67 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			else
 				verbs -= /mob/dead/observer/verb/boo
 				verbs -= /mob/dead/observer/verb/possess
+
+/mob/dead/observer/reset_perspective(atom/A)
+	if(client)
+		if(ismob(client.eye) && (client.eye != src))
+			var/mob/target = client.eye
+			observetarget = null
+			if(target.observers)
+				target.observers -= src
+				UNSETEMPTY(target.observers)
+	if(..())
+		if(hud_used)
+			client.screen = list()
+			hud_used.show_hud(hud_used.hud_version)
+
+/mob/dead/observer/verb/observe()
+	set name = "Observe"
+	set category = "OOC"
+
+	var/list/creatures = getpois()
+
+	reset_perspective(null)
+
+	var/eye_name = null
+
+	eye_name = input("Please, select a player!", "Observe", null, null) as null|anything in creatures
+
+	if (!eye_name)
+		return
+
+	var/mob/mob_eye = creatures[eye_name]
+	//Istype so we filter out points of interest that are not mobs
+	if(client && mob_eye && istype(mob_eye))
+		client.eye = mob_eye
+		client.screen = list()
+		if(mob_eye.hud_used)
+			LAZYINITLIST(mob_eye.observers)
+			mob_eye.observers |= src
+			mob_eye.hud_used.show_hud(1,src)
+			observetarget = mob_eye
+
+/mob/dead/observer/verb/register_pai_candidate()
+	set category = "Ghost"
+	set name = "pAI Setup"
+	set desc = "Upload a fragment of your personality to the global pAI databanks"
+
+	register_pai()
+
+/mob/dead/observer/proc/register_pai()
+	if(istype(src, /mob/dead/observer))
+		if(SSpai)
+			SSpai.recruitWindow(src)
+	else
+		to_chat(usr, "Can't become a pAI candidate while not dead!")
+
+/mob/dead/observer/CtrlShiftClick(mob/user)
+	if(isobserver(user) && check_rights(R_SPAWN))
+		change_mob_type( /mob/living/carbon/human , null, null, TRUE) //always delmob, ghosts shouldn't be left lingering
+
+/proc/set_observer_default_invisibility(amount, message=null)
+	for(var/mob/dead/observer/G in player_list)
+		G.invisibility = amount
+		if(message)
+			to_chat(G, message)
+	observer_default_invisibility = amount

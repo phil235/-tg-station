@@ -1,7 +1,7 @@
 /datum/round_event_control/wizard/imposter //Mirror Mania
 	name = "Imposter Wizard"
 	weight = 1
-	typepath = /datum/round_event/wizard/imposter/
+	typepath = /datum/round_event/wizard/imposter
 	max_occurrences = 1
 	earliest_start = 0
 
@@ -16,7 +16,7 @@
 			return //Sad Trombone
 		var/client/C = pick(candidates)
 
-		PoolOrNew(/obj/effect/particle_effect/smoke, W.loc)
+		new /obj/effect/particle_effect/smoke(W.loc)
 
 		var/mob/living/carbon/human/I = new /mob/living/carbon/human(W.loc)
 		W.dna.transfer_identity(I, transfer_SE=1)
@@ -53,6 +53,6 @@
 		I.mind.objectives += protect_objective
 		ticker.mode.update_wiz_icons_added(I.mind)
 
-		I.attack_log += "\[[time_stamp()]\] <font color='red'>Is an imposter!</font>"
-		I << "<B>You are an imposter! Trick and confuse the crew to misdirect malice from your handsome original!</B>"
+		I.log_message("<font color='red'>Is an imposter!</font>", INDIVIDUAL_ATTACK_LOG)
+		to_chat(I, "<B>You are an imposter! Trick and confuse the crew to misdirect malice from your handsome original!</B>")
 		I << sound('sound/effects/magic.ogg')

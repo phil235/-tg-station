@@ -116,21 +116,32 @@
 // attack with item, place item on conveyor
 /obj/machinery/conveyor/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/weapon/crowbar))
-		if(!(stat & BROKEN))
-			var/obj/item/conveyor_construct/C = new/obj/item/conveyor_construct(src.loc)
-			C.id = id
-			transfer_fingerprints_to(C)
-		user << "<span class='notice'>You remove the conveyor belt.</span>"
-		qdel(src)
+		user.visible_message("<span class='notice'>[user] struggles to pry up \the [src] with \the [I].</span>", \
+		"<span class='notice'>You struggle to pry up \the [src] with \the [I].</span>")
+		if(do_after(user, 40*I.toolspeed, target = src))
+			if(QDELETED(src))
+				return //prevent multiple decontructs
+			if(!(stat & BROKEN))
+				var/obj/item/conveyor_construct/C = new/obj/item/conveyor_construct(src.loc)
+				C.id = id
+				transfer_fingerprints_to(C)
+			to_chat(user, "<span class='notice'>You remove the conveyor belt.</span>")
+			qdel(src)
 
 	else if(istype(I, /obj/item/weapon/wrench))
 		if(!(stat & BROKEN))
-			playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
+			playsound(loc, I.usesound, 50, 1)
 			setDir(turn(dir,-45))
 			update_move_direction()
-			user << "<span class='notice'>You rotate [src].</span>"
+			to_chat(user, "<span class='notice'>You rotate [src].</span>")
 
-	else if(user.a_intent != "harm")
+	else if(istype(I, /obj/item/weapon/screwdriver))
+		if(!(stat & BROKEN))
+			verted = verted * -1
+			update_move_direction()
+			to_chat(user, "<span class='notice'>You reverse [src]'s direction.</span>")
+
+	else if(user.a_intent != INTENT_HARM)
 		if(user.drop_item())
 			I.loc = src.loc
 	else
@@ -202,17 +213,18 @@
 
 
 
-/obj/machinery/conveyor_switch/New(newloc, newid)
-	..(newloc)
+/obj/machinery/conveyor_switch/Initialize(mapload, newid)
+	if(mapload)
+		return TRUE	//need machines list
+	..()
 	if(!id)
 		id = newid
 	update()
 
-	spawn(5)		// allow map load
-		conveyors = list()
-		for(var/obj/machinery/conveyor/C in machines)
-			if(C.id == id)
-				conveyors += C
+	conveyors = list()
+	for(var/obj/machinery/conveyor/C in machines)
+		if(C.id == id)
+			conveyors += C
 
 // update the icon depending on the position
 
@@ -270,7 +282,7 @@
 		var/obj/item/conveyor_switch_construct/C = new/obj/item/conveyor_switch_construct(src.loc)
 		C.id = id
 		transfer_fingerprints_to(C)
-		user << "<span class='notice'>You deattach the conveyor switch.</span>"
+		to_chat(user, "<span class='notice'>You deattach the conveyor switch.</span>")
 		qdel(src)
 
 /obj/machinery/conveyor_switch/oneway
@@ -286,13 +298,13 @@
 	icon_state = "conveyor0"
 	name = "conveyor belt assembly"
 	desc = "A conveyor belt assembly."
-	w_class = 4
+	w_class = WEIGHT_CLASS_BULKY
 	var/id = "" //inherited by the belt
 
 /obj/item/conveyor_construct/attackby(obj/item/I, mob/user, params)
 	..()
 	if(istype(I, /obj/item/conveyor_switch_construct))
-		user << "<span class='notice'>You link the switch to the conveyor belt assembly.</span>"
+		to_chat(user, "<span class='notice'>You link the switch to the conveyor belt assembly.</span>")
 		var/obj/item/conveyor_switch_construct/C = I
 		id = C.id
 
@@ -301,7 +313,7 @@
 		return
 	var/cdir = get_dir(A, user)
 	if(A == user.loc)
-		user << "<span class='notice'>You cannot place a conveyor belt under yourself.</span>"
+		to_chat(user, "<span class='notice'>You cannot place a conveyor belt under yourself.</span>")
 		return
 	var/obj/machinery/conveyor/C = new/obj/machinery/conveyor(A,cdir)
 	C.id = id
@@ -313,7 +325,7 @@
 	desc = "A conveyor control switch assembly."
 	icon = 'icons/obj/recycling.dmi'
 	icon_state = "switch-off"
-	w_class = 4
+	w_class = WEIGHT_CLASS_BULKY
 	var/id = "" //inherited by the switch
 
 /obj/item/conveyor_switch_construct/New()
@@ -329,7 +341,7 @@
 			found = 1
 			break
 	if(!found)
-		user << "\icon[src]<span class=notice>The conveyor switch did not detect any linked conveyor belts in range.</span>"
+		to_chat(user, "\icon[src]<span class=notice>The conveyor switch did not detect any linked conveyor belts in range.</span>")
 		return
 	var/obj/machinery/conveyor_switch/NC = new/obj/machinery/conveyor_switch(A, id)
 	transfer_fingerprints_to(NC)

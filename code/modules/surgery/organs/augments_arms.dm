@@ -4,7 +4,7 @@
 	zone = "r_arm"
 	slot = "r_arm_device"
 	icon_state = "implant-toolkit"
-	w_class = 3
+	w_class = WEIGHT_CLASS_NORMAL
 	actions_types = list(/datum/action/item_action/organ_action/toggle)
 
 	var/list/items_list = list()
@@ -31,7 +31,7 @@
 
 /obj/item/organ/cyberimp/arm/examine(mob/user)
 	..()
-	user << "<span class='info'>[src] is assembled in the [zone == "r_arm" ? "right" : "left"] arm configuration. You can use a screwdriver to reassemble it.</span>"
+	to_chat(user, "<span class='info'>[src] is assembled in the [zone == "r_arm" ? "right" : "left"] arm configuration. You can use a screwdriver to reassemble it.</span>")
 
 /obj/item/organ/cyberimp/arm/attackby(obj/item/weapon/W, mob/user, params)
 	..()
@@ -41,7 +41,7 @@
 		else
 			zone = "r_arm"
 		slot = zone + "_device"
-		user << "<span class='notice'>You modify [src] to be installed on the [zone == "r_arm" ? "right" : "left"] arm.</span>"
+		to_chat(user, "<span class='notice'>You modify [src] to be installed on the [zone == "r_arm" ? "right" : "left"] arm.</span>")
 		update_icon()
 	else if(istype(W, /obj/item/weapon/card/emag))
 		emag_act()
@@ -55,7 +55,7 @@
 
 /obj/item/organ/cyberimp/arm/gun/emp_act(severity)
 	if(prob(15/severity) && owner)
-		owner << "<span class='warning'>[src] is hit by EMP!</span>"
+		to_chat(owner, "<span class='warning'>[src] is hit by EMP!</span>")
 		// give the owner an idea about why his implant is glitching
 		Retract()
 	..()
@@ -64,16 +64,15 @@
 	if(!holder || (holder in src))
 		return
 
-	owner.visible_message("<span class='notice'>[owner] retracts [holder] back into \his [zone == "r_arm" ? "right" : "left"] arm.</span>",
+	owner.visible_message("<span class='notice'>[owner] retracts [holder] back into [owner.p_their()] [zone == "r_arm" ? "right" : "left"] arm.</span>",
 		"<span class='notice'>[holder] snaps back into your [zone == "r_arm" ? "right" : "left"] arm.</span>",
 		"<span class='italics'>You hear a short mechanical noise.</span>")
 
 	if(istype(holder, /obj/item/device/assembly/flash/armimplant))
 		var/obj/item/device/assembly/flash/F = holder
-		F.SetLuminosity(0)
+		F.set_light(0)
 
-	owner.unEquip(holder, 1)
-	holder.forceMove(src)
+	owner.transferItemToLoc(holder, src, TRUE)
 	holder = null
 	playsound(get_turf(owner), 'sound/mecha/mechmove03.ogg', 50, 1)
 
@@ -86,38 +85,38 @@
 	holder.flags |= NODROP
 	holder.resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	holder.slot_flags = null
-	holder.w_class = 5
+	holder.w_class = WEIGHT_CLASS_HUGE
 	holder.materials = null
 
 	if(istype(holder, /obj/item/device/assembly/flash/armimplant))
 		var/obj/item/device/assembly/flash/F = holder
-		F.SetLuminosity(7)
+		F.set_light(7)
 
 	var/obj/item/arm_item = owner.get_active_held_item()
 
 	if(arm_item)
-		if(!owner.unEquip(arm_item))
-			owner << "<span class='warning'>Your [arm_item] interferes with [src]!</span>"
+		if(!owner.dropItemToGround(arm_item))
+			to_chat(owner, "<span class='warning'>Your [arm_item] interferes with [src]!</span>")
 			return
 		else
-			owner << "<span class='notice'>You drop [arm_item] to activate [src]!</span>"
+			to_chat(owner, "<span class='notice'>You drop [arm_item] to activate [src]!</span>")
 
 	var/result = (zone == "r_arm" ? owner.put_in_r_hand(holder) : owner.put_in_l_hand(holder))
 	if(!result)
-		owner << "<span class='warning'>Your [src] fails to activate!</span>"
+		to_chat(owner, "<span class='warning'>Your [src] fails to activate!</span>")
 		return
 
 	// Activate the hand that now holds our item.
 	owner.swap_hand(result)//... or the 1st hand if the index gets lost somehow
 
-	owner.visible_message("<span class='notice'>[owner] extends [holder] from \his [zone == "r_arm" ? "right" : "left"] arm.</span>",
+	owner.visible_message("<span class='notice'>[owner] extends [holder] from [owner.p_their()] [zone == "r_arm" ? "right" : "left"] arm.</span>",
 		"<span class='notice'>You extend [holder] from your [zone == "r_arm" ? "right" : "left"] arm.</span>",
 		"<span class='italics'>You hear a short mechanical noise.</span>")
 	playsound(get_turf(owner), 'sound/mecha/mechmove03.ogg', 50, 1)
 
 /obj/item/organ/cyberimp/arm/ui_action_click()
 	if(crit_fail || (!holder && !contents.len))
-		owner << "<span class='warning'>The implant doesn't respond. It seems to be broken...</span>"
+		to_chat(owner, "<span class='warning'>The implant doesn't respond. It seems to be broken...</span>")
 		return
 
 	// You can emag the arm-mounted implant by activating it while holding emag in it's hand.
@@ -142,7 +141,7 @@
 		Retract()
 		owner.visible_message("<span class='danger'>A loud bang comes from [owner]\'s [zone == "r_arm" ? "right" : "left"] arm!</span>")
 		playsound(get_turf(owner), 'sound/weapons/flashbang.ogg', 100, 1)
-		owner << "<span class='userdanger'>You feel an explosion erupt inside your [zone == "r_arm" ? "right" : "left"] arm as your implant breaks!</span>"
+		to_chat(owner, "<span class='userdanger'>You feel an explosion erupt inside your [zone == "r_arm" ? "right" : "left"] arm as your implant breaks!</span>")
 		owner.adjust_fire_stacks(20)
 		owner.IgniteMob()
 		owner.adjustFireLoss(25)
@@ -185,7 +184,7 @@
 
 /obj/item/organ/cyberimp/arm/toolset/emag_act()
 	if(!(locate(/obj/item/weapon/kitchen/knife/combat/cyborg) in items_list))
-		usr << "<span class='notice'>You unlock [src]'s integrated knife!</span>"
+		to_chat(usr, "<span class='notice'>You unlock [src]'s integrated knife!</span>")
 		items_list += new /obj/item/weapon/kitchen/knife/combat/cyborg(src)
 		return 1
 	return 0

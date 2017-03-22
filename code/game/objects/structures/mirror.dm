@@ -20,7 +20,7 @@
 
 		var/userloc = H.loc
 
-		//see code/modules/mob/new_player/preferences.dm at approx line 545 for comments!
+		//see code/modules/mob/dead/new_player/preferences.dm at approx line 545 for comments!
 		//this is largely copypasted from there.
 
 		//handle facial hair (if necessary)
@@ -42,6 +42,10 @@
 
 		H.update_hair()
 
+/obj/structure/mirror/examine_status(mob/user)
+	if(broken)
+		return // no message spam
+	..()
 
 /obj/structure/mirror/obj_break(damage_flag)
 	if(!broken && !(flags & NODECONSTRUCT))
@@ -57,17 +61,17 @@
 	qdel(src)
 
 /obj/structure/mirror/attackby(obj/item/I, mob/living/user, params)
-	if(istype(I, /obj/item/weapon/weldingtool) && user.a_intent != "harm")
+	if(istype(I, /obj/item/weapon/weldingtool) && user.a_intent != INTENT_HARM)
 		var/obj/item/weapon/weldingtool/WT = I
 		if(broken)
 			user.changeNext_move(CLICK_CD_MELEE)
 			if(WT.remove_fuel(0, user))
-				user << "<span class='notice'>You begin repairing [src]...</span>"
+				to_chat(user, "<span class='notice'>You begin repairing [src]...</span>")
 				playsound(src, 'sound/items/Welder.ogg', 100, 1)
-				if(do_after(user, 10/I.toolspeed, target = src))
+				if(do_after(user, 10*I.toolspeed, target = src))
 					if(!user || !WT || !WT.isOn())
 						return
-					user << "<span class='notice'>You repair [src].</span>"
+					to_chat(user, "<span class='notice'>You repair [src].</span>")
 					broken = 0
 					icon_state = initial(icon_state)
 					desc = initial(desc)
@@ -151,7 +155,7 @@
 					H.skin_tone = new_s_tone
 					H.dna.update_ui_block(DNA_SKIN_TONE_BLOCK)
 
-			if(MUTCOLORS in H.dna.species.specflags)
+			if(MUTCOLORS in H.dna.species.species_traits)
 				var/new_mutantcolor = input(user, "Choose your skin color:", "Race change") as color|null
 				if(new_mutantcolor)
 					var/temp_hsv = RGBtoHSV(new_mutantcolor)
@@ -160,7 +164,7 @@
 						H.dna.features["mcolor"] = sanitize_hexcolor(new_mutantcolor)
 
 					else
-						H << "<span class='notice'>Invalid color. Your color is not bright enough.</span>"
+						to_chat(H, "<span class='notice'>Invalid color. Your color is not bright enough.</span>")
 
 			H.update_body()
 			H.update_hair()
@@ -175,14 +179,14 @@
 			if(H.gender == "male")
 				if(alert(H, "Become a Witch?", "Confirmation", "Yes", "No") == "Yes")
 					H.gender = "female"
-					H << "<span class='notice'>Man, you feel like a woman!</span>"
+					to_chat(H, "<span class='notice'>Man, you feel like a woman!</span>")
 				else
 					return
 
 			else
 				if(alert(H, "Become a Warlock?", "Confirmation", "Yes", "No") == "Yes")
 					H.gender = "male"
-					H << "<span class='notice'>Whoa man, you feel like a man!</span>"
+					to_chat(H, "<span class='notice'>Whoa man, you feel like a man!</span>")
 				else
 					return
 			H.dna.update_ui_block(DNA_GENDER_BLOCK)

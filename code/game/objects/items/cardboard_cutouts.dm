@@ -4,7 +4,7 @@
 	desc = "A vaguely humanoid cardboard cutout. It's completely blank."
 	icon = 'icons/obj/cardboard_cutout.dmi'
 	icon_state = "cutout_basic"
-	w_class = 4
+	w_class = WEIGHT_CLASS_BULKY
 	resistance_flags = FLAMMABLE
 	// Possible restyles for the cutout;
 	// add an entry in change_appearance() if you add to here
@@ -19,7 +19,7 @@
 	var/lastattacker = null
 
 /obj/item/cardboard_cutout/attack_hand(mob/living/user)
-	if(user.a_intent == "help" || pushed_over)
+	if(user.a_intent == INTENT_HELP || pushed_over)
 		return ..()
 	user.visible_message("<span class='warning'>[user] pushes over [src]!</span>", "<span class='danger'>You push over [src]!</span>")
 	playsound(src, 'sound/weapons/Genhit.ogg', 50, 1)
@@ -37,7 +37,7 @@
 /obj/item/cardboard_cutout/attack_self(mob/living/user)
 	if(!pushed_over)
 		return
-	user << "<span class='notice'>You right [src].</span>"
+	to_chat(user, "<span class='notice'>You right [src].</span>")
 	desc = initial(desc)
 	icon = initial(icon)
 	icon_state = initial(icon_state) //This resets a cutout to its blank state - this is intentional to allow for resetting
@@ -76,12 +76,12 @@
 	if(!crayon || !user)
 		return
 	if(pushed_over)
-		user << "<span class='warning'>Right [src] first!</span>"
+		to_chat(user, "<span class='warning'>Right [src] first!</span>")
 		return
 	if(crayon.check_empty(user))
 		return
 	if(crayon.is_capped)
-		user << "<span class='warning'>Take the cap off first!</span>"
+		to_chat(user, "<span class='warning'>Take the cap off first!</span>")
 		return
 	var/new_appearance = input(user, "Choose a new appearance for [src].", "26th Century Deception") as null|anything in possible_appearances
 	if(!new_appearance || !crayon || !user.canUseTopic(src))

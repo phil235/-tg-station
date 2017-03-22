@@ -17,7 +17,7 @@
 	response_disarm = "pokes"
 	response_harm   = "splats"
 	density = 0
-	ventcrawler = 2
+	ventcrawler = VENTCRAWLER_ALWAYS
 	faction = list("hostile")
 	attack_sound = 'sound/effects/Reee.ogg'
 	butcher_results = list(/obj/item/weapon/reagent_containers/food/snacks/nugget = 1)
@@ -25,7 +25,7 @@
 	mob_size = MOB_SIZE_TINY
 	gold_core_spawnable = 1
 
-/mob/living/simple_animal/hostile/retaliate/frog/New()
+/mob/living/simple_animal/hostile/retaliate/frog/Initialize()
 	..()
 	if(prob(1))
 		name = "rare frog"

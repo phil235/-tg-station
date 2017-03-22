@@ -1,6 +1,7 @@
 /mob/living/simple_animal/hostile/skeleton
 	name = "reanimated skeleton"
 	desc = "A real bonefied skeleton, doesn't seem like it wants to socialize."
+	icon = 'icons/mob/simple_human.dmi'
 	icon_state = "skeleton"
 	icon_living = "skeleton"
 	icon_dead = "skeleton"
@@ -8,7 +9,7 @@
 	turns_per_move = 5
 	speak_emote = list("rattles")
 	emote_see = list("rattles")
-	a_intent = "harm"
+	a_intent = INTENT_HARM
 	maxHealth = 40
 	health = 40
 	speed = 1

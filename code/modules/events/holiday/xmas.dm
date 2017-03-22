@@ -80,6 +80,14 @@
 	flags_inv = 0
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, fire = 0, acid = 0)
 
+/obj/effect/landmark/xmastree
+	name = "christmas tree spawner"
+	var/tree = /obj/structure/flora/tree/pine/xmas
+
+/obj/effect/landmark/xmastree/rdrod
+	name = "festivus pole spawner"
+	tree = /obj/structure/festivus
+
 /datum/round_event_control/santa
 	name = "Santa is coming to town! (Christmas)"
 	holidayID = CHRISTMAS
@@ -149,4 +157,4 @@
 				telespell.clothes_req = 0 //santa robes aren't actually magical.
 				santa.mind.AddSpell(telespell) //does the station have chimneys? WHO KNOWS!
 
-				santa << "<span class='boldannounce'>You are Santa! Your objective is to bring joy to the people on this station. You can conjure more presents using a spell, and there are several presents in your bag.</span>"
+				to_chat(santa, "<span class='boldannounce'>You are Santa! Your objective is to bring joy to the people on this station. You can conjure more presents using a spell, and there are several presents in your bag.</span>")

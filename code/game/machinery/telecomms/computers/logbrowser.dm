@@ -1,4 +1,4 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
+
 
 /obj/machinery/computer/telecomms/server
 	name = "telecommunications server monitoring console"
@@ -187,7 +187,7 @@
 	if(href_list["delete"])
 
 		if(!src.allowed(usr) && !emagged)
-			usr << "<span class='danger'>ACCESS DENIED.</span>"
+			to_chat(usr, "<span class='danger'>ACCESS DENIED.</span>")
 			return
 
 		if(SelectedServer)

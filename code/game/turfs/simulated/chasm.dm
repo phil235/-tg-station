@@ -5,9 +5,10 @@
 	name = "chasm"
 	desc = "Watch your step."
 	baseturf = /turf/open/chasm
-	smooth = SMOOTH_TRUE | SMOOTH_BORDER
+	smooth = SMOOTH_TRUE | SMOOTH_BORDER | SMOOTH_MORE
 	icon = 'icons/turf/floors/Chasms.dmi'
 	icon_state = "smooth"
+	canSmoothWith = list(/turf/open/floor/fakepit, /turf/open/chasm)
 	var/drop_x = 1
 	var/drop_y = 1
 	var/drop_z = 1
@@ -20,6 +21,34 @@
 	if(!drop_stuff())
 		STOP_PROCESSING(SSobj, src)
 
+
+/turf/open/chasm/attackby(obj/item/C, mob/user, params, area/area_restriction)
+	..()
+	if(istype(C, /obj/item/stack/rods))
+		var/obj/item/stack/rods/R = C
+		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
+		if(!L)
+			if(R.use(1))
+				to_chat(user, "<span class='notice'>You construct a lattice.</span>")
+				playsound(src, 'sound/weapons/Genhit.ogg', 50, 1)
+				ReplaceWithLattice()
+			else
+				to_chat(user, "<span class='warning'>You need one rod to build a lattice.</span>")
+			return
+	if(istype(C, /obj/item/stack/tile/plasteel))
+		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
+		if(L)
+			var/obj/item/stack/tile/plasteel/S = C
+			if(S.use(1))
+				qdel(L)
+				playsound(src, 'sound/weapons/Genhit.ogg', 50, 1)
+				to_chat(user, "<span class='notice'>You build a floor.</span>")
+				ChangeTurf(/turf/open/floor/plating)
+			else
+				to_chat(user, "<span class='warning'>You need one floor tile to build a floor!</span>")
+		else
+			to_chat(user, "<span class='warning'>The plating is going to need some support! Place metal rods first.</span>")
+
 /turf/open/chasm/proc/drop_stuff(AM)
 	. = 0
 	var/thing_to_check = src
@@ -28,7 +57,7 @@
 	for(var/thing in thing_to_check)
 		if(droppable(thing))
 			. = 1
-			addtimer(src, "drop", 0, FALSE, thing)
+			INVOKE_ASYNC(src, .proc/drop, thing)
 
 /turf/open/chasm/proc/droppable(atom/movable/AM)
 	if(!isliving(AM) && !isobj(AM))
@@ -39,9 +68,9 @@
 		//Portals aren't affected by gravity. Probably.
 		return 0
 	//Flies right over the chasm
-	if(isanimal(AM))
-		var/mob/living/simple_animal/SA = AM
-		if(SA.flying)
+	if(isliving(AM))
+		var/mob/MM = AM
+		if(MM.movement_type & FLYING)
 			return 0
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
@@ -51,13 +80,11 @@
 			visible_message("<span class='boldwarning'>[H] falls into [src]!</span>")
 			J.chasm_react(H)
 			return 0
-		if(H.dna && H.dna.species && (FLYING in H.dna.species.specflags))
-			return 0
 	return 1
 
 /turf/open/chasm/proc/drop(atom/movable/AM)
 	//Make sure the item is still there after our sleep
-	if(!AM || qdeleted(AM))
+	if(!AM || QDELETED(AM))
 		return
 
 	var/turf/T = locate(drop_x, drop_y, drop_z)
@@ -71,7 +98,7 @@
 			L.adjustBruteLoss(30)
 
 
-/turf/open/chasm/straight_down/New()
+/turf/open/chasm/straight_down/Initialize()
 	..()
 	drop_x = x
 	drop_y = y
@@ -86,7 +113,7 @@
 
 /turf/open/chasm/straight_down/lava_land_surface/drop(atom/movable/AM)
 	//Make sure the item is still there after our sleep
-	if(!AM || qdeleted(AM))
+	if(!AM || QDELETED(AM))
 		return
 	AM.visible_message("<span class='boldwarning'>[AM] falls into [src]!</span>", "<span class='userdanger'>You stumble and stare into an abyss before you. It stares back, and you fall \
 	into the enveloping dark.</span>")
@@ -98,13 +125,13 @@
 	animate(AM, transform = matrix() - matrix(), alpha = 0, color = rgb(0, 0, 0), time = 10)
 	for(var/i in 1 to 5)
 		//Make sure the item is still there after our sleep
-		if(!AM || qdeleted(AM))
+		if(!AM || QDELETED(AM))
 			return
 		AM.pixel_y--
 		sleep(2)
 
 	//Make sure the item is still there after our sleep
-	if(!AM || qdeleted(AM))
+	if(!AM || QDELETED(AM))
 		return
 
 	if(iscyborg(AM))

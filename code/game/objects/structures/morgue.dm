@@ -50,16 +50,21 @@
 
 /obj/structure/bodycontainer/attack_hand(mob/user)
 	if(locked)
-		user << "<span class='danger'>It's locked.</span>"
+		to_chat(user, "<span class='danger'>It's locked.</span>")
 		return
 	if(!connected)
-		user << "That doesn't appear to have a tray."
+		to_chat(user, "That doesn't appear to have a tray.")
 		return
 	if(connected.loc == src)
 		open()
 	else
 		close()
 	add_fingerprint(user)
+
+/obj/structure/bodycontainer/attack_robot(mob/user)
+	if(!user.Adjacent(src))
+		return
+	return attack_hand(user)
 
 /obj/structure/bodycontainer/attackby(obj/P, mob/user, params)
 	add_fingerprint(user)
@@ -80,12 +85,12 @@
 	new /obj/item/stack/sheet/metal (loc, 5)
 	qdel(src)
 
-/obj/structure/bodycontainer/container_resist()
+/obj/structure/bodycontainer/container_resist(mob/living/user)
 	open()
 
 /obj/structure/bodycontainer/relay_container_resist(mob/living/user, obj/O)
-	user << "<span class='notice'>You slam yourself into the side of [O].</span>"
-	container_resist()
+	to_chat(user, "<span class='notice'>You slam yourself into the side of [O].</span>")
+	container_resist(user)
 
 /obj/structure/bodycontainer/proc/open()
 	playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
@@ -135,6 +140,10 @@
 					icon_state = "morgue4" // Cloneable
 					break
 
+/obj/item/weapon/paper/morguereminder
+	name = "morgue memo"
+	info = "<font size='2'>Since this station's medbay never seems to fail to be staffed by the mindless monkeys meant for genetics experiments, I'm leaving a reminder here for anyone handling the pile of cadavers the quacks are sure to leave.</font><BR><BR><font size='4'><font color=red>Red lights mean there's a plain ol' dead body inside.</font><BR><BR><font color=orange>Yellow lights mean there's non-body objects inside.</font><BR><font size='2'>Probably stuff pried off a corpse someone grabbed, or if you're lucky it's stashed booze.</font><BR><BR><font color=green>Green lights mean the morgue system detects the body may be able to be cloned.</font></font><BR><font size='2'>I don't know how that works, but keep it away from the kitchen and go yell at the geneticists.</font><BR><BR>- Centcom medical inspector"
+
 /*
  * Crematorium
  */
@@ -145,6 +154,10 @@ var/global/list/crematoriums = new/list()
 	icon_state = "crema1"
 	opendir = SOUTH
 	var/id = 1
+
+/obj/structure/bodycontainer/crematorium/attack_robot(mob/user) //Borgs can't use crematoriums without help
+	to_chat(user, "<span class='warning'>[src] is locked against you.</span>")
+	return
 
 /obj/structure/bodycontainer/crematorium/Destroy()
 	crematoriums.Remove(src)
@@ -190,7 +203,7 @@ var/global/list/crematoriums = new/list()
 			if (M.stat != DEAD)
 				M.emote("scream")
 			if(user)
-				user.attack_log +="\[[time_stamp()]\] Cremated <b>[M]/[M.ckey]</b>"
+				user.log_message("Cremated <b>[M]/[M.ckey]</b>", INDIVIDUAL_ATTACK_LOG)
 				log_attack("\[[time_stamp()]\] <b>[user]/[user.ckey]</b> cremated <b>[M]/[M.ckey]</b>")
 			else
 				log_attack("\[[time_stamp()]\] <b>UNKNOWN</b> cremated <b>[M]/[M.ckey]</b>")
@@ -205,7 +218,7 @@ var/global/list/crematoriums = new/list()
 
 		new /obj/effect/decal/cleanable/ash(src)
 		sleep(30)
-		if(!qdeleted(src))
+		if(!QDELETED(src))
 			locked = 0
 			update_icon()
 			playsound(src.loc, 'sound/machines/ding.ogg', 50, 1) //you horrible people
@@ -245,7 +258,7 @@ var/global/list/crematoriums = new/list()
 		connected.close()
 		add_fingerprint(user)
 	else
-		user << "<span class='warning'>That's not connected to anything!</span>"
+		to_chat(user, "<span class='warning'>That's not connected to anything!</span>")
 
 /obj/structure/tray/MouseDrop_T(atom/movable/O as mob|obj, mob/user)
 	if(!istype(O, /atom/movable) || O.anchored || !Adjacent(user) || !user.Adjacent(O) || O.loc == user)

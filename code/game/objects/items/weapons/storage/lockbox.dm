@@ -1,12 +1,12 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
+
 
 /obj/item/weapon/storage/lockbox
 	name = "lockbox"
 	desc = "A locked box."
 	icon_state = "lockbox+l"
 	item_state = "syringe_kit"
-	w_class = 4
-	max_w_class = 3
+	w_class = WEIGHT_CLASS_BULKY
+	max_w_class = WEIGHT_CLASS_NORMAL
 	max_combined_w_class = 14 //The sum of the w_classes of all the items in this storage item.
 	storage_slots = 4
 	req_access = list(access_armory)
@@ -20,31 +20,31 @@
 /obj/item/weapon/storage/lockbox/attackby(obj/item/weapon/W, mob/user, params)
 	if(W.GetID())
 		if(broken)
-			user << "<span class='danger'>It appears to be broken.</span>"
+			to_chat(user, "<span class='danger'>It appears to be broken.</span>")
 			return
 		if(allowed(user))
 			locked = !locked
 			if(locked)
 				icon_state = icon_locked
-				user << "<span class='danger'>You lock the [src.name]!</span>"
+				to_chat(user, "<span class='danger'>You lock the [src.name]!</span>")
 				close_all()
 				return
 			else
 				icon_state = icon_closed
-				user << "<span class='danger'>You unlock the [src.name]!</span>"
+				to_chat(user, "<span class='danger'>You unlock the [src.name]!</span>")
 				return
 		else
-			user << "<span class='danger'>Access Denied.</span>"
+			to_chat(user, "<span class='danger'>Access Denied.</span>")
 			return
 	if(!locked)
 		return ..()
 	else
-		user << "<span class='danger'>It's locked!</span>"
+		to_chat(user, "<span class='danger'>It's locked!</span>")
 
 /obj/item/weapon/storage/lockbox/MouseDrop(over_object, src_location, over_location)
 	if (locked)
 		src.add_fingerprint(usr)
-		usr << "<span class='warning'>It's locked!</span>"
+		to_chat(usr, "<span class='warning'>It's locked!</span>")
 		return 0
 	..()
 
@@ -59,7 +59,7 @@
 			return
 /obj/item/weapon/storage/lockbox/show_to(mob/user)
 	if(locked)
-		user << "<span class='warning'>It's locked!</span>"
+		to_chat(user, "<span class='warning'>It's locked!</span>")
 	else
 		..()
 	return
@@ -67,7 +67,7 @@
 //Check the destination item type for contentto.
 /obj/item/weapon/storage/lockbox/storage_contents_dump_act(obj/item/weapon/storage/src_object, mob/user)
 	if(locked)
-		user << "<span class='warning'>It's locked!</span>"
+		to_chat(user, "<span class='warning'>It's locked!</span>")
 		return 0
 	return ..()
 
@@ -101,8 +101,8 @@
 	desc = "A locked box used to store medals of honor."
 	icon_state = "medalbox+l"
 	item_state = "syringe_kit"
-	w_class = 3
-	max_w_class = 2
+	w_class = WEIGHT_CLASS_NORMAL
+	max_w_class = WEIGHT_CLASS_SMALL
 	storage_slots = 10
 	req_access = list(access_captain)
 	icon_locked = "medalbox+l"

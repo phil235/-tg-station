@@ -13,7 +13,7 @@
 	icon_state = "imp"
 	icon_living = "imp"
 	speed = 1
-	a_intent = "harm"
+	a_intent = INTENT_HARM
 	stop_automated_movement = 1
 	status_flags = CANPUSH
 	attack_sound = 'sound/magic/demon_attack1.ogg'
@@ -38,7 +38,7 @@
 							Though you are not obligated to help, perhaps by aiding a higher ranking devil, you might just get a promotion.  However, you are incapable	\
 							of intentionally harming a fellow devil.</B>"
 
-/mob/living/simple_animal/imp/New()
+/mob/living/simple_animal/imp/Initialize()
 	..()
 	boost = world.time + 30
 

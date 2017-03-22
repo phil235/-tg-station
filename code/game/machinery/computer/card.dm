@@ -1,4 +1,4 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
+
 
 //Keeps track of the time for the ID console. Having it as a global variable prevents people from dismantling/reassembling it to
 //increase the slots of many jobs.
@@ -19,6 +19,7 @@ var/time_last_changed_position = 0
 	var/list/region_access = null
 	var/list/head_subordinates = null
 	var/target_dept = 0 //Which department this computer has access to. 0=all departments
+	var/prioritycount = 0 // we don't want 500 prioritized jobs
 
 	//Cooldown for closing positions in seconds
 	//if set to -1: No cooldown... probably a bad idea
@@ -34,8 +35,7 @@ var/time_last_changed_position = 0
 		"Head of Security",
 		"Chief Engineer",
 		"Research Director",
-		"Chief Medical Officer",
-		"Chaplain")
+		"Chief Medical Officer")
 
 	//The scaling factor of max total positions in relation to the total amount of people on board the station in %
 	var/max_relative_positions = 30 //30%: Seems reasonable, limit of 6 @ 20 players
@@ -43,6 +43,8 @@ var/time_last_changed_position = 0
 	//This is used to keep track of opened positions for jobs to allow instant closing
 	//Assoc array: "JobName" = (int)<Opened Positions>
 	var/list/opened_positions = list();
+
+	light_color = LIGHT_COLOR_BLUE
 
 /obj/machinery/computer/card/attackby(obj/O, mob/user, params)//TODO:SANITY
 	if(istype(O, /obj/item/weapon/card/id))
@@ -53,17 +55,20 @@ var/time_last_changed_position = 0
 					return
 				idcard.loc = src
 				scan = idcard
+				playsound(src, 'sound/machines/terminal_insert_disc.ogg', 50, 0)
 			else if(!modify)
 				if(!usr.drop_item())
 					return
 				idcard.loc = src
 				modify = idcard
+				playsound(src, 'sound/machines/terminal_insert_disc.ogg', 50, 0)
 		else
 			if(!modify)
 				if(!usr.drop_item())
 					return
 				idcard.loc = src
 				modify = idcard
+				playsound(src, 'sound/machines/terminal_insert_disc.ogg', 50, 0)
 	else
 		return ..()
 
@@ -147,7 +152,7 @@ var/time_last_changed_position = 0
 			S = "--------"
 		dat += "<a href='?src=\ref[src];choice=scan'>[S]</a>"
 		dat += "<table>"
-		dat += "<tr><td style='width:25%'><b>Job</b></td><td style='width:25%'><b>Slots</b></td><td style='width:25%'><b>Open job</b></td><td style='width:25%'><b>Close job</b></td></tr>"
+		dat += "<tr><td style='width:25%'><b>Job</b></td><td style='width:25%'><b>Slots</b></td><td style='width:25%'><b>Open job</b></td><td style='width:25%'><b>Close job</b><td style='width:25%'><b>Prioritize</b></td></td></tr>"
 		var/ID
 		if(scan && (access_change_ids in scan.access) && !target_dept)
 			ID = 1
@@ -191,6 +196,22 @@ var/time_last_changed_position = 0
 					dat += "Cooldown ongoing: [mins]:[(seconds < 10) ? "0[seconds]" : "[seconds]"]"
 				if(0)
 					dat += "Denied"
+			dat += "</td><td>"
+			switch(job.total_positions)
+				if(0)
+					dat += "Denied"
+				else
+					if(ID)
+						if(job in SSjob.prioritized_jobs)
+							dat += "<a href='?src=\ref[src];choice=prioritize_job;job=[job.title]'>Deprioritize</a>"
+						else
+							if(prioritycount < 5)
+								dat += "<a href='?src=\ref[src];choice=prioritize_job;job=[job.title]'>Prioritize</a>"
+							else
+								dat += "Denied"
+					else
+						dat += "Prioritize"
+
 			dat += "</td></tr>"
 		dat += "</table>"
 	else
@@ -226,7 +247,7 @@ var/time_last_changed_position = 0
 			header += "<div align='center'><br>"
 			header += "<a href='?src=\ref[src];choice=modify'>Remove [target_name]</a> || "
 			header += "<a href='?src=\ref[src];choice=scan'>Remove [scan_name]</a> <br> "
-			header += "<a href='?src=\ref[src];choice=mode;mode_target=1'>Access Crew Manifest</a> || "
+			header += "<a href='?src=\ref[src];choice=mode;mode_target=1'>Access Crew Manifest</a> <br> "
 			header += "<a href='?src=\ref[src];choice=logout'>Log Out</a></div>"
 
 		header += "<hr>"
@@ -315,10 +336,6 @@ var/time_last_changed_position = 0
 				body += "<br><hr><a href = '?src=\ref[src];choice=mode;mode_target=2'>Job Management</a>"
 
 		dat = "<tt>[header][body]<hr><br></tt>"
-
-	//user << browse(dat, "window=id_com;size=900x520")
-	//onclose(user, "id_com")
-
 	var/datum/browser/popup = new(user, "id_com", src.name, 900, 620)
 	popup.set_content(dat)
 	popup.set_title_image(user.browse_rsc_icon(src.icon, src.icon_state))
@@ -337,6 +354,7 @@ var/time_last_changed_position = 0
 				modify.update_label()
 				modify.loc = loc
 				modify.verb_pickup()
+				playsound(src, 'sound/machines/terminal_insert_disc.ogg', 50, 0)
 				modify = null
 				region_access = null
 				head_subordinates = null
@@ -345,6 +363,7 @@ var/time_last_changed_position = 0
 				if (istype(I, /obj/item/weapon/card/id))
 					if(!usr.drop_item())
 						return
+					playsound(src, 'sound/machines/terminal_insert_disc.ogg', 50, 0)
 					I.loc = src
 					modify = I
 			authenticated = 0
@@ -353,12 +372,14 @@ var/time_last_changed_position = 0
 			if (scan)
 				scan.loc = src.loc
 				scan.verb_pickup()
+				playsound(src, 'sound/machines/terminal_insert_disc.ogg', 50, 0)
 				scan = null
 			else
 				var/obj/item/I = usr.get_active_held_item()
 				if (istype(I, /obj/item/weapon/card/id))
 					if(!usr.drop_item())
 						return
+					playsound(src, 'sound/machines/terminal_insert_disc.ogg', 50, 0)
 					I.loc = src
 					scan = I
 			authenticated = 0
@@ -374,6 +395,7 @@ var/time_last_changed_position = 0
 							authenticated = 1
 						else
 							authenticated = 2
+						playsound(src, 'sound/machines/terminal_on.ogg', 50, 0)
 
 					else
 						if((access_hop in scan.access) && ((target_dept==1) || !target_dept))
@@ -395,11 +417,13 @@ var/time_last_changed_position = 0
 						if(region_access)
 							authenticated = 1
 			else if ((!( authenticated ) && issilicon(usr)) && (!modify))
-				usr << "<span class='warning'>You can't modify an ID without an ID inserted to modify! Once one is in the modify slot on the computer, you can log in.</span>"
+				to_chat(usr, "<span class='warning'>You can't modify an ID without an ID inserted to modify! Once one is in the modify slot on the computer, you can log in.</span>")
 		if ("logout")
 			region_access = null
 			head_subordinates = null
 			authenticated = 0
+			playsound(src, 'sound/machines/terminal_off.ogg', 50, 0)
+
 		if("access")
 			if(href_list["allowed"])
 				if(authenticated)
@@ -409,6 +433,7 @@ var/time_last_changed_position = 0
 						modify.access -= access_type
 						if(access_allowed == 1)
 							modify.access += access_type
+						playsound(src, "terminal_type", 50, 0)
 		if ("assign")
 			if (authenticated == 2)
 				var/t1 = href_list["assign_target"]
@@ -428,17 +453,19 @@ var/time_last_changed_position = 0
 							jobdatum = J
 							break
 					if(!jobdatum)
-						usr << "<span class='error'>No log exists for this job.</span>"
+						to_chat(usr, "<span class='error'>No log exists for this job.</span>")
 						return
 
 					modify.access = ( istype(src,/obj/machinery/computer/card/centcom) ? get_centcom_access(t1) : jobdatum.get_access() )
 				if (modify)
 					modify.assignment = t1
+					playsound(src, 'sound/machines/terminal_prompt_confirm.ogg', 50, 0)
 		if ("demote")
 			if(modify.assignment in head_subordinates || modify.assignment == "Assistant")
 				modify.assignment = "Unassigned"
+				playsound(src, 'sound/machines/terminal_prompt_confirm.ogg', 50, 0)
 			else
-				usr << "<span class='error'>You are not authorized to demote this position.</span>"
+				to_chat(usr, "<span class='error'>You are not authorized to demote this position.</span>")
 		if ("reg")
 			if (authenticated)
 				var/t2 = modify
@@ -447,8 +474,9 @@ var/time_last_changed_position = 0
 					var/newName = reject_bad_name(href_list["reg"])
 					if(newName)
 						modify.registered_name = newName
+						playsound(src, 'sound/machines/terminal_prompt_confirm.ogg', 50, 0)
 					else
-						usr << "<span class='error'>Invalid name entered.</span>"
+						to_chat(usr, "<span class='error'>Invalid name entered.</span>")
 						return
 		if ("mode")
 			mode = text2num(href_list["mode_target"])
@@ -456,6 +484,7 @@ var/time_last_changed_position = 0
 		if("return")
 			//DISPLAY MAIN MENU
 			mode = 3;
+			playsound(src, "terminal_type", 25, 0)
 
 		if("make_job_available")
 			// MAKE ANOTHER JOB POSITION AVAILABLE FOR LATE JOINERS
@@ -470,6 +499,7 @@ var/time_last_changed_position = 0
 					time_last_changed_position = world.time / 10
 				j.total_positions++
 				opened_positions[edit_job_target]++
+				playsound(src, 'sound/machines/terminal_prompt_confirm.ogg', 50, 0)
 
 		if("make_job_unavailable")
 			// MAKE JOB POSITION UNAVAILABLE FOR LATE JOINERS
@@ -485,6 +515,25 @@ var/time_last_changed_position = 0
 					time_last_changed_position = world.time / 10
 				j.total_positions--
 				opened_positions[edit_job_target]--
+				playsound(src, 'sound/machines/terminal_prompt_deny.ogg', 50, 0)
+
+		if ("prioritize_job")
+			// TOGGLE WHETHER JOB APPEARS AS PRIORITIZED IN THE LOBBY
+			if(scan && (access_change_ids in scan.access) && !target_dept)
+				var/priority_target = href_list["job"]
+				var/datum/job/j = SSjob.GetJob(priority_target)
+				if(!j)
+					return 0
+				var/priority = TRUE
+				if(j in SSjob.prioritized_jobs)
+					SSjob.prioritized_jobs -= j
+					prioritycount--
+					priority = FALSE
+				else
+					SSjob.prioritized_jobs += j
+					prioritycount++
+				usr << "<span class='notice'>[j.title] has been successfully [priority ?  "prioritized" : "unprioritized"]. Potential employees will notice your request.</span>"
+				playsound(src, 'sound/machines/terminal_prompt_confirm.ogg', 50, 0)
 
 		if ("print")
 			if (!( printing ))
@@ -497,6 +546,7 @@ var/time_last_changed_position = 0
 				P.info = t1
 				P.name = "paper- 'Crew Manifest'"
 				printing = null
+				playsound(src, 'sound/machines/terminal_insert_disc.ogg', 50, 0)
 	if (modify)
 		modify.update_label()
 	updateUsrDialog()
@@ -532,6 +582,8 @@ var/time_last_changed_position = 0
 	target_dept = 2
 	icon_screen = "idhos"
 
+	light_color = LIGHT_COLOR_RED
+
 /obj/machinery/computer/card/minor/cmo
 	target_dept = 3
 	icon_screen = "idcmo"
@@ -540,6 +592,10 @@ var/time_last_changed_position = 0
 	target_dept = 4
 	icon_screen = "idrd"
 
+	light_color = LIGHT_COLOR_PINK
+
 /obj/machinery/computer/card/minor/ce
 	target_dept = 5
 	icon_screen = "idce"
+
+	light_color = LIGHT_COLOR_YELLOW

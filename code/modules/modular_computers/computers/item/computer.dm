@@ -62,8 +62,11 @@
 	for(var/H in all_components)
 		var/obj/item/weapon/computer_hardware/CH = all_components[H]
 		if(CH.holder == src)
+			CH.on_remove(src)
 			CH.holder = null
+			all_components.Remove(CH.device_type)
 			qdel(CH)
+	physical = null
 	return ..()
 
 
@@ -73,6 +76,8 @@
 			verbs += /obj/item/device/modular_computer/proc/eject_id
 		if(MC_SDD)
 			verbs += /obj/item/device/modular_computer/proc/eject_disk
+		if(MC_AI)
+			verbs += /obj/item/device/modular_computer/proc/eject_card
 
 /obj/item/device/modular_computer/proc/remove_verb(path)
 	switch(path)
@@ -80,6 +85,8 @@
 			verbs -= /obj/item/device/modular_computer/proc/eject_id
 		if(MC_SDD)
 			verbs -= /obj/item/device/modular_computer/proc/eject_disk
+		if(MC_AI)
+			verbs -= /obj/item/device/modular_computer/proc/eject_card
 
 // Eject ID card from computer, if it has ID slot with card inside.
 /obj/item/device/modular_computer/proc/eject_id()
@@ -91,13 +98,24 @@
 		return
 	var/obj/item/weapon/computer_hardware/card_slot/card_slot = all_components[MC_CARD]
 	if(usr.canUseTopic(src))
-		card_slot.try_eject(, usr)
+		card_slot.try_eject(null, usr)
+
+// Eject ID card from computer, if it has ID slot with card inside.
+/obj/item/device/modular_computer/proc/eject_card()
+	set name = "Eject Intellicard"
+	set category = "Object"
+
+	if(issilicon(usr))
+		return
+	var/obj/item/weapon/computer_hardware/ai_slot/ai_slot = all_components[MC_AI]
+	if(usr.canUseTopic(src))
+		ai_slot.try_eject(null, usr,1)
+
 
 // Eject ID card from computer, if it has ID slot with card inside.
 /obj/item/device/modular_computer/proc/eject_disk()
 	set name = "Eject Data Disk"
 	set category = "Object"
-	set src in view(1)
 
 	if(issilicon(usr))
 		return
@@ -114,12 +132,16 @@
 
 	if(user.canUseTopic(src))
 		var/obj/item/weapon/computer_hardware/card_slot/card_slot = all_components[MC_CARD]
+		var/obj/item/weapon/computer_hardware/ai_slot/ai_slot = all_components[MC_AI]
 		var/obj/item/weapon/computer_hardware/hard_drive/portable/portable_drive = all_components[MC_SDD]
 		if(portable_drive)
 			if(uninstall_component(portable_drive, user))
 				portable_drive.verb_pickup()
-		else if(card_slot)
-			card_slot.try_eject(, user)
+		else
+			if(card_slot && card_slot.try_eject(null, user))
+				return
+			if(ai_slot)
+				ai_slot.try_eject(null, user)
 
 
 // Gets IDs/access levels from card slot. Would be useful when/if PDAs would become modular PCs.
@@ -154,19 +176,19 @@
 
 /obj/item/device/modular_computer/emag_act(mob/user)
 	if(emagged)
-		user << "<span class='warning'>\The [src] was already emagged.</span>"
+		to_chat(user, "<span class='warning'>\The [src] was already emagged.</span>")
 		return 0
 	else
 		emagged = 1
-		user << "<span class='notice'>You emag \the [src]. It's screen briefly shows a \"OVERRIDE ACCEPTED: New software downloads available.\" message.</span>"
+		to_chat(user, "<span class='notice'>You emag \the [src]. It's screen briefly shows a \"OVERRIDE ACCEPTED: New software downloads available.\" message.</span>")
 		return 1
 
 /obj/item/device/modular_computer/examine(mob/user)
 	..()
 	if(obj_integrity <= integrity_failure)
-		user << "<span class='danger'>It is heavily damaged!</span>"
+		to_chat(user, "<span class='danger'>It is heavily damaged!</span>")
 	else if(obj_integrity < max_integrity)
-		user << "<span class='warning'>It is damaged.</span>"
+		to_chat(user, "<span class='warning'>It is damaged.</span>")
 
 /obj/item/device/modular_computer/update_icon()
 	cut_overlays()
@@ -195,9 +217,9 @@
 	var/issynth = issilicon(user) // Robots and AIs get different activation messages.
 	if(obj_integrity <= integrity_failure)
 		if(issynth)
-			user << "<span class='warning'>You send an activation signal to \the [src], but it responds with an error code. It must be damaged.</span>"
+			to_chat(user, "<span class='warning'>You send an activation signal to \the [src], but it responds with an error code. It must be damaged.</span>")
 		else
-			user << "<span class='warning'>You press the power button, but the computer fails to boot up, displaying variety of errors before shutting down again.</span>"
+			to_chat(user, "<span class='warning'>You press the power button, but the computer fails to boot up, displaying variety of errors before shutting down again.</span>")
 		return
 
 	// If we have a recharger, enable it automatically. Lets computer without a battery work.
@@ -207,17 +229,17 @@
 
 	if(all_components[MC_CPU] && use_power()) // use_power() checks if the PC is powered
 		if(issynth)
-			user << "<span class='notice'>You send an activation signal to \the [src], turning it on.</span>"
+			to_chat(user, "<span class='notice'>You send an activation signal to \the [src], turning it on.</span>")
 		else
-			user << "<span class='notice'>You press the power button and start up \the [src].</span>"
+			to_chat(user, "<span class='notice'>You press the power button and start up \the [src].</span>")
 		enabled = 1
 		update_icon()
 		ui_interact(user)
 	else // Unpowered
 		if(issynth)
-			user << "<span class='warning'>You send an activation signal to \the [src] but it does not respond.</span>"
+			to_chat(user, "<span class='warning'>You send an activation signal to \the [src] but it does not respond.</span>")
 		else
-			user << "<span class='warning'>You press the power button but \the [src] does not respond.</span>"
+			to_chat(user, "<span class='warning'>You press the power button but \the [src] does not respond.</span>")
 
 // Process currently calls handle_power(), may be expanded in future if more things are added.
 /obj/item/device/modular_computer/process()
@@ -362,7 +384,7 @@
 
 	if(istype(W, /obj/item/weapon/wrench))
 		if(all_components.len)
-			user << "<span class='warning'>Remove all components from \the [src] before disassembling it.</span>"
+			to_chat(user, "<span class='warning'>Remove all components from \the [src] before disassembling it.</span>")
 			return
 		new /obj/item/stack/sheet/metal( get_turf(src.loc), steel_sheet_cost )
 		physical.visible_message("\The [src] has been disassembled by [user].")
@@ -373,23 +395,23 @@
 	if(istype(W, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = W
 		if(!WT.isOn())
-			user << "<span class='warning'>\The [W] is off.</span>"
+			to_chat(user, "<span class='warning'>\The [W] is off.</span>")
 			return
 
 		if(obj_integrity == max_integrity)
-			user << "<span class='warning'>\The [src] does not require repairs.</span>"
+			to_chat(user, "<span class='warning'>\The [src] does not require repairs.</span>")
 			return
 
-		user << "<span class='notice'>You begin repairing damage to \the [src]...</span>"
+		to_chat(user, "<span class='notice'>You begin repairing damage to \the [src]...</span>")
 		var/dmg = round(max_integrity - obj_integrity)
 		if(WT.remove_fuel(round(dmg/75)) && do_after(usr, dmg/10))
 			obj_integrity = max_integrity
-			user << "<span class='notice'>You repair \the [src].</span>"
+			to_chat(user, "<span class='notice'>You repair \the [src].</span>")
 		return
 
 	if(istype(W, /obj/item/weapon/screwdriver))
 		if(!all_components.len)
-			user << "<span class='warning'>This device doesn't have any components installed.</span>"
+			to_chat(user, "<span class='warning'>This device doesn't have any components installed.</span>")
 			return
 		var/list/component_names = list()
 		for(var/h in all_components)

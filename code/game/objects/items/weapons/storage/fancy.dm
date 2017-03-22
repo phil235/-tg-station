@@ -38,9 +38,9 @@
 	..()
 	if(fancy_open)
 		if(contents.len == 1)
-			user << "There is one [src.icon_type] left."
+			to_chat(user, "There is one [src.icon_type] left.")
 		else
-			user << "There are [contents.len <= 0 ? "no" : "[src.contents.len]"] [src.icon_type]s left."
+			to_chat(user, "There are [contents.len <= 0 ? "no" : "[src.contents.len]"] [src.icon_type]s left.")
 
 /obj/item/weapon/storage/fancy/attack_self(mob/user)
 	fancy_open = !fancy_open
@@ -116,7 +116,7 @@
 	icon = 'icons/obj/cigarettes.dmi'
 	icon_state = "cig"
 	item_state = "cigpacket"
-	w_class = 1
+	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
 	slot_flags = SLOT_BELT
 	storage_slots = 6
@@ -177,11 +177,11 @@
 			remove_from_storage(W, M)
 			M.equip_to_slot_if_possible(W, slot_wear_mask)
 			contents -= W
-			user << "<span class='notice'>You take a [icon_type] out of the pack.</span>"
+			to_chat(user, "<span class='notice'>You take a [icon_type] out of the pack.</span>")
 		else
 			..()
 	else
-		user << "<span class='notice'>There are no [icon_type]s left in the pack.</span>"
+		to_chat(user, "<span class='notice'>There are no [icon_type]s left in the pack.</span>")
 
 /obj/item/weapon/storage/fancy/cigarettes/dromedaryco
 	name = "DromedaryCo"
@@ -247,7 +247,7 @@
 /obj/item/weapon/storage/fancy/rollingpapers
 	name = "rolling paper pack"
 	desc = "A pack of NanoTrasen brand rolling papers."
-	w_class = 1
+	w_class = WEIGHT_CLASS_TINY
 	icon = 'icons/obj/cigarettes.dmi'
 	icon_state = "cig_paper_pack"
 	storage_slots = 10
@@ -269,7 +269,7 @@
 	desc = "A case of premium cigars. Very expensive."
 	icon = 'icons/obj/cigarettes.dmi'
 	icon_state = "cigarcase"
-	w_class = 3
+	w_class = WEIGHT_CLASS_NORMAL
 	storage_slots = 5
 	can_hold = list(/obj/item/clothing/mask/cigarette/cigar)
 	icon_type = "premium cigar"

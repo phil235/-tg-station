@@ -6,7 +6,7 @@
 	icon_state = "rock"
 	var/smooth_icon = 'icons/turf/smoothrocks.dmi'
 	smooth = SMOOTH_MORE|SMOOTH_BORDER
-	canSmoothWith = list (/turf/closed)
+	canSmoothWith
 	baseturf = /turf/open/floor/plating/asteroid/airless
 	initial_gas_mix = "TEMP=2.7"
 	opacity = 1
@@ -24,7 +24,9 @@
 	var/scan_state = null //Holder for the image we display when we're pinged by a mining scanner
 	var/defer_change = 0
 
-/turf/closed/mineral/New()
+/turf/closed/mineral/Initialize()
+	if (!canSmoothWith)
+		canSmoothWith = list(/turf/closed)
 	pixel_y = -4
 	pixel_x = -4
 	icon = smooth_icon
@@ -36,12 +38,15 @@
 				if(istype(T, /turf/closed/mineral/random))
 					Spread(T)
 
+/turf/closed/mineral/shuttleRotate(rotation)
+	setDir(angle2dir(rotation+dir2angle(dir)))
+	queue_smooth(src)
 
 
 /turf/closed/mineral/attackby(obj/item/weapon/pickaxe/P, mob/user, params)
 
 	if (!user.IsAdvancedToolUser())
-		usr << "<span class='warning'>You don't have the dexterity to do this!</span>"
+		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return
 
 	if (istype(P, /obj/item/weapon/pickaxe))
@@ -52,12 +57,12 @@
 		if(last_act+P.digspeed > world.time)//prevents message spam
 			return
 		last_act = world.time
-		user << "<span class='notice'>You start picking...</span>"
+		to_chat(user, "<span class='notice'>You start picking...</span>")
 		P.playDigSound()
 
 		if(do_after(user,P.digspeed, target = src))
 			if(ismineralturf(src))
-				user << "<span class='notice'>You finish cutting into the rock.</span>"
+				to_chat(user, "<span class='notice'>You finish cutting into the rock.</span>")
 				gets_drilled(user)
 				feedback_add_details("pick_used_mining","[P.type]")
 	else
@@ -71,8 +76,7 @@
 			new mineralType(src)
 		feedback_add_details("ore_mined","[mineralType]|[mineralAmt]")
 	ChangeTurf(turf_type, defer_change)
-	spawn(10)
-		AfterChange()
+	addtimer(CALLBACK(src, .proc/AfterChange), 1, TIMER_UNIQUE)
 	playsound(src, 'sound/effects/break_stone.ogg', 50, 1) //beautiful destruction
 	return
 
@@ -82,10 +86,10 @@
 	..()
 
 /turf/closed/mineral/attack_alien(mob/living/carbon/alien/M)
-	M << "<span class='notice'>You start digging into the rock...</span>"
+	to_chat(M, "<span class='notice'>You start digging into the rock...</span>")
 	playsound(src, 'sound/effects/break_stone.ogg', 50, 1)
 	if(do_after(M,40, target = src))
-		M << "<span class='notice'>You tunnel into the rock.</span>"
+		to_chat(M, "<span class='notice'>You tunnel into the rock.</span>")
 		gets_drilled(M)
 
 /turf/closed/mineral/Bumped(AM as mob|obj)
@@ -130,19 +134,23 @@
 	T.ChangeTurf(type)
 
 /turf/closed/mineral/random
-	var/mineralSpawnChanceList = list(
-		/turf/closed/mineral/uranium = 5, /turf/closed/mineral/diamond = 1, /turf/closed/mineral/gold = 10,
-		/turf/closed/mineral/silver = 12, /turf/closed/mineral/plasma = 20, /turf/closed/mineral/iron = 40, /turf/closed/mineral/titanium = 11,
-		/turf/closed/mineral/gibtonite = 4, /turf/open/floor/plating/asteroid/airless/cave = 2, /turf/closed/mineral/bscrystal = 1)
+	var/mineralSpawnChanceList
 		//Currently, Adamantine won't spawn as it has no uses. -Durandan
 	var/mineralChance = 13
+	var/display_icon_state = "rock"
 
-/turf/closed/mineral/random/New()
+/turf/closed/mineral/random/Initialize()
+	if (!mineralSpawnChanceList)
+		mineralSpawnChanceList = list(
+			/turf/closed/mineral/uranium = 5, /turf/closed/mineral/diamond = 1, /turf/closed/mineral/gold = 10,
+			/turf/closed/mineral/silver = 12, /turf/closed/mineral/plasma = 20, /turf/closed/mineral/iron = 40, /turf/closed/mineral/titanium = 11,
+			/turf/closed/mineral/gibtonite = 4, /turf/open/floor/plating/asteroid/airless/cave = 2, /turf/closed/mineral/bscrystal = 1)
+	if (display_icon_state)
+		icon_state = display_icon_state
 	..()
-
 	if (prob(mineralChance))
 		var/path = pickweight(mineralSpawnChanceList)
-		var/turf/T = ChangeTurf(path)
+		var/turf/T = ChangeTurf(path,FALSE,TRUE)
 
 		if(T && ismineralturf(T))
 			var/turf/closed/mineral/M = T
@@ -160,10 +168,6 @@
 	mineralSpawnChanceList = list(
 		/turf/closed/mineral/uranium = 35, /turf/closed/mineral/diamond = 30, /turf/closed/mineral/gold = 45, /turf/closed/mineral/titanium = 45,
 		/turf/closed/mineral/silver = 50, /turf/closed/mineral/plasma = 50, /turf/closed/mineral/bscrystal = 20)
-
-/turf/closed/mineral/random/high_chance/New()
-	icon_state = "rock"
-	..()
 
 /turf/closed/mineral/random/high_chance/volcanic
 	environment_type = "basalt"
@@ -185,10 +189,6 @@
 		/turf/closed/mineral/silver = 6, /turf/closed/mineral/plasma = 15, /turf/closed/mineral/iron = 40,
 		/turf/closed/mineral/gibtonite = 2, /turf/closed/mineral/bscrystal = 1)
 
-/turf/closed/mineral/random/low_chance/New()
-	icon_state = "rock"
-	..()
-
 
 /turf/closed/mineral/random/volcanic
 	environment_type = "basalt"
@@ -203,15 +203,14 @@
 		/turf/closed/mineral/silver/volcanic = 12, /turf/closed/mineral/plasma/volcanic = 20, /turf/closed/mineral/iron/volcanic = 40,
 		/turf/closed/mineral/gibtonite/volcanic = 4, /turf/open/floor/plating/asteroid/airless/cave/volcanic = 1, /turf/closed/mineral/bscrystal/volcanic = 1)
 
+
 /turf/closed/mineral/random/labormineral
 	mineralSpawnChanceList = list(
-		/turf/closed/mineral/iron = 100, /turf/closed/mineral/uranium = 1, /turf/closed/mineral/diamond = 1,
-		/turf/closed/mineral/gold = 1, /turf/closed/mineral/silver = 1, /turf/closed/mineral/plasma = 1)
+		/turf/closed/mineral/uranium = 3, /turf/closed/mineral/diamond = 1, /turf/closed/mineral/gold = 8, /turf/closed/mineral/titanium = 8,
+		/turf/closed/mineral/silver = 20, /turf/closed/mineral/plasma = 30, /turf/closed/mineral/iron = 95,
+		/turf/closed/mineral/gibtonite = 2)
 	icon_state = "rock_labor"
 
-/turf/closed/mineral/random/labormineral/New()
-	icon_state = "rock"
-	..()
 
 /turf/closed/mineral/random/labormineral/volcanic
 	environment_type = "basalt"
@@ -220,9 +219,9 @@
 	initial_gas_mix = "o2=14;n2=23;TEMP=300"
 	defer_change = 1
 	mineralSpawnChanceList = list(
-		/turf/closed/mineral/iron/volcanic = 100, /turf/closed/mineral/uranium/volcanic = 1, /turf/closed/mineral/diamond/volcanic = 1,
-		/turf/closed/mineral/gold/volcanic = 1, /turf/closed/mineral/silver/volcanic = 1, /turf/closed/mineral/plasma/volcanic = 1)
-
+		/turf/closed/mineral/uranium/volcanic = 3, /turf/closed/mineral/diamond/volcanic = 1, /turf/closed/mineral/gold/volcanic = 8, /turf/closed/mineral/titanium/volcanic = 8,
+		/turf/closed/mineral/silver/volcanic = 20, /turf/closed/mineral/plasma/volcanic = 30, /turf/closed/mineral/bscrystal/volcanic = 1, /turf/closed/mineral/gibtonite/volcanic = 2,
+		/turf/closed/mineral/iron/volcanic = 95)
 
 
 
@@ -386,7 +385,7 @@
 	var/activated_name = null
 	var/activated_image = null
 
-/turf/closed/mineral/gibtonite/New()
+/turf/closed/mineral/gibtonite/Initialize()
 	det_time = rand(8,10) //So you don't know exactly when the hot potato will explode
 	..()
 
@@ -437,7 +436,7 @@
 
 /turf/closed/mineral/gibtonite/proc/defuse()
 	if(stage == 1)
-		overlays -= activated_image
+		cut_overlay(activated_image)
 		var/image/I = image('icons/turf/smoothrocks.dmi', loc = src, icon_state = "rock_Gibtonite_inactive", layer = ON_EDGED_TURF_LAYER)
 		add_overlay(I)
 		desc = "An inactive gibtonite reserve. The ore can be extracted."
@@ -466,8 +465,7 @@
 			G.icon_state = "Gibtonite ore 2"
 
 	ChangeTurf(turf_type, defer_change)
-	spawn(10)
-		AfterChange()
+	addtimer(CALLBACK(src, .proc/AfterChange), 1, TIMER_UNIQUE)
 
 
 /turf/closed/mineral/gibtonite/volcanic

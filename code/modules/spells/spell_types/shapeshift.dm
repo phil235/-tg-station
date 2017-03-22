@@ -39,7 +39,7 @@
 /obj/effect/proc_holder/spell/targeted/shapeshift/proc/Shapeshift(mob/living/caster)
 	for(var/mob/living/M in caster)
 		if(M.status_flags & GODMODE)
-			caster << "<span class='warning'>You're already shapeshifted!</span>"
+			to_chat(caster, "<span class='warning'>You're already shapeshifted!</span>")
 			return
 
 	var/mob/living/shape = new shapeshift_type(caster.loc)
@@ -71,3 +71,13 @@
 
 	shape.mind.transfer_to(caster)
 	qdel(shape) //Gib it maybe ?
+
+/obj/effect/proc_holder/spell/targeted/shapeshift/dragon
+	name = "Dragon Form"
+	desc = "Take on the shape a lesser ash drake."
+	invocation = "RAAAAAAAAWR!"
+
+	shapeshift_type = /mob/living/simple_animal/hostile/megafauna/dragon/lesser
+	list/current_shapes = list(/mob/living/simple_animal/hostile/megafauna/dragon/lesser)
+	list/current_casters = list()
+	list/possible_shapes = list(/mob/living/simple_animal/hostile/megafauna/dragon/lesser)
